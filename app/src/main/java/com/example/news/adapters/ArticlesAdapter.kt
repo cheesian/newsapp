@@ -50,7 +50,8 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
             val currentArticle = articleList[position]
             articlesHolder.articleTitle.text = currentArticle.title
             articlesHolder.articleText.text = currentArticle.description
-            val author = currentArticle.author
+            val author = if (currentArticle.author.isNullOrBlank())
+                "Anonymous" else currentArticle.author
             val authorText = "By $author"
             val publishedAt = currentArticle.publishedAt
             val timeText = "At $publishedAt"

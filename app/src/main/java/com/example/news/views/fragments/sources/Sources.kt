@@ -30,7 +30,7 @@ import javax.inject.Inject
 Created by ian
  */
 
-class Sources : Fragment() {
+class Sources : Fragment() {/*
 
     private lateinit var binding: SourcesBinding
     private lateinit var fragContext: Context
@@ -218,5 +218,5 @@ class Sources : Fragment() {
         ftbAction.setCompoundDrawables(iconMenu, null, null, null)
 
     }
-
+*/
 }

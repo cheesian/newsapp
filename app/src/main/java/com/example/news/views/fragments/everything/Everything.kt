@@ -26,7 +26,7 @@ import javax.inject.Inject
 Created by ian
  */
 
-class Everything : Fragment() {
+class Everything : Fragment() {/*
 
     private lateinit var binding: EverythingBinding
     private lateinit var fragContext: Context
@@ -212,5 +212,5 @@ class Everything : Fragment() {
         ftbAction.text = getString(R.string.options)
         ftbAction.setCompoundDrawables(iconMenu, null, null, null)
 
-    }
+    }*/
 }
