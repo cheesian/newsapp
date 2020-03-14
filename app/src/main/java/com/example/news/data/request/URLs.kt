@@ -9,4 +9,5 @@ object URLs {
     const val Q = "and"
     const val LANGUAGE = "en"
     const val SORT_BY = "popularity"
+    const val PAGE_SIZE = 40
 }

@@ -18,7 +18,7 @@ object Notify {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    fun snackBar(view: View, message: String, actionMessage: String = "Undo", function:View.OnClickListener ) {
+    fun snackBar(view: View, message: String, actionMessage: String = "", function:View.OnClickListener = View.OnClickListener {  }) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setAction(actionMessage, function)
             .show()

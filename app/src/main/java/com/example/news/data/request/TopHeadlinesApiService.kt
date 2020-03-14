@@ -8,6 +8,7 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 
 /**
@@ -16,7 +17,7 @@ Created by ian
 
 interface TopHeadlinesApiService {
 
-    @GET(TOP_HEADLINES_ENDPOINT)
+    /*@GET(TOP_HEADLINES_ENDPOINT)
     fun getTopHeadlines(
         @Query("apiKey")
         apiKey:String,
@@ -28,7 +29,7 @@ interface TopHeadlinesApiService {
         sources:String,
         @Query("q")
         q:String
-    ): Observable<AllResponseEntity>
+    ): Observable<AllResponseEntity>*/
 //    country: country_list.xml
 //    category: category_list.xml
 //    sources: generate dynamically
@@ -38,7 +39,19 @@ interface TopHeadlinesApiService {
     fun getTopHeadlines(
         @Query("apiKey")
         apiKey:String,
+        @Query("pageSize")
+        pageSize:Int,
         @Query("q")
         q:String
+    ): Observable<AllResponseEntity>
+
+    // for the custom queries
+    @GET(TOP_HEADLINES_ENDPOINT)
+    fun getCustomTopHeadlines(
+        @Query("apiKey")
+        apiKey:String,
+        @Query("pageSize")
+        pageSize:Int,
+        @QueryMap map: HashMap<String, String>
     ): Observable<AllResponseEntity>
 }

@@ -22,6 +22,7 @@ import com.example.news.databinding.TopHeadlinesBinding
 import com.example.news.utils.*
 import com.example.news.utils.Hide.hide
 import com.example.news.utils.Notify.snackBar
+import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel
 import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModelFactory
@@ -54,14 +55,11 @@ class TopHeadlines : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private var sourceList = mutableListOf<String>()
-    private var combinedQuery: String = ""
-    private var categoryQuery: String? = null
-    private var countryQuery: String? = null
-    private var sourceQuery: String? = null
     lateinit var topHeadlinesViewModel: TopHeadlinesViewModel
     @Inject
     lateinit var topHeadlinesViewModelFactory: TopHeadlinesViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
+    var map: HashMap<String, String> = HashMap()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,7 +73,8 @@ class TopHeadlines : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.topHeadlinesRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
         topHeadlinesViewModel = ViewModelProviders.of(this, topHeadlinesViewModelFactory).get(TopHeadlinesViewModel::class.java)
@@ -86,13 +85,16 @@ class TopHeadlines : Fragment() {
 
         topHeadlinesViewModel.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
+            layoutManager.scrollToPosition(it.size - 1)
         })
 
         topHeadlinesViewModel.sourceList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 sourceList.clear()
                 for (source in it) {
-                    sourceList.add(source.name)
+                    val sourceName = source.name
+                    val sourceId = source.id
+                    sourceList.add(sourceId)
                 }
                 populateSpinner(spinner = sourceSpinner, context = context!!, arrayList = sourceList, textViewResource = R.layout.spinner_text)
             }
@@ -166,36 +168,44 @@ class TopHeadlines : Fragment() {
                 var selectedCountry: String? = null
                 var selectedCategory: String? = null
                 var selectedSource: String? = null
-                combinedQuery = ""
+                var selectedKeyword: String = ""
+                map.clear()
 
                 if (countryCheckBox.isChecked && countrySpinner.selectedItem != null && countrySpinner.selectedItem.toString() != getString(
                         R.string.spinner_prompt
                     )
                 ) {
                     selectedCountry = countrySpinner.selectedItem.toString()
-                    countryQuery = "&country=$selectedCountry"
-                    combinedQuery += countryQuery
-                } else countryQuery = null
+                    map["country"] = selectedCountry
+                }
 
                 if (categoryCheckBox.isChecked && categorySpinner.selectedItem != null && categorySpinner.selectedItem.toString() != getString(
                         R.string.spinner_prompt
                     )
                 ) {
                     selectedCategory = categorySpinner.selectedItem.toString()
-                    categoryQuery = "&category=$selectedCategory"
-                    combinedQuery += categoryQuery
-                } else categoryQuery = null
+                    map["category"] = selectedCategory
+                }
 
                 if (sourceCheckBox.isChecked && sourceSpinner.selectedItem != null && sourceSpinner.selectedItem.toString() != getString(
                         R.string.spinner_prompt
                     )
                 ) {
                     selectedSource = sourceSpinner.selectedItem.toString()
-                    sourceQuery = "&source=$selectedSource"
-                    combinedQuery += sourceQuery
-                } else sourceQuery = null
+                    map["sources"] = selectedSource
+                }
 
-                if (combinedQuery != "") Notify.toast(fragContext, "Fetching news")
+                if (keyWordCheckBox.isChecked && !keyWordEditText.getText().toString().isBlank()) {
+                    selectedKeyword = keyWordEditText.getText().toString()
+                    map["q"] = selectedKeyword
+                }
+
+                if (map.isEmpty()) {
+                    snackBar(view = binding.root, message = "Use the checkboxes to filter your search")
+                } else {
+                    reset()
+                    topHeadlinesViewModel.getCustomTopHeadlines(map)
+                }
 
             }
             View.GONE -> {

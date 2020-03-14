@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.news.data.request.TopHeadlinesApiService
 import com.example.news.data.request.URLs.API_KEY
+import com.example.news.data.request.URLs.PAGE_SIZE
 import com.example.news.data.request.URLs.Q
 import com.example.news.data.response.everything.AllResponseEntity
 import com.example.news.data.response.everything.ArticleResponseEntity
@@ -22,12 +23,12 @@ class TopHeadlinesRepository @Inject constructor(
     private val articlesDao: ArticlesDao
 ) {
 
-    fun getTopHeadlines(country:String, category:String, sources:String, q:String): Observable<AllResponseEntity> {
-        return topHeadlinesApiService.getTopHeadlines(API_KEY, country, category, sources, q)
+    fun getTopHeadlines(): Observable<AllResponseEntity> {
+        return topHeadlinesApiService.getTopHeadlines(API_KEY, PAGE_SIZE, Q)
     }
 
-    fun getTopHeadlines(): Observable<AllResponseEntity> {
-        return topHeadlinesApiService.getTopHeadlines(API_KEY, Q)
+    fun getCustomTopHeadlines(map: HashMap<String, String>): Observable<AllResponseEntity> {
+        return topHeadlinesApiService.getCustomTopHeadlines(API_KEY, PAGE_SIZE, map)
     }
 
     fun getArticles(): LiveData<List<ArticleResponseEntity>> {

@@ -42,9 +42,12 @@ class TopHeadlinesViewModel(
                     for (entity in list) {
                         topHeadlinesRepository.insertArticle(entity)
                         entity.sourceResponseEntity?.let {
+                            if (!it.id.isNullOrBlank())
                             topHeadlinesRepository.insertSource(it)
                         }
                     }
+                    val size = list.size
+                    message.value = "Found $size articles"
                 }
             }
 
@@ -62,7 +65,7 @@ class TopHeadlinesViewModel(
         }
     }
 
-    fun getTopHeadlines(country:String, category:String, sources:String, q:String = Q) {
+    /*fun getTopHeadlines(country:String, category:String, sources:String, q:String = Q) {
         disposable.add(
             topHeadlinesRepository.getTopHeadlines(country, category, sources, q)
                 .subscribeOn(Schedulers.io())
@@ -73,7 +76,7 @@ class TopHeadlinesViewModel(
                     { error -> generalResponse.value = GeneralResponse.error(error) }
                 )
         )
-    }
+    }*/
 
     fun getTopHeadlines() {
         disposable.add(
@@ -84,6 +87,25 @@ class TopHeadlinesViewModel(
                 .subscribe (
                     { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
                     { error -> generalResponse.value = GeneralResponse.error(error) }
+                )
+        )
+    }
+
+    fun getCustomTopHeadlines(map: HashMap<String, String>) {
+        disposable.add(
+            topHeadlinesRepository.getCustomTopHeadlines(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { generalResponse.value = GeneralResponse.loading() }
+                .subscribe(
+                    { result ->
+                        if (!result.articleResponseEntities.isNullOrEmpty())
+                            topHeadlinesRepository.deleteAllArticles()
+                        generalResponse.value = GeneralResponse.allResponseSuccess(result)
+                    },
+                    { error ->
+                        generalResponse.value = GeneralResponse.error(error)
+                    }
                 )
         )
     }
