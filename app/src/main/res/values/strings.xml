@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">News</string>
+    <string name="fab_description">Explore options</string>
+    <string name="app_title">GLOBAL NEWS</string>
+    <string name="options">Options</string>
+    <string name="cancel">Cancel</string>
+    <string name="reload">Reload</string>
+    <string name="search">Search</string>
+    <string name="keyword">Keyword</string>
+    <string name="type">Type keyword here …</string>
+    <string name="source">Source</string>
+    <string name="category">Category</string>
+    <string name="country">Country</string>
+    <string name="spinner_prompt">Click &amp; Select</string>
+</resources>

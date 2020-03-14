@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ftb_margins">15dp</dimen>
+    <dimen name="options_spacing">15dp</dimen>
+</resources>
