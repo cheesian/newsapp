@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.news.data.NewsDB
 import com.example.news.data.daos.ArticlesDao
 import com.example.news.data.daos.SourcesDao
+import com.example.news.data.daos.TopHeadlinesDao
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -40,6 +41,12 @@ class DaoModule (private val application: Application) {
     @Reusable
     fun provideSourcesDao (newsDB: NewsDB): SourcesDao {
         return newsDB.sourcesDao()
+    }
+
+    @Provides
+    @Reusable
+    fun provideTopHeadlinesDao (newsDB: NewsDB): TopHeadlinesDao {
+        return newsDB.topHeadlinesDao()
     }
 
 }

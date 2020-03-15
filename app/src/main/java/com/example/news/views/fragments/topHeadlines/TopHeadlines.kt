@@ -271,6 +271,7 @@ class TopHeadlines : Fragment() {
         hide(countrySpinner)
         hide(categorySpinner)
         hide(sourceSpinner)
+        hide(languageSpinner)
         hide(keyWordEditText)
         hide(ftbCancel)
 //        hide(ftbReload)

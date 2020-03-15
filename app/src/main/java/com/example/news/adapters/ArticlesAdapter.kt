@@ -83,8 +83,21 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
     }
 
     fun setTopHeadlinesItems(itemList: List<TopHeadlinesResponseEntity>) {
-        itemList as List<ArticleResponseEntity>
-        setItems(itemList)
+        val list = mutableListOf<ArticleResponseEntity>()
+        for (item in itemList) {
+            val entity = ArticleResponseEntity(
+                item.author,
+                item.title,
+                item.description,
+                item.url,
+                item.urlToImage,
+                item.publishedAt,
+                item.content,
+                item.sourceResponseEntity
+            )
+            list.add(entity)
+        }
+        setItems(list)
     }
 
 }

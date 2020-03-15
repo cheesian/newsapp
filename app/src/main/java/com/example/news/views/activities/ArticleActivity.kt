@@ -8,16 +8,13 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.news.R
 import com.example.news.databinding.ArticleActivityBinding
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.snackBar
-import kotlinx.android.synthetic.main.toolbar.view.*
 import java.net.UnknownHostException
-import kotlin.math.log
 
 
 /**

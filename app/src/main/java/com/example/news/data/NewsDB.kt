@@ -21,7 +21,7 @@ Created by ian
         ArticleResponseEntity::class,
         com.example.news.data.response.everything.SourceResponseEntity::class,
         TopHeadlinesResponseEntity::class],
-    version = 2, exportSchema = false
+    version = 3, exportSchema = false
 )
 @TypeConverters(SourceResponseEntityConverter::class)
 abstract class NewsDB : RoomDatabase() {

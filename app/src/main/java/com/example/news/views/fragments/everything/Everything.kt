@@ -272,6 +272,7 @@ class Everything : Fragment() {
         Hide.hide(countrySpinner)
         Hide.hide(categorySpinner)
         Hide.hide(sourceSpinner)
+        Hide.hide(languageSpinner)
         Hide.hide(keyWordEditText)
         Hide.hide(ftbCancel)
 //        hide(ftbReload)
@@ -287,7 +288,7 @@ class Everything : Fragment() {
         Hide.hide(countrySpinner)
         Hide.hide(ftbCancel)
         Hide.hide(languageSpinner)
-//        hide(ftbReload)
+//        hide(ftbReload)sourceSpinner
 
         Checkbox.uncheck(checkBoxes)
 

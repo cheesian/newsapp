@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.news.data.repositories.TopHeadlinesRepository
-import com.example.news.data.request.URLs.Q
 import com.example.news.data.response.GeneralResponse
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.setErrorMessage
@@ -38,7 +37,7 @@ class TopHeadlinesViewModel(
             GeneralResponse.Status.SUCCESS -> {
                 log(message = "Status.SUCCESS")
                 visibility.value = View.GONE
-                generalResponse.allResponseEntity?.articleResponseEntities?.let { list ->
+                generalResponse.topResponseEntity?.articleResponseEntities?.let { list ->
                     for (entity in list) {
                         topHeadlinesRepository.insertArticle(entity)
                         entity.sourceResponseEntity?.let {
@@ -65,19 +64,6 @@ class TopHeadlinesViewModel(
         }
     }
 
-    /*fun getTopHeadlines(country:String, category:String, sources:String, q:String = Q) {
-        disposable.add(
-            topHeadlinesRepository.getTopHeadlines(country, category, sources, q)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { generalResponse.setValue(GeneralResponse.loading()) }
-                .subscribe (
-                    { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
-                    { error -> generalResponse.value = GeneralResponse.error(error) }
-                )
-        )
-    }*/
-
     fun getTopHeadlines() {
         disposable.add(
             topHeadlinesRepository.getTopHeadlines()
@@ -85,7 +71,7 @@ class TopHeadlinesViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { generalResponse.setValue(GeneralResponse.loading()) }
                 .subscribe (
-                    { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
+                    { result -> generalResponse.value = GeneralResponse.topResponseSuccess(result) },
                     { error -> generalResponse.value = GeneralResponse.error(error) }
                 )
         )
@@ -101,7 +87,7 @@ class TopHeadlinesViewModel(
                     { result ->
                         if (!result.articleResponseEntities.isNullOrEmpty())
                             topHeadlinesRepository.deleteAllArticles()
-                        generalResponse.value = GeneralResponse.allResponseSuccess(result)
+                        generalResponse.value = GeneralResponse.topResponseSuccess(result)
                     },
                     { error ->
                         generalResponse.value = GeneralResponse.error(error)

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.news.data.request.URLs.API_KEY
 import com.example.news.data.request.URLs.TOP_HEADLINES_ENDPOINT
 import com.example.news.data.response.everything.AllResponseEntity
+import com.example.news.data.response.topHeadlines.TopResponseEntity
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -43,7 +44,7 @@ interface TopHeadlinesApiService {
         pageSize:Int,
         @Query("q")
         q:String
-    ): Observable<AllResponseEntity>
+    ): Observable<TopResponseEntity>
 
     // for the custom queries
     @GET(TOP_HEADLINES_ENDPOINT)
@@ -53,5 +54,5 @@ interface TopHeadlinesApiService {
         @Query("pageSize")
         pageSize:Int,
         @QueryMap map: HashMap<String, String>
-    ): Observable<AllResponseEntity>
+    ): Observable<TopResponseEntity>
 }

@@ -10,6 +10,7 @@ import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.data.daos.TopHeadlinesDao
 import com.example.news.data.response.everything.SourceResponseEntity
 import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity
+import com.example.news.data.response.topHeadlines.TopResponseEntity
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -23,11 +24,11 @@ class TopHeadlinesRepository @Inject constructor(
     private val topHeadlinesDao: TopHeadlinesDao
 ) {
 
-    fun getTopHeadlines(): Observable<AllResponseEntity> {
+    fun getTopHeadlines(): Observable<TopResponseEntity> {
         return topHeadlinesApiService.getTopHeadlines(API_KEY, PAGE_SIZE, Q)
     }
 
-    fun getCustomTopHeadlines(map: HashMap<String, String>): Observable<AllResponseEntity> {
+    fun getCustomTopHeadlines(map: HashMap<String, String>): Observable<TopResponseEntity> {
         return topHeadlinesApiService.getCustomTopHeadlines(API_KEY, PAGE_SIZE, map)
     }
 
