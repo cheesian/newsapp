@@ -25,6 +25,7 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
 
     private var articleList: List<ArticleResponseEntity> = emptyList()
     private val adapterContext = context
+    private var origin = 0
 
     inner class ArticlesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val articleImage = itemView.findViewById<ImageView>(R.id.adapterImage)!!
@@ -68,7 +69,9 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
                 }
             } else {
                 val intent = Intent(adapterContext, ArticleActivity::class.java)
+                val source = if (origin==1) "everything" else "topHeadlines"
                 intent.putExtra("url", currentArticle.url)
+                intent.putExtra("origin", source)
                 articlesHolder.itemView.setOnClickListener {
                     adapterContext.startActivity(intent)
                 }
@@ -79,6 +82,7 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
 
     fun setItems(itemList: List<ArticleResponseEntity>) {
         this.articleList = itemList
+        origin++
         notifyDataSetChanged()
     }
 
@@ -97,6 +101,7 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
             )
             list.add(entity)
         }
+        origin++
         setItems(list)
     }
 
