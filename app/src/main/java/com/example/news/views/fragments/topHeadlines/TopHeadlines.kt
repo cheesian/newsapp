@@ -22,7 +22,6 @@ import com.example.news.databinding.TopHeadlinesBinding
 import com.example.news.utils.*
 import com.example.news.utils.Hide.hide
 import com.example.news.utils.Notify.snackBar
-import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel
 import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModelFactory
@@ -270,23 +269,23 @@ class TopHeadlines : Fragment() {
             }
         }
 
-        Hide.hide(countrySpinner)
-        Hide.hide(categorySpinner)
-        Hide.hide(sourceSpinner)
-        Hide.hide(keyWordEditText)
-        Hide.hide(ftbCancel)
+        hide(countrySpinner)
+        hide(categorySpinner)
+        hide(sourceSpinner)
+        hide(keyWordEditText)
+        hide(ftbCancel)
 //        hide(ftbReload)
 
     }
 
     private fun reset() {
 
-        Hide.hide(horizontalOptions)
-        Hide.hide(keyWordEditText)
-        Hide.hide(sourceSpinner)
-        Hide.hide(categorySpinner)
-        Hide.hide(countrySpinner)
-        Hide.hide(ftbCancel)
+        hide(horizontalOptions)
+        hide(keyWordEditText)
+        hide(sourceSpinner)
+        hide(categorySpinner)
+        hide(countrySpinner)
+        hide(ftbCancel)
         hide(languageSpinner)
 //        hide(ftbReload)
 

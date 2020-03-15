@@ -1,5 +1,6 @@
 package com.example.news.views.activities
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebResourceError
@@ -42,6 +43,7 @@ class ArticleActivity: AppCompatActivity() {
         progressBar = binding.progressBar
         webView = binding.webview
         webView.settings.javaScriptEnabled = true
+        webView.webViewClient = Client()
         url = intent.getStringExtra("url")
         if (url.isNullOrBlank()) {
             snackBar(
@@ -61,11 +63,14 @@ class ArticleActivity: AppCompatActivity() {
             return false
         }
 
-        override fun onLoadResource(view: WebView?, url: String?) {
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
             progressBar.visibility = View.VISIBLE
         }
 
+
         override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
             progressBar.visibility = View.GONE
         }
 
