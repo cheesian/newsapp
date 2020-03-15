@@ -39,10 +39,12 @@ class TopHeadlines : Fragment() {
     private lateinit var categorySpinner: Spinner
     private lateinit var countrySpinner: Spinner
     private lateinit var sourceSpinner: Spinner
+    private lateinit var languageSpinner: Spinner
     private lateinit var categoryCheckBox: CheckBox
     private lateinit var countryCheckBox: CheckBox
     private lateinit var sourceCheckBox: CheckBox
     private lateinit var keyWordCheckBox: CheckBox
+    private lateinit var languageCheckBox: CheckBox
     private lateinit var keyWordEditText: EditText
     private lateinit var checkBoxes: ArrayList<CheckBox>
     private lateinit var ftbAction: Button
@@ -122,14 +124,17 @@ class TopHeadlines : Fragment() {
         categorySpinner = binding.includedOptions.spinner_category
         countrySpinner = binding.includedOptions.spinner_country
         sourceSpinner = binding.includedOptions.spinner_source
+        languageSpinner = binding.includedOptions.spinner_language
         populateSpinner(categorySpinner, fragContext, R.array.categories, textViewResource = R.layout.spinner_text)
         populateSpinner(countrySpinner, fragContext, R.array.countries, textViewResource = R.layout.spinner_text)
+        populateSpinner(languageSpinner, fragContext, R.array.languages, textViewResource = R.layout.spinner_text)
 
         checkBoxes = ArrayList()
         countryCheckBox = binding.includedOptions.checkBox_country
         categoryCheckBox = binding.includedOptions.checkBox_category
         sourceCheckBox = binding.includedOptions.checkBox_source
         keyWordCheckBox = binding.includedOptions.checkBox_keyword
+        languageCheckBox = binding.includedOptions.checkBox_language
 
         keyWordEditText = binding.includedOptions.editText_keyword
 
@@ -143,6 +148,7 @@ class TopHeadlines : Fragment() {
         checkBoxes.add(categoryCheckBox)
         checkBoxes.add(sourceCheckBox)
         checkBoxes.add(keyWordCheckBox)
+        checkBoxes.add(languageCheckBox)
 
         iconCancel = fragContext.resources.getDrawable(R.drawable.ic_cancel_white_24dp)
         iconCancel.setBounds(0, 0, 60, 60)
@@ -165,7 +171,6 @@ class TopHeadlines : Fragment() {
         when (horizontalOptions.visibility) {
             View.VISIBLE -> {
 //                snackBar(view!!, "Snack", "Undo", SnackBarAction)
-                var selectedCountry: String? = null
                 var selectedCategory: String? = null
                 var selectedSource: String? = null
                 var selectedKeyword: String = ""
@@ -175,8 +180,9 @@ class TopHeadlines : Fragment() {
                         R.string.spinner_prompt
                     )
                 ) {
-                    selectedCountry = countrySpinner.selectedItem.toString()
-                    map["country"] = selectedCountry
+                    countrySpinner.selectedItem.toString().also {
+                        map["country"] = it.takeLast(2)
+                    }
                 }
 
                 if (categoryCheckBox.isChecked && categorySpinner.selectedItem != null && categorySpinner.selectedItem.toString() != getString(
@@ -198,6 +204,15 @@ class TopHeadlines : Fragment() {
                 if (keyWordCheckBox.isChecked && !keyWordEditText.getText().toString().isBlank()) {
                     selectedKeyword = keyWordEditText.getText().toString()
                     map["q"] = selectedKeyword
+                }
+
+                if (languageCheckBox.isChecked && languageSpinner.selectedItem != null && languageSpinner.selectedItem.toString() != getString(
+                        R.string.spinner_prompt
+                    )
+                ) {
+                    languageSpinner.selectedItem.toString().also {
+                        map["language"] = it.takeLast(2)
+                    }
                 }
 
                 if (map.isEmpty()) {
@@ -237,6 +252,9 @@ class TopHeadlines : Fragment() {
         countryCheckBox.setOnClickListener { checkbox ->
             Checkbox.connectCheckboxToView(checkbox, countrySpinner)
         }
+        languageCheckBox.setOnClickListener { checkbox ->
+            Checkbox.connectCheckboxToView(checkbox, languageSpinner)
+        }
         categoryCheckBox.setOnClickListener { checkbox ->
             Checkbox.connectCheckboxToView(checkbox, categorySpinner)
         }
@@ -269,6 +287,7 @@ class TopHeadlines : Fragment() {
         Hide.hide(categorySpinner)
         Hide.hide(countrySpinner)
         Hide.hide(ftbCancel)
+        hide(languageSpinner)
 //        hide(ftbReload)
 
         Checkbox.uncheck(checkBoxes)

@@ -12,4 +12,5 @@
     <string name="category">Category</string>
     <string name="country">Country</string>
     <string name="spinner_prompt">Click &amp; Select</string>
+    <string name="language">Language</string>
 </resources>

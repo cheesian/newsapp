@@ -48,6 +48,20 @@
         android:orientation="vertical">
 
         <Spinner
+            app:layout_constraintTop_toTopOf="@id/checkBox_language"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_language"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_language"
+            android:id="@+id/spinner_language"
+            style="@style/spinner" />
+
+        <CheckBox
+            app:layout_constraintStart_toStartOf="@id/checkBox_category"
+            app:layout_constraintBottom_toTopOf="@id/checkBox_country"
+            android:id="@+id/checkBox_language"
+            android:text="@string/language"
+            style="@style/checkbox" />
+
+        <Spinner
             app:layout_constraintTop_toTopOf="@id/checkBox_country"
             app:layout_constraintBottom_toBottomOf="@id/checkBox_country"
             app:layout_constraintEnd_toStartOf="@id/checkBox_country"
