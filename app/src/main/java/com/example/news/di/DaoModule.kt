@@ -3,8 +3,8 @@ package com.example.news.di
 import android.app.Application
 import androidx.room.Room
 import com.example.news.data.NewsDB
-import com.example.news.data.response.everything.ArticlesDao
-import com.example.news.data.response.sources.SourcesDao
+import com.example.news.data.daos.ArticlesDao
+import com.example.news.data.daos.SourcesDao
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable

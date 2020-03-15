@@ -1,15 +1,15 @@
 package com.example.news.data.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.news.data.request.TopHeadlinesApiService
 import com.example.news.data.request.URLs.API_KEY
 import com.example.news.data.request.URLs.PAGE_SIZE
 import com.example.news.data.request.URLs.Q
 import com.example.news.data.response.everything.AllResponseEntity
 import com.example.news.data.response.everything.ArticleResponseEntity
-import com.example.news.data.response.everything.ArticlesDao
+import com.example.news.data.daos.TopHeadlinesDao
 import com.example.news.data.response.everything.SourceResponseEntity
+import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ Created by ian
 
 class TopHeadlinesRepository @Inject constructor(
     private val topHeadlinesApiService: TopHeadlinesApiService,
-    private val articlesDao: ArticlesDao
+    private val topHeadlinesDao: TopHeadlinesDao
 ) {
 
     fun getTopHeadlines(): Observable<AllResponseEntity> {
@@ -31,35 +31,35 @@ class TopHeadlinesRepository @Inject constructor(
         return topHeadlinesApiService.getCustomTopHeadlines(API_KEY, PAGE_SIZE, map)
     }
 
-    fun getArticles(): LiveData<List<ArticleResponseEntity>> {
-        return articlesDao.getArticles()
+    fun getArticles(): LiveData<List<TopHeadlinesResponseEntity>> {
+        return topHeadlinesDao.getArticles()
     }
 
     fun deleteAllArticles(){
-        articlesDao.deleteAllArticles()
+        topHeadlinesDao.deleteAllArticles()
     }
 
-    fun deleteArticle(article: ArticleResponseEntity) {
-        articlesDao.deleteArticle(article)
+    fun deleteArticle(article: TopHeadlinesResponseEntity) {
+        topHeadlinesDao.deleteArticle(article)
     }
 
-    fun insertArticle(article: ArticleResponseEntity){
-        articlesDao.insertArticle(article)
+    fun insertArticle(article: TopHeadlinesResponseEntity){
+        topHeadlinesDao.insertArticle(article)
     }
 
     fun deleteAllSources(){
-        articlesDao.deleteAllSources()
+        topHeadlinesDao.deleteAllSources()
     }
 
     fun deleteSource (source: SourceResponseEntity) {
-        articlesDao.deleteSource(source)
+        topHeadlinesDao.deleteSource(source)
     }
 
     fun insertSource (source: SourceResponseEntity){
-        articlesDao.insertSource (source)
+        topHeadlinesDao.insertSource (source)
     }
 
     fun getSources(): LiveData<List<SourceResponseEntity>> {
-        return articlesDao.getSources()
+        return topHeadlinesDao.getSources()
     }
 }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.news.R
 import com.example.news.data.response.everything.ArticleResponseEntity
+import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 import com.example.news.utils.CircleTransform
 import com.example.news.utils.Notify.toast
 import com.example.news.views.activities.ArticleActivity
@@ -79,6 +80,11 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
     fun setItems(itemList: List<ArticleResponseEntity>) {
         this.articleList = itemList
         notifyDataSetChanged()
+    }
+
+    fun setTopHeadlinesItems(itemList: List<TopHeadlinesResponseEntity>) {
+        itemList as List<ArticleResponseEntity>
+        setItems(itemList)
     }
 
 }

@@ -1,27 +1,27 @@
-package com.example.news.data.response.everything
+package com.example.news.data.daos
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
+import com.example.news.data.response.everything.SourceResponseEntity
+import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 
 
 /**
 Created by ian
  */
 @Dao
-interface ArticlesDao {
+interface TopHeadlinesDao {
+    @Query("SELECT * from topHeadlines")
+    fun getArticles(): LiveData<List<TopHeadlinesResponseEntity>>
 
-    @Query("SELECT * from articles")
-    fun getArticles(): LiveData<List<ArticleResponseEntity>>
-
-    @Query("DELETE from articles")
+    @Query("DELETE from topHeadlines")
     fun deleteAllArticles()
 
     @Delete
-    fun deleteArticle(article: ArticleResponseEntity)
+    fun deleteArticle(article: TopHeadlinesResponseEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArticle(article: ArticleResponseEntity)
+    fun insertArticle(article: TopHeadlinesResponseEntity)
 
     @Query("SELECT * from sourceIDs")
     fun getSources(): LiveData<List<SourceResponseEntity>>

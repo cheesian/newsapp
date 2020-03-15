@@ -11,6 +11,7 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 
 /**
@@ -50,4 +51,14 @@ fun getEverythingWithoutDates(
     @Query("sort_by")
     sortBy:String
 ): Observable<AllResponseEntity>
+
+    // for the custom queries
+    @GET(EVERYTHING_ENDPOINT)
+    fun getCustomEverything(
+        @Query("apiKey")
+        apiKey:String,
+        @Query("pageSize")
+        pageSize:Int,
+        @QueryMap map: HashMap<String, String>
+    ): Observable<AllResponseEntity>
 }

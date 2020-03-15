@@ -1,12 +1,11 @@
 package com.example.news.data.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.news.data.request.SourcesApiService
 import com.example.news.data.request.URLs.API_KEY
 import com.example.news.data.request.URLs.LANGUAGE
 import com.example.news.data.response.sources.SourceResponseEntity
-import com.example.news.data.response.sources.SourcesDao
+import com.example.news.data.daos.SourcesDao
 import com.example.news.data.response.sources.SourcesResponseEntity
 import io.reactivex.Observable
 import javax.inject.Inject

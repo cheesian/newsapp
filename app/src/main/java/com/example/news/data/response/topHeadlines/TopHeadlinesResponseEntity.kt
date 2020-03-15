@@ -1,10 +1,11 @@
-package com.example.news.data.response.everything
+package com.example.news.data.response.topHeadlines
 
 import androidx.room.Entity
+import com.example.news.data.response.everything.SourceResponseEntity
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "articles", primaryKeys = ["title", "publishedAt"])
-data class ArticleResponseEntity(
+@Entity(tableName = "topHeadlines", primaryKeys = ["title", "publishedAt"])
+data class TopHeadlinesResponseEntity(
     @SerializedName("author")
     val author: String? = "Anonymous",
     @SerializedName("title")

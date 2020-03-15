@@ -79,13 +79,12 @@ class TopHeadlines : Fragment() {
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
         topHeadlinesViewModel = ViewModelProviders.of(this, topHeadlinesViewModelFactory).get(TopHeadlinesViewModel::class.java)
-
         topHeadlinesViewModel.getGeneralResponse().observe(viewLifecycleOwner, Observer {
             topHeadlinesViewModel.consume(it)
         })
 
         topHeadlinesViewModel.articleList.observe(viewLifecycleOwner, Observer {
-            adapter.setItems(it)
+            adapter.setTopHeadlinesItems(it)
             layoutManager.scrollToPosition(it.size - 1)
         })
 

@@ -1,15 +1,15 @@
 package com.example.news.data.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.news.data.request.EverythingApiService
+import com.example.news.data.request.URLs
 import com.example.news.data.request.URLs.API_KEY
 import com.example.news.data.request.URLs.LANGUAGE
-import com.example.news.data.request.URLs.Q
 import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.everything.AllResponseEntity
 import com.example.news.data.response.everything.ArticleResponseEntity
-import com.example.news.data.response.everything.ArticlesDao
+import com.example.news.data.daos.ArticlesDao
+import com.example.news.data.response.everything.SourceResponseEntity
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -25,6 +25,10 @@ class EverythingRepository @Inject constructor(
 
     fun getEverything(q: String, from: String, to: String, language: String, sortBy: String): Observable<AllResponseEntity>{
         return everythingApiService.getEverything(API_KEY, q, from, to, language, sortBy)
+    }
+
+    fun getCustomEverything(map: HashMap<String, String>): Observable<AllResponseEntity> {
+        return everythingApiService.getCustomEverything(API_KEY, URLs.PAGE_SIZE, map)
     }
 
     fun getEverythingWithoutDates(q: String, language: String = LANGUAGE, sortBy: String = SORT_BY): Observable<AllResponseEntity>{
@@ -45,6 +49,22 @@ class EverythingRepository @Inject constructor(
 
     fun insertArticle(article: ArticleResponseEntity){
         articlesDao.insertArticle(article)
+    }
+
+    fun deleteAllSources(){
+        articlesDao.deleteAllSources()
+    }
+
+    fun deleteSource (source: SourceResponseEntity) {
+        articlesDao.deleteSource(source)
+    }
+
+    fun insertSource (source: SourceResponseEntity){
+        articlesDao.insertSource (source)
+    }
+
+    fun getSources(): LiveData<List<SourceResponseEntity>> {
+        return articlesDao.getSources()
     }
 
 }

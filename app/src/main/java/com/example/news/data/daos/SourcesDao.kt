@@ -1,8 +1,8 @@
-package com.example.news.data.response.sources
+package com.example.news.data.daos
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
+import com.example.news.data.response.sources.SourceResponseEntity
 
 
 /**
