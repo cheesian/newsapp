@@ -28,6 +28,9 @@ class SourcesRepository @Inject constructor(
         return sourcesApiService.getSources(API_KEY)
     }
 
+    fun getCustomSources(map: HashMap<String, String>): Observable<SourcesResponseEntity> {
+        return sourcesApiService.getCustomSources(API_KEY, map)
+    }
     fun getLocalSources(): LiveData<List<SourceResponseEntity>> {
         return sourcesDao.getSources()
     }

@@ -48,7 +48,6 @@ class Everything : Fragment() {
     private lateinit var checkBoxes: ArrayList<CheckBox>
     private lateinit var ftbAction: Button
     private lateinit var ftbCancel: Button
-    //    private lateinit var ftbReload: Button
     private lateinit var horizontalOptions: ConstraintLayout
     private lateinit var iconCancel: Drawable
     private lateinit var iconMenu: Drawable
