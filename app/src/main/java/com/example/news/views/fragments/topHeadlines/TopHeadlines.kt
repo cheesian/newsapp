@@ -157,12 +157,17 @@ class TopHeadlines : Fragment() {
         refreshLayout.setOnRefreshListener {
             topHeadlinesViewModel.getTopHeadlines()
         }
+        topHeadlinesViewModel.initialize()
         return binding.root
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) topHeadlinesViewModel.getTopHeadlines()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeView()
-        topHeadlinesViewModel.getTopHeadlines()
     }
 
     private fun toggleOptions() {

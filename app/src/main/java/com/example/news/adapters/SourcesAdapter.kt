@@ -54,7 +54,9 @@ class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter
             val source = "sources"
             intent.putExtra("url", url)
             intent.putExtra("origin", source)
-            context.startActivity(intent)
+            holder.rootView.setOnClickListener {
+                context.startActivity(intent)
+            }
         }
         holder.title.text = name
         holder.text.text = description

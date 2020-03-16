@@ -26,6 +26,11 @@ class TopHeadlinesViewModel(
     var visibility: MutableLiveData<Int> = MutableLiveData()
     var articleList = topHeadlinesRepository.getArticles()
     var sourceList = topHeadlinesRepository.getSources()
+    var isInitialized: Boolean = false
+
+    fun initialize () {
+        isInitialized = true
+    }
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse

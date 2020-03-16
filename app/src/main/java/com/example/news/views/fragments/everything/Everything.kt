@@ -157,9 +157,12 @@ class Everything : Fragment() {
         return binding.root
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) everythingViewModel.getEverythingWithoutDates()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeView()
-        everythingViewModel.getEverythingWithoutDates()
     }
 
     private fun toggleOptions() {

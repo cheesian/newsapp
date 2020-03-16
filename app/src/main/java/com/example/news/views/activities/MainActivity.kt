@@ -27,9 +27,9 @@ class MainActivity : AppCompatActivity() {
         val viewPager = binding.pager
         setSupportActionBar(toolbar)
         adapter = PagerAdapter(supportFragmentManager)
-        adapter.addFragment(TopHeadlines(), "Trending News")
-        adapter.addFragment(Sources(), "News Sources")
-        adapter.addFragment(Everything(), "All News")
+        adapter.addFragment(TopHeadlines(), "Trending News Only")
+        adapter.addFragment(Sources(), "All News Sources")
+        adapter.addFragment(Everything(), "All News Articles")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
