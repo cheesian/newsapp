@@ -60,7 +60,7 @@ class Sources : Fragment() {
     private lateinit var iconSearch: Drawable
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var sourcesViewModel: SourcesViewModel
+    private var sourcesViewModel: SourcesViewModel? = null
     @Inject
     lateinit var sourcesViewModelFactory: SourcesViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
@@ -82,21 +82,21 @@ class Sources : Fragment() {
         val adapter = SourcesAdapter(context!!)
         recyclerView.adapter = adapter
         sourcesViewModel = ViewModelProviders.of(this, sourcesViewModelFactory).get(SourcesViewModel::class.java)
-        sourcesViewModel.getGeneralResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            sourcesViewModel.consume(it)
+        sourcesViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            sourcesViewModel!!.consume(it)
         })
 
-        sourcesViewModel.sourceList.observe(viewLifecycleOwner, Observer {
+        sourcesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
             layoutManager.scrollToPosition(it.size - 1)
         })
 
-        sourcesViewModel.visibility.observe(viewLifecycleOwner, Observer {
+        sourcesViewModel!!.visibility.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = it
             if (it == View.GONE) refreshLayout.isRefreshing = false
         })
 
-        sourcesViewModel.message.observe(viewLifecycleOwner, Observer {
+        sourcesViewModel!!.message.observe(viewLifecycleOwner, Observer {
             val action = when (it) {
                 "Fetching data ..." -> ""
                 else -> "Reload"
@@ -105,7 +105,7 @@ class Sources : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = View.OnClickListener { sourcesViewModel.getSources() }
+                function = View.OnClickListener { sourcesViewModel!!.getSources() }
             )
 
         })
@@ -133,7 +133,7 @@ class Sources : Fragment() {
 
         checkBoxes.add(countryCheckBox)
         checkBoxes.add(categoryCheckBox)
-        checkBoxes.add(keyWordCheckBox)
+        checkBoxes.add(languageCheckBox)
 
         iconCancel = fragContext.resources.getDrawable(R.drawable.ic_cancel_white_24dp)
         iconCancel.setBounds(0, 0, 60, 60)
@@ -142,14 +142,14 @@ class Sources : Fragment() {
         iconSearch = fragContext.resources.getDrawable(R.drawable.ic_search_white_24dp)
         iconSearch.setBounds(0, 0, 60, 60)
         refreshLayout.setOnRefreshListener {
-            sourcesViewModel.getSources()
+            sourcesViewModel!!.getSources()
         }
         return binding.root
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) sourcesViewModel.getSources()
+        if (isVisibleToUser) sourcesViewModel?.getSources()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -195,7 +195,7 @@ class Sources : Fragment() {
                     )
                 } else {
                     reset()
-                    sourcesViewModel.getCustomSources(map)
+                    sourcesViewModel!!.getCustomSources(map)
                 }
 
             }
@@ -256,6 +256,7 @@ class Sources : Fragment() {
         hide(sourceSpinner)
         hide(categorySpinner)
         hide(countrySpinner)
+        hide(languageSpinner)
         hide(ftbCancel)
 
         uncheck(checkBoxes)

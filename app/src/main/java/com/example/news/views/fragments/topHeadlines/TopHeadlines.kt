@@ -56,7 +56,7 @@ class TopHeadlines : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private var sourceList = mutableListOf<String>()
-    lateinit var topHeadlinesViewModel: TopHeadlinesViewModel
+    private var topHeadlinesViewModel: TopHeadlinesViewModel? = null
     @Inject
     lateinit var topHeadlinesViewModelFactory: TopHeadlinesViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
@@ -79,16 +79,16 @@ class TopHeadlines : Fragment() {
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
         topHeadlinesViewModel = ViewModelProviders.of(this, topHeadlinesViewModelFactory).get(TopHeadlinesViewModel::class.java)
-        topHeadlinesViewModel.getGeneralResponse().observe(viewLifecycleOwner, Observer {
-            topHeadlinesViewModel.consume(it)
+        topHeadlinesViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {
+            topHeadlinesViewModel!!.consume(it)
         })
 
-        topHeadlinesViewModel.articleList.observe(viewLifecycleOwner, Observer {
+        topHeadlinesViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setTopHeadlinesItems(it)
             layoutManager.scrollToPosition(it.size - 1)
         })
 
-        topHeadlinesViewModel.sourceList.observe(viewLifecycleOwner, Observer {
+        topHeadlinesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 sourceList.clear()
                 for (source in it) {
@@ -100,12 +100,12 @@ class TopHeadlines : Fragment() {
             }
         })
 
-        topHeadlinesViewModel.visibility.observe(viewLifecycleOwner, Observer {
+        topHeadlinesViewModel!!.visibility.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = it
             if (it == View.GONE) refreshLayout.isRefreshing = false
         })
 
-        topHeadlinesViewModel.message.observe(viewLifecycleOwner, Observer {
+        topHeadlinesViewModel!!.message.observe(viewLifecycleOwner, Observer {
             val action = when (it) {
                 "Fetching data ..." -> ""
                 else -> "Reload"
@@ -114,7 +114,7 @@ class TopHeadlines : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = View.OnClickListener { topHeadlinesViewModel.getTopHeadlines() }
+                function = View.OnClickListener { topHeadlinesViewModel!!.getTopHeadlines() }
             )
 
         })
@@ -155,15 +155,15 @@ class TopHeadlines : Fragment() {
         iconSearch = fragContext.resources.getDrawable(R.drawable.ic_search_white_24dp)
         iconSearch.setBounds(0, 0, 60, 60)
         refreshLayout.setOnRefreshListener {
-            topHeadlinesViewModel.getTopHeadlines()
+            topHeadlinesViewModel!!.getTopHeadlines()
         }
-        topHeadlinesViewModel.initialize()
+        topHeadlinesViewModel!!.initialize()
         return binding.root
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) topHeadlinesViewModel.getTopHeadlines()
+        if (isVisibleToUser) topHeadlinesViewModel?.getTopHeadlines()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -222,7 +222,7 @@ class TopHeadlines : Fragment() {
                     snackBar(view = binding.root, message = "Use the checkboxes to filter your search")
                 } else {
                     reset()
-                    topHeadlinesViewModel.getCustomTopHeadlines(map)
+                    topHeadlinesViewModel!!.getCustomTopHeadlines(map)
                 }
 
             }

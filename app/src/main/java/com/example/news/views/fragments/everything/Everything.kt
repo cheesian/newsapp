@@ -55,7 +55,7 @@ class Everything : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private var sourceList = mutableListOf<String>()
-    private lateinit var everythingViewModel: EverythingViewModel
+    private var everythingViewModel: EverythingViewModel? = null
     @Inject
     lateinit var everythingViewModelFactory: EverythingViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
@@ -77,16 +77,16 @@ class Everything : Fragment() {
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
         everythingViewModel = ViewModelProviders.of(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
-        everythingViewModel.getGeneralResponse().observe(viewLifecycleOwner, Observer {
-            everythingViewModel.consume(it)
+        everythingViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {
+            everythingViewModel!!.consume(it)
         })
 
-        everythingViewModel.articleList.observe(viewLifecycleOwner, Observer {
+        everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
             layoutManager.scrollToPosition(it.size - 1)
         })
 
-        everythingViewModel.sourceList.observe(viewLifecycleOwner, Observer {
+        everythingViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 sourceList.clear()
                 for (source in it) {
@@ -98,12 +98,12 @@ class Everything : Fragment() {
             }
         })
 
-        everythingViewModel.visibility.observe(viewLifecycleOwner, Observer {
+        everythingViewModel!!.visibility.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = it
             if (it == View.GONE) refreshLayout.isRefreshing = false
         })
 
-        everythingViewModel.message.observe(viewLifecycleOwner, Observer {
+        everythingViewModel!!.message.observe(viewLifecycleOwner, Observer {
             val action = when (it) {
                 "Fetching data ..." -> ""
                 else -> "Reload"
@@ -112,7 +112,7 @@ class Everything : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = View.OnClickListener { everythingViewModel.getEverythingWithoutDates() }
+                function = View.OnClickListener { everythingViewModel!!.getEverythingWithoutDates() }
             )
 
         })
@@ -152,14 +152,14 @@ class Everything : Fragment() {
         iconSearch = fragContext.resources.getDrawable(R.drawable.ic_search_white_24dp)
         iconSearch.setBounds(0, 0, 60, 60)
         refreshLayout.setOnRefreshListener {
-            everythingViewModel.getEverythingWithoutDates()
+            everythingViewModel!!.getEverythingWithoutDates()
         }
         return binding.root
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) everythingViewModel.getEverythingWithoutDates()
+        if (isVisibleToUser) everythingViewModel?.getEverythingWithoutDates()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeView()
@@ -220,7 +220,7 @@ class Everything : Fragment() {
                     )
                 } else {
                     reset()
-                    everythingViewModel.getCustomEverything(map)
+                    everythingViewModel!!.getCustomEverything(map)
                 }
 
             }
