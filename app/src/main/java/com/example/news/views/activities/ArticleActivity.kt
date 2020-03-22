@@ -10,11 +10,11 @@ import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.news.R
 import com.example.news.databinding.ArticleActivityBinding
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.snackBar
-import com.example.news.utils.Notify.toast
 import java.net.UnknownHostException
 
 
@@ -27,6 +27,7 @@ class ArticleActivity: AppCompatActivity() {
     private lateinit var binding: ArticleActivityBinding
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +40,7 @@ class ArticleActivity: AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = binding.progressBar
+        swipeRefreshLayout = binding.swipe
         webView = binding.webview
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = Client()
@@ -52,6 +54,9 @@ class ArticleActivity: AppCompatActivity() {
             )
         } else
         webView.loadUrl(url)
+        swipeRefreshLayout.setOnRefreshListener {
+            webView.loadUrl(url)
+        }
     }
 
     inner class Client: WebViewClient () {
@@ -63,12 +68,14 @@ class ArticleActivity: AppCompatActivity() {
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
+            swipeRefreshLayout.isRefreshing = false
             progressBar.visibility = View.VISIBLE
         }
 
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
+            swipeRefreshLayout.isRefreshing = false
             progressBar.visibility = View.GONE
         }
 
@@ -89,7 +96,6 @@ class ArticleActivity: AppCompatActivity() {
                 actionMessage = "Reload",
                 function = View.OnClickListener {
                     webView.loadUrl(url)
-                    toast(this@ArticleActivity, url!!)
                 }
             )
         }
