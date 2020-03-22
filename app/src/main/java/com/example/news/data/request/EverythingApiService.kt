@@ -59,6 +59,8 @@ fun getEverythingWithoutDates(
         apiKey:String,
         @Query("pageSize")
         pageSize:Int,
+        @Query("sortBy")
+        sortBy:String,
         @QueryMap map: HashMap<String, String>
     ): Observable<AllResponseEntity>
 }

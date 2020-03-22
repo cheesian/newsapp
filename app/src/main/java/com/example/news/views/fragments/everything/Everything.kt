@@ -8,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -76,7 +77,7 @@ class Everything : Fragment() {
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
-        everythingViewModel = ViewModelProviders.of(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
+        everythingViewModel = ViewModelProvider(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
         everythingViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {
             everythingViewModel!!.consume(it)
         })
@@ -90,7 +91,6 @@ class Everything : Fragment() {
             it?.let {
                 sourceList.clear()
                 for (source in it) {
-                    val sourceName = source.name
                     val sourceId = source.id
                     sourceList.add(sourceId)
                 }
@@ -145,11 +145,11 @@ class Everything : Fragment() {
         checkBoxes.add(keyWordCheckBox)
         checkBoxes.add(languageCheckBox)
 
-        iconCancel = fragContext.resources.getDrawable(R.drawable.ic_cancel_white_24dp)
+        iconCancel = getDrawable(fragContext, R.drawable.ic_cancel_white_24dp)!!
         iconCancel.setBounds(0, 0, 60, 60)
-        iconMenu = fragContext.resources.getDrawable(R.drawable.ic_menu_white)
+        iconMenu = getDrawable(fragContext, R.drawable.ic_menu_white)!!
         iconMenu.setBounds(0, 0, 60, 60)
-        iconSearch = fragContext.resources.getDrawable(R.drawable.ic_search_white_24dp)
+        iconSearch = getDrawable(fragContext, R.drawable.ic_search_white_24dp)!!
         iconSearch.setBounds(0, 0, 60, 60)
         refreshLayout.setOnRefreshListener {
             everythingViewModel!!.getEverythingWithoutDates()
@@ -169,9 +169,9 @@ class Everything : Fragment() {
         when (horizontalOptions.visibility) {
             View.VISIBLE -> {
 //                snackBar(view!!, "Snack", "Undo", SnackBarAction)
-                var selectedCategory: String? = null
-                var selectedSource: String? = null
-                var selectedKeyword: String = ""
+                val selectedCategory: String?
+                val selectedSource: String
+                val selectedKeyword: String
                 map.clear()
 
                 if (countryCheckBox.isChecked && countrySpinner.selectedItem != null && countrySpinner.selectedItem.toString() != getString(

@@ -14,6 +14,7 @@ import com.example.news.R
 import com.example.news.databinding.ArticleActivityBinding
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.snackBar
+import com.example.news.utils.Notify.toast
 import java.net.UnknownHostException
 
 
@@ -86,7 +87,10 @@ class ArticleActivity: AppCompatActivity() {
                 view = view!!.rootView,
                 message = errorMessage,
                 actionMessage = "Reload",
-                function = View.OnClickListener { webView.loadUrl(url) }
+                function = View.OnClickListener {
+                    webView.loadUrl(url)
+                    toast(this@ArticleActivity, url!!)
+                }
             )
         }
     }

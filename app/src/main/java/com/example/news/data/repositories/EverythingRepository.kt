@@ -28,7 +28,7 @@ class EverythingRepository @Inject constructor(
     }
 
     fun getCustomEverything(map: HashMap<String, String>): Observable<AllResponseEntity> {
-        return everythingApiService.getCustomEverything(API_KEY, URLs.PAGE_SIZE, map)
+        return everythingApiService.getCustomEverything(API_KEY, URLs.PAGE_SIZE, URLs.SORT_BY, map)
     }
 
     fun getEverythingWithoutDates(q: String, language: String = LANGUAGE, sortBy: String = SORT_BY): Observable<AllResponseEntity>{

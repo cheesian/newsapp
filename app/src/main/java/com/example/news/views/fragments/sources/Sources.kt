@@ -8,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,9 +24,7 @@ import com.example.news.utils.Checkbox
 import com.example.news.utils.Checkbox.uncheck
 import com.example.news.utils.Hide.hide
 import com.example.news.utils.Notify
-import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
-import com.example.news.utils.Show
 import com.example.news.utils.Show.show
 import com.example.news.views.fragments.sources.viewModels.SourcesViewModel
 import com.example.news.views.fragments.sources.viewModels.SourcesViewModelFactory
@@ -81,7 +80,7 @@ class Sources : Fragment() {
         recyclerView.layoutManager = layoutManager
         val adapter = SourcesAdapter(context!!)
         recyclerView.adapter = adapter
-        sourcesViewModel = ViewModelProviders.of(this, sourcesViewModelFactory).get(SourcesViewModel::class.java)
+        sourcesViewModel = ViewModelProvider(this, sourcesViewModelFactory).get(SourcesViewModel::class.java)
         sourcesViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             sourcesViewModel!!.consume(it)
         })
@@ -135,11 +134,11 @@ class Sources : Fragment() {
         checkBoxes.add(categoryCheckBox)
         checkBoxes.add(languageCheckBox)
 
-        iconCancel = fragContext.resources.getDrawable(R.drawable.ic_cancel_white_24dp)
+        iconCancel = getDrawable(fragContext, R.drawable.ic_cancel_white_24dp)!!
         iconCancel.setBounds(0, 0, 60, 60)
-        iconMenu = fragContext.resources.getDrawable(R.drawable.ic_menu_white)
+        iconMenu = getDrawable(fragContext, R.drawable.ic_menu_white)!!
         iconMenu.setBounds(0, 0, 60, 60)
-        iconSearch = fragContext.resources.getDrawable(R.drawable.ic_search_white_24dp)
+        iconSearch = getDrawable(fragContext, R.drawable.ic_search_white_24dp)!!
         iconSearch.setBounds(0, 0, 60, 60)
         refreshLayout.setOnRefreshListener {
             sourcesViewModel!!.getSources()
@@ -227,17 +226,6 @@ class Sources : Fragment() {
         categoryCheckBox.setOnClickListener { checkbox ->
             Checkbox.connectCheckboxToView(checkbox, categorySpinner)
         }
-        /*sourceCheckBox.setOnClickListener { checkbox ->
-            Checkbox.connectCheckboxToView(checkbox, sourceSpinner)
-        }
-        keyWordCheckBox.setOnClickListener { checkBox ->
-            checkBox as CheckBox
-            if (checkBox.isChecked) {
-                show(keyWordEditText)
-            } else {
-                hide(keyWordEditText)
-            }
-        }*/
 
         hide(countrySpinner)
         hide(categorySpinner)

@@ -8,6 +8,6 @@ object URLs {
     const val TOP_HEADLINES_ENDPOINT = "top-headlines"
     const val Q = "and"
     const val LANGUAGE = "en"
-    const val SORT_BY = "popularity"
+    const val SORT_BY = "publishedAt"
     const val PAGE_SIZE = 40
 }
