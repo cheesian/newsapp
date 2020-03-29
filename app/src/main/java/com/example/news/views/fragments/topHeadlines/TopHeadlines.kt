@@ -74,7 +74,7 @@ class TopHeadlines : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.topHeadlinesRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
@@ -85,7 +85,7 @@ class TopHeadlines : Fragment() {
 
         topHeadlinesViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setTopHeadlinesItems(it)
-            layoutManager.scrollToPosition(it.size - 1)
+            layoutManager.scrollToPosition(0)
         })
 
         topHeadlinesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -95,6 +95,7 @@ class TopHeadlines : Fragment() {
                     val sourceId = source.id
                     sourceList.add(sourceId)
                 }
+                sourceList.sort()
                 populateSpinner(spinner = sourceSpinner, context = context!!, arrayList = sourceList, textViewResource = R.layout.spinner_text)
             }
         })

@@ -32,7 +32,7 @@ interface EverythingApiService {
         to:String,
         @Query("language")
         language:String,
-        @Query("sort_by")
+        @Query("sortBy")
         sortBy:String
     ): Observable<AllResponseEntity>
 //    q: editText input
@@ -48,7 +48,7 @@ fun getEverythingWithoutDates(
     q:String,
     @Query("language")
     language:String,
-    @Query("sort_by")
+    @Query("sortBy")
     sortBy:String
 ): Observable<AllResponseEntity>
 

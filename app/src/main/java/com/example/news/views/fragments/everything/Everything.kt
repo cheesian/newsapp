@@ -73,7 +73,7 @@ class Everything : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.everythingRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
@@ -84,7 +84,7 @@ class Everything : Fragment() {
 
         everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
-            layoutManager.scrollToPosition(it.size - 1)
+            layoutManager.scrollToPosition(0)
         })
 
         everythingViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -94,6 +94,7 @@ class Everything : Fragment() {
                     val sourceId = source.id
                     sourceList.add(sourceId)
                 }
+                sourceList.sort()
                 populateSpinner(spinner = sourceSpinner, context = context!!, arrayList = sourceList, textViewResource = R.layout.spinner_text)
             }
         })

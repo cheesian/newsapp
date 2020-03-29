@@ -6,7 +6,7 @@ object URLs {
     const val SOURCES_ENDPOINT = "sources"
     const val EVERYTHING_ENDPOINT = "everything"
     const val TOP_HEADLINES_ENDPOINT = "top-headlines"
-    const val Q = "and"
+    const val Q = "a"
     const val LANGUAGE = "en"
     const val SORT_BY = "publishedAt"
     const val PAGE_SIZE = 40

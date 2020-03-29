@@ -76,7 +76,7 @@ class Sources : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.sourcesRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         val adapter = SourcesAdapter(context!!)
         recyclerView.adapter = adapter
@@ -87,7 +87,7 @@ class Sources : Fragment() {
 
         sourcesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
-            layoutManager.scrollToPosition(it.size - 1)
+            layoutManager.scrollToPosition(0)
         })
 
         sourcesViewModel!!.visibility.observe(viewLifecycleOwner, Observer {
