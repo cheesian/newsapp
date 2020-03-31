@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/top_headlines_fragment">
+
+    <fragment android:id="@+id/top_headlines_fragment"
+        android:name="com.example.news.views.fragments.topHeadlines.TopHeadlines"
+        tools:layout="@layout/fragment_top_headlines">
+        <action
+            android:id="@+id/action_top_headlines_fragment_to_everything_fragment"
+            app:destination="@id/everything_fragment"
+            app:popUpTo="@id/everything_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment android:id="@+id/everything_fragment"
+        android:name="com.example.news.views.fragments.topHeadlines.TopHeadlines"
+        tools:layout="@layout/fragment_top_headlines">
+        <action
+            android:id="@+id/action_everything_fragment_to_sources_fragment"
+            app:destination="@id/sources_fragment"
+            app:popUpTo="@id/sources_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment android:id="@+id/sources_fragment"
+        android:name="com.example.news.views.fragments.topHeadlines.TopHeadlines"
+        tools:layout="@layout/fragment_top_headlines">
+        <action
+            android:id="@+id/action_sources_fragment_to_top_headlines_fragment"
+            app:destination="@id/top_headlines_fragment"
+            app:popUpTo="@id/top_headlines_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

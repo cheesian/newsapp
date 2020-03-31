@@ -13,4 +13,10 @@
     <string name="country">Country</string>
     <string name="spinner_prompt">Click &amp; Select</string>
     <string name="language">Language</string>
+    <string name="sample_names">Johnny Cage</string>
+    <string name="sample_email">johnny@cage.com</string>
+    <string name="logout">Logout</string>
+    <string name="trending_news">Trending News</string>
+    <string name="all_global_news">All Global News</string>
+    <string name="news_sources">News Sources</string>
 </resources>
