@@ -16,8 +16,8 @@
     </fragment>
 
     <fragment android:id="@+id/everything_fragment"
-        android:name="com.example.news.views.fragments.topHeadlines.TopHeadlines"
-        tools:layout="@layout/fragment_top_headlines">
+        android:name="com.example.news.views.fragments.everything.Everything"
+        tools:layout="@layout/fragment_everything">
         <action
             android:id="@+id/action_everything_fragment_to_sources_fragment"
             app:destination="@id/sources_fragment"
@@ -26,8 +26,8 @@
     </fragment>
 
     <fragment android:id="@+id/sources_fragment"
-        android:name="com.example.news.views.fragments.topHeadlines.TopHeadlines"
-        tools:layout="@layout/fragment_top_headlines">
+        android:name="com.example.news.views.fragments.sources.Sources"
+        tools:layout="@layout/fragment_sources">
         <action
             android:id="@+id/action_sources_fragment_to_top_headlines_fragment"
             app:destination="@id/top_headlines_fragment"

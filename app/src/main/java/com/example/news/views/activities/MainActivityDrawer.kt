@@ -9,8 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.news.R
 import com.example.news.databinding.MainActivityDrawerBinding
+import com.example.news.utils.Notify.toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
@@ -34,8 +36,12 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         navigationView = binding.navigationView
         headerView = navigationView.getHeaderView(0)
         navController = findNavController(R.id.nav_host_fragment)
+        // this ensures the selected item is highlighted automatically
+        navigationView.setupWithNavController(navController)
+        navigationView.setNavigationItemSelectedListener(this)
         drawerLayout = binding.drawer
         toggleNavButton = binding.drawerFab
+        initializeDrawer()
     }
 
     private fun initializeDrawer() {
@@ -49,7 +55,6 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        item.isChecked = true
         drawerLayout.closeDrawers()
         when (item.itemId) {
 
@@ -78,7 +83,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     private fun checkIfIsCurrentFragment(fragmentID: Int, action: () -> Unit) {
         val currentLocation = navController.currentDestination!!.id
         if (currentLocation == fragmentID) {
-            onBackPressed()
+            drawerLayout.closeDrawers()
         } else action()
     }
 

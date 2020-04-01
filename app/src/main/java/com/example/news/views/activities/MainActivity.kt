@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: MainActivityBinding
     lateinit var adapter: PagerAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFullScreen(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -48,6 +48,6 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-    }
+    }*/
 }
 
