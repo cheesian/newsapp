@@ -15,6 +15,7 @@ import com.example.news.R
 import com.example.news.databinding.ArticleActivityBinding
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.snackBar
+import com.example.news.utils.Notify.toast
 import java.net.UnknownHostException
 
 
@@ -50,7 +51,7 @@ class ArticleActivity: AppCompatActivity() {
                 view = binding.root,
                 message = "Failed to load url",
                 actionMessage = "Go back",
-                function = View.OnClickListener { webView.loadUrl(url) }
+                function = { webView.loadUrl(url) }
             )
         } else
         webView.loadUrl(url)
@@ -90,12 +91,10 @@ class ArticleActivity: AppCompatActivity() {
                 "Something went wrong. Please try again"
             }
             snackBar(
-                view = view!!.rootView,
+                view = binding.root,
                 message = errorMessage,
                 actionMessage = "Reload",
-                function = View.OnClickListener {
-                    webView.loadUrl(url)
-                }
+                function = { webView.loadUrl(url) }
             )
         }
     }

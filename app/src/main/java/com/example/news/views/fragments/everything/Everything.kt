@@ -112,7 +112,7 @@ class Everything : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = View.OnClickListener { everythingViewModel!!.getEverythingWithoutDates() }
+                function = { everythingViewModel!!.getEverythingWithoutDates() }
             )
 
         })
