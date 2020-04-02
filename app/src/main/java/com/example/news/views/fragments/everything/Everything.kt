@@ -101,7 +101,6 @@ class Everything : Fragment() {
 
         everythingViewModel!!.visibility.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = it
-            if (it == View.GONE) refreshLayout.isRefreshing = false
         })
 
         everythingViewModel!!.message.observe(viewLifecycleOwner, Observer {
@@ -154,6 +153,7 @@ class Everything : Fragment() {
         iconSearch.setBounds(0, 0, 60, 60)
         refreshLayout.setOnRefreshListener {
             everythingViewModel!!.getEverythingWithoutDates()
+            refreshLayout.isRefreshing = false
         }
         return binding.root
     }

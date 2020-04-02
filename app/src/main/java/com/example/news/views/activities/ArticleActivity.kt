@@ -56,6 +56,7 @@ class ArticleActivity: AppCompatActivity() {
         webView.loadUrl(url)
         swipeRefreshLayout.setOnRefreshListener {
             webView.loadUrl(url)
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -68,14 +69,12 @@ class ArticleActivity: AppCompatActivity() {
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-            swipeRefreshLayout.isRefreshing = false
             progressBar.visibility = View.VISIBLE
         }
 
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            swipeRefreshLayout.isRefreshing = false
             progressBar.visibility = View.GONE
         }
 

@@ -92,7 +92,6 @@ class Sources : Fragment() {
 
         sourcesViewModel!!.visibility.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = it
-            if (it == View.GONE) refreshLayout.isRefreshing = false
         })
 
         sourcesViewModel!!.message.observe(viewLifecycleOwner, Observer {
@@ -142,6 +141,7 @@ class Sources : Fragment() {
         iconSearch.setBounds(0, 0, 60, 60)
         refreshLayout.setOnRefreshListener {
             sourcesViewModel!!.getSources()
+            refreshLayout.isRefreshing = false
         }
         return binding.root
     }
