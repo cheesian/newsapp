@@ -28,7 +28,6 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var headerView: View
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toggleNavButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,18 +39,11 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         navigationView.setupWithNavController(navController)
         navigationView.setNavigationItemSelectedListener(this)
         drawerLayout = binding.drawer
-        toggleNavButton = binding.drawerFab
         initializeDrawer()
     }
 
     private fun initializeDrawer() {
-        toggleNavButton.setOnClickListener {
-            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.openDrawer(GravityCompat.START)
-            } else {
-                drawerLayout.closeDrawer(GravityCompat.END)
-            }
-        }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
