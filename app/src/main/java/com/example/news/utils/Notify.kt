@@ -18,10 +18,17 @@ object Notify {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    fun snackBar(view: View, message: String, actionMessage: String = "", function:View.OnClickListener = View.OnClickListener {  }) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-            .setAction(actionMessage, function)
-            .show()
+    // Only set the actionMessage when you want to specify the action
+    fun snackBar(view: View, message: String, actionMessage: String = "", function: () -> Unit = {}) {
+        val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        if (actionMessage.isBlank()) {
+            snackBar.setAction("Dismiss") {
+                snackBar.dismiss()
+            }
+        } else {
+            snackBar.setAction(actionMessage) { function() }
+        }
+        snackBar.show()
     }
 
     fun log(tag: String = "NewsLog", message: String) {

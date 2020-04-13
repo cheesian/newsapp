@@ -36,12 +36,8 @@ class Everything : Fragment() {
 
     private lateinit var binding: EverythingBinding
     private lateinit var fragContext: Context
-    private lateinit var categorySpinner: Spinner
-    private lateinit var countrySpinner: Spinner
     private lateinit var sourceSpinner: Spinner
     private lateinit var languageSpinner: Spinner
-    private lateinit var categoryCheckBox: CheckBox
-    private lateinit var countryCheckBox: CheckBox
     private lateinit var sourceCheckBox: CheckBox
     private lateinit var keyWordCheckBox: CheckBox
     private lateinit var languageCheckBox: CheckBox
@@ -112,22 +108,16 @@ class Everything : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = View.OnClickListener { everythingViewModel!!.getEverythingWithoutDates() }
+                function = { everythingViewModel!!.getEverythingWithoutDates() }
             )
 
         })
 
-        categorySpinner = binding.includedOptions.spinner_category
-        countrySpinner = binding.includedOptions.spinner_country
         sourceSpinner = binding.includedOptions.spinner_source
         languageSpinner = binding.includedOptions.spinner_language
-        populateSpinner(categorySpinner, fragContext, R.array.categories, textViewResource = R.layout.spinner_text)
-        populateSpinner(countrySpinner, fragContext, R.array.countries, textViewResource = R.layout.spinner_text)
         populateSpinner(languageSpinner, fragContext, R.array.languages, textViewResource = R.layout.spinner_text)
 
         checkBoxes = ArrayList()
-        countryCheckBox = binding.includedOptions.checkBox_country
-        categoryCheckBox = binding.includedOptions.checkBox_category
         sourceCheckBox = binding.includedOptions.checkBox_source
         keyWordCheckBox = binding.includedOptions.checkBox_keyword
         languageCheckBox = binding.includedOptions.checkBox_language
@@ -139,8 +129,6 @@ class Everything : Fragment() {
 
         horizontalOptions = binding.includedOptions.options_horizontal
 
-        checkBoxes.add(countryCheckBox)
-        checkBoxes.add(categoryCheckBox)
         checkBoxes.add(sourceCheckBox)
         checkBoxes.add(keyWordCheckBox)
         checkBoxes.add(languageCheckBox)
@@ -170,27 +158,9 @@ class Everything : Fragment() {
         when (horizontalOptions.visibility) {
             View.VISIBLE -> {
 //                snackBar(view!!, "Snack", "Undo", SnackBarAction)
-                val selectedCategory: String?
                 val selectedSource: String
                 val selectedKeyword: String
                 map.clear()
-
-                if (countryCheckBox.isChecked && countrySpinner.selectedItem != null && countrySpinner.selectedItem.toString() != getString(
-                        R.string.spinner_prompt
-                    )
-                ) {
-                    countrySpinner.selectedItem.toString().also {
-                        map["country"] = it.takeLast(2)
-                    }
-                }
-
-                if (categoryCheckBox.isChecked && categorySpinner.selectedItem != null && categorySpinner.selectedItem.toString() != getString(
-                        R.string.spinner_prompt
-                    )
-                ) {
-                    selectedCategory = categorySpinner.selectedItem.toString()
-                    map["category"] = selectedCategory
-                }
 
                 if (sourceCheckBox.isChecked && sourceSpinner.selectedItem != null && sourceSpinner.selectedItem.toString() != getString(
                         R.string.spinner_prompt
@@ -250,16 +220,10 @@ class Everything : Fragment() {
             toggleOptions()
         }
 
-
-        countryCheckBox.setOnClickListener { checkbox ->
-            Checkbox.connectCheckboxToView(checkbox, countrySpinner)
-        }
         languageCheckBox.setOnClickListener { checkbox ->
             Checkbox.connectCheckboxToView(checkbox, languageSpinner)
         }
-        categoryCheckBox.setOnClickListener { checkbox ->
-            Checkbox.connectCheckboxToView(checkbox, categorySpinner)
-        }
+
         sourceCheckBox.setOnClickListener { checkbox ->
             Checkbox.connectCheckboxToView(checkbox, sourceSpinner)
         }
@@ -272,8 +236,6 @@ class Everything : Fragment() {
             }
         }
 
-        Hide.hide(countrySpinner)
-        Hide.hide(categorySpinner)
         Hide.hide(sourceSpinner)
         Hide.hide(languageSpinner)
         Hide.hide(keyWordEditText)
@@ -287,8 +249,6 @@ class Everything : Fragment() {
         Hide.hide(horizontalOptions)
         Hide.hide(keyWordEditText)
         Hide.hide(sourceSpinner)
-        Hide.hide(categorySpinner)
-        Hide.hide(countrySpinner)
         Hide.hide(ftbCancel)
         Hide.hide(languageSpinner)
 //        hide(ftbReload)sourceSpinner

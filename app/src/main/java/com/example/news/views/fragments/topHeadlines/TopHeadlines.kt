@@ -113,7 +113,7 @@ class TopHeadlines : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = View.OnClickListener { topHeadlinesViewModel!!.getTopHeadlines() }
+                function = { topHeadlinesViewModel!!.getTopHeadlines() }
             )
 
         })

@@ -103,7 +103,7 @@ class Sources : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = View.OnClickListener { sourcesViewModel!!.getSources() }
+                function = { sourcesViewModel!!.getSources() }
             )
 
         })
