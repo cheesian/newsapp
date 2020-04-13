@@ -8,16 +8,12 @@
 
     <gradient
         android:angle="225"
-        android:centerX="float"
-        android:centerY="float"
         android:endColor="#01f1fa"
-        android:gradientRadius="integer"
         android:startColor="#0189ff"
         android:type="linear" />
 
     <stroke
         android:width="2dp"
         android:color="#FFFFFF" />
-
 
 </shape>
