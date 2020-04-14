@@ -7,12 +7,12 @@ import com.example.news.utils.Show.show
 
 object Checkbox {
 
-    fun connectCheckboxToView(checkBox: View, spinner: View) {
+    fun connectCheckboxToView(checkBox: View, view: View) {
         checkBox as CheckBox
         if (checkBox.isChecked) {
-            show(spinner)
+            show(view)
         } else {
-            hide(spinner)
+            hide(view)
         }
     }
 

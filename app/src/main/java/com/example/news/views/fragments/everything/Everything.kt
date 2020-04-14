@@ -25,6 +25,16 @@ import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModelFactory
 import kotlinx.android.synthetic.main.options.view.*
+import kotlinx.android.synthetic.main.options.view.action_button
+import kotlinx.android.synthetic.main.options.view.cancel_button
+import kotlinx.android.synthetic.main.options.view.checkBox_keyword
+import kotlinx.android.synthetic.main.options.view.checkBox_language
+import kotlinx.android.synthetic.main.options.view.checkBox_source
+import kotlinx.android.synthetic.main.options.view.editText_keyword
+import kotlinx.android.synthetic.main.options.view.options_horizontal
+import kotlinx.android.synthetic.main.options.view.spinner_language
+import kotlinx.android.synthetic.main.options.view.spinner_source
+import kotlinx.android.synthetic.main.options_everything.view.*
 import javax.inject.Inject
 
 
@@ -41,7 +51,12 @@ class Everything : Fragment() {
     private lateinit var sourceCheckBox: CheckBox
     private lateinit var keyWordCheckBox: CheckBox
     private lateinit var languageCheckBox: CheckBox
+    private lateinit var fromCheckBox: CheckBox
+    private lateinit var toCheckBox: CheckBox
     private lateinit var keyWordEditText: EditText
+    private lateinit var fromEditText: EditText
+    private lateinit var toEditText: EditText
+    private lateinit var calendarView: CalendarView
     private lateinit var checkBoxes: ArrayList<CheckBox>
     private lateinit var ftbAction: Button
     private lateinit var ftbCancel: Button
@@ -121,17 +136,21 @@ class Everything : Fragment() {
         sourceCheckBox = binding.includedOptions.checkBox_source
         keyWordCheckBox = binding.includedOptions.checkBox_keyword
         languageCheckBox = binding.includedOptions.checkBox_language
+        fromCheckBox = binding.includedOptions.checkBox_from
+        toCheckBox = binding.includedOptions.checkBox_to
 
         keyWordEditText = binding.includedOptions.editText_keyword
+        fromEditText = binding.includedOptions.editText_from
+        toEditText = binding.includedOptions.editText_to
 
         ftbAction = binding.includedOptions.action_button
         ftbCancel = binding.includedOptions.cancel_button
 
         horizontalOptions = binding.includedOptions.options_horizontal
 
-        checkBoxes.add(sourceCheckBox)
-        checkBoxes.add(keyWordCheckBox)
-        checkBoxes.add(languageCheckBox)
+        calendarView =binding.calendar
+
+        checkBoxes.addAll(listOf(sourceCheckBox, keyWordCheckBox, languageCheckBox, fromCheckBox, toCheckBox))
 
         iconCancel = getDrawable(fragContext, R.drawable.ic_cancel_white_24dp)!!
         iconCancel.setBounds(0, 0, 60, 60)
@@ -139,10 +158,6 @@ class Everything : Fragment() {
         iconMenu.setBounds(0, 0, 60, 60)
         iconSearch = getDrawable(fragContext, R.drawable.ic_search_white_24dp)!!
         iconSearch.setBounds(0, 0, 60, 60)
-        refreshLayout.setOnRefreshListener {
-            everythingViewModel!!.getEverythingWithoutDates()
-            refreshLayout.isRefreshing = false
-        }
         return binding.root
     }
 
@@ -157,22 +172,22 @@ class Everything : Fragment() {
     private fun toggleOptions() {
         when (horizontalOptions.visibility) {
             View.VISIBLE -> {
-//                snackBar(view!!, "Snack", "Undo", SnackBarAction)
-                val selectedSource: String
-                val selectedKeyword: String
+
                 map.clear()
 
                 if (sourceCheckBox.isChecked && sourceSpinner.selectedItem != null && sourceSpinner.selectedItem.toString() != getString(
                         R.string.spinner_prompt
                     )
                 ) {
-                    selectedSource = sourceSpinner.selectedItem.toString()
-                    map["sources"] = selectedSource
+                    sourceSpinner.selectedItem.toString().apply {
+                        map["sources"] = this
+                    }
                 }
 
                 if (keyWordCheckBox.isChecked && !keyWordEditText.getText().toString().isBlank()) {
-                    selectedKeyword = keyWordEditText.getText().toString()
-                    map["q"] = selectedKeyword
+                    keyWordEditText.getText().toString().apply {
+                        map["q"] = this
+                    }
                 }
 
                 if (languageCheckBox.isChecked && languageSpinner.selectedItem != null && languageSpinner.selectedItem.toString() != getString(
@@ -181,6 +196,18 @@ class Everything : Fragment() {
                 ) {
                     languageSpinner.selectedItem.toString().also {
                         map["language"] = it.takeLast(2)
+                    }
+                }
+
+                if (fromCheckBox.isChecked && !fromEditText.getText().toString().isBlank()) {
+                    fromEditText.getText().toString().apply {
+                        map["from"] = this
+                    }
+                }
+
+                if (toCheckBox.isChecked && !toEditText.getText().toString().isBlank()) {
+                    toEditText.getText().toString().apply {
+                        map["to"] = this
                     }
                 }
 
@@ -198,7 +225,6 @@ class Everything : Fragment() {
             View.GONE -> {
                 Show.show(horizontalOptions)
                 Show.show(ftbCancel)
-//                Show.show(ftbReload)
                 ftbAction.text = getString(R.string.search)
                 ftbAction.setCompoundDrawables(iconSearch, null, null, null)
             }
@@ -207,14 +233,14 @@ class Everything : Fragment() {
 
     private fun initializeView() {
 
+        refreshLayout.setOnRefreshListener {
+            everythingViewModel!!.getEverythingWithoutDates()
+            refreshLayout.isRefreshing = false
+        }
+
         ftbCancel.setOnClickListener {
             reset()
         }
-
-        /*ftbReload.setOnClickListener {
-            reset()
-            topHeadlinesViewModel.getTopHeadlines()
-        }*/
 
         ftbAction.setOnClickListener {
             toggleOptions()
@@ -227,20 +253,52 @@ class Everything : Fragment() {
         sourceCheckBox.setOnClickListener { checkbox ->
             Checkbox.connectCheckboxToView(checkbox, sourceSpinner)
         }
+
         keyWordCheckBox.setOnClickListener { checkBox ->
+            Checkbox.connectCheckboxToView(checkBox, keyWordEditText)
+        }
+
+        fromCheckBox.setOnClickListener { checkBox->
             checkBox as CheckBox
-            if (checkBox.isChecked) {
-                Show.show(keyWordEditText)
-            } else {
-                Hide.hide(keyWordEditText)
+            when (checkBox.isChecked) {
+                true -> Show.show(fromEditText)
+                false -> {
+                    Hide.hide(fromEditText)
+                    Hide.hide(calendarView)
+                }
+            }
+        }
+
+        toCheckBox.setOnClickListener {checkBox->
+            checkBox as CheckBox
+            when (checkBox.isChecked) {
+                true -> Show.show(toEditText)
+                false -> {
+                    Hide.hide(toEditText)
+                    Hide.hide(calendarView)
+                }
+            }
+        }
+
+        fromEditText.setOnClickListener {
+            calendarView.apply {
+                this.visibility = View.VISIBLE
+            }
+        }
+
+        toEditText.setOnClickListener {
+            with (calendarView) {
+                visibility = View.VISIBLE
             }
         }
 
         Hide.hide(sourceSpinner)
         Hide.hide(languageSpinner)
         Hide.hide(keyWordEditText)
+        Hide.hide(fromEditText)
+        Hide.hide(toEditText)
         Hide.hide(ftbCancel)
-//        hide(ftbReload)
+        Hide.hide(calendarView)
 
     }
 
@@ -248,10 +306,12 @@ class Everything : Fragment() {
 
         Hide.hide(horizontalOptions)
         Hide.hide(keyWordEditText)
+        Hide.hide(fromEditText)
+        Hide.hide(toEditText)
         Hide.hide(sourceSpinner)
         Hide.hide(ftbCancel)
         Hide.hide(languageSpinner)
-//        hide(ftbReload)sourceSpinner
+        Hide.hide(calendarView)
 
         Checkbox.uncheck(checkBoxes)
 
