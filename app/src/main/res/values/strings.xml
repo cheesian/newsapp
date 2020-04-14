@@ -19,4 +19,7 @@
     <string name="trending_news">Trending News</string>
     <string name="all_global_news">All Global News</string>
     <string name="news_sources">News Sources</string>
+    <string name="from">From</string>
+    <string name="enter_date">Enter date</string>
+    <string name="to">To</string>
 </resources>

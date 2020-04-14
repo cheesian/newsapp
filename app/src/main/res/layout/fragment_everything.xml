@@ -30,6 +30,17 @@
             app:layout_anchorGravity="center"
             tools:visibility="visible" />
 
+        <CalendarView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/ftb_margins"
+            android:background="@drawable/button_background_rounded"
+            app:layout_anchor="@id/refresh_layout"
+            app:layout_anchorGravity="center"
+            app:layout_insetEdge="top"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
         <include
             android:id="@+id/included_options"
             layout="@layout/options_everything"
@@ -37,7 +48,7 @@
             android:layout_height="wrap_content"
             app:layout_anchor="@id/refresh_layout"
             app:layout_anchorGravity="bottom"
-            app:layout_dodgeInsetEdges="bottom" />
+            app:layout_dodgeInsetEdges="bottom|top" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
