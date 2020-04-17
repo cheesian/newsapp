@@ -34,7 +34,7 @@
             android:id="@+id/included_options"
             layout="@layout/options_everything"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_anchor="@id/refresh_layout"
             app:layout_anchorGravity="bottom"
             app:layout_dodgeInsetEdges="bottom" />
