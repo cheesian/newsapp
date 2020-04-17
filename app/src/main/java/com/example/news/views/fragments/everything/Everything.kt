@@ -21,11 +21,25 @@ import com.example.news.R
 import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.EverythingBinding
 import com.example.news.utils.*
+import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModelFactory
 import kotlinx.android.synthetic.main.options.view.*
+import kotlinx.android.synthetic.main.options.view.action_button
+import kotlinx.android.synthetic.main.options.view.cancel_button
+import kotlinx.android.synthetic.main.options.view.checkBox_keyword
+import kotlinx.android.synthetic.main.options.view.checkBox_language
+import kotlinx.android.synthetic.main.options.view.checkBox_source
+import kotlinx.android.synthetic.main.options.view.editText_keyword
+import kotlinx.android.synthetic.main.options.view.options_horizontal
+import kotlinx.android.synthetic.main.options.view.spinner_language
+import kotlinx.android.synthetic.main.options.view.spinner_source
+import kotlinx.android.synthetic.main.options_everything.view.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /**
@@ -56,6 +70,8 @@ class Everything : Fragment() {
     @Inject
     lateinit var everythingViewModelFactory: EverythingViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
+    private lateinit var calendarView: CalendarView
+    private lateinit var calendar: Calendar
     var map: HashMap<String, String> = HashMap()
 
     override fun onCreateView(
@@ -143,6 +159,12 @@ class Everything : Fragment() {
             everythingViewModel!!.getEverythingWithoutDates()
             refreshLayout.isRefreshing = false
         }
+        calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.YEAR, 2020);
+        calendarView = binding.includedOptions.calendarView
+        calendarView.setDate(calendar.timeInMillis, true, true);
         return binding.root
     }
 
@@ -234,6 +256,10 @@ class Everything : Fragment() {
             } else {
                 Hide.hide(keyWordEditText)
             }
+        }
+        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val message = "Selected date Day: " + dayOfMonth + " Month : " + (month + 1) + " Year " + year
+            toast(context = context!!, message = message)
         }
 
         Hide.hide(sourceSpinner)
