@@ -9,6 +9,7 @@ import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.everything.AllResponseEntity
 import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.data.daos.ArticlesDao
+import com.example.news.data.request.URLs.Q
 import com.example.news.data.response.everything.SourceResponseEntity
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class EverythingRepository @Inject constructor(
     }
 
     fun getCustomEverything(map: HashMap<String, String>): Observable<AllResponseEntity> {
+        if (!map.containsKey("q")) map["q"] = Q
         return everythingApiService.getCustomEverything(API_KEY, URLs.PAGE_SIZE, URLs.SORT_BY, map)
     }
 

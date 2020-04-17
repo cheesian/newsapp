@@ -21,6 +21,7 @@ import com.example.news.R
 import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.EverythingBinding
 import com.example.news.utils.*
+import com.example.news.utils.DateTimeUtil.getYMD
 import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
@@ -209,6 +210,20 @@ class Everything : Fragment() {
                 ) {
                     languageSpinner.selectedItem.toString().also {
                         map["language"] = it.takeLast(2)
+                    }
+                }
+
+                if (fromDateCheckBox.isChecked && !fromDateTextView.text.isNullOrBlank()) {
+//                    map["to"] and map["from"] must both be set or unset so we cannot set map["from"] right here
+                    when (toDateCheckBox.isChecked){
+                        true -> {
+                            map["to"] = toDateTextView.text?.toString() ?: getYMD()
+                            map["from"] = fromDateTextView.text.toString()
+                        }
+                        false -> {
+                            map["from"] = fromDateTextView.text.toString()
+                            map["to"] = getYMD()
+                        }
                     }
                 }
 
