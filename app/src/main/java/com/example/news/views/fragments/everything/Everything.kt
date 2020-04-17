@@ -21,11 +21,25 @@ import com.example.news.R
 import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.EverythingBinding
 import com.example.news.utils.*
+import com.example.news.utils.DateTimeUtil.getYMD
+import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModelFactory
-import kotlinx.android.synthetic.main.options.view.*
+import kotlinx.android.synthetic.main.options.view.action_button
+import kotlinx.android.synthetic.main.options.view.cancel_button
+import kotlinx.android.synthetic.main.options.view.checkBox_keyword
+import kotlinx.android.synthetic.main.options.view.checkBox_language
+import kotlinx.android.synthetic.main.options.view.checkBox_source
+import kotlinx.android.synthetic.main.options.view.editText_keyword
+import kotlinx.android.synthetic.main.options.view.options_horizontal
+import kotlinx.android.synthetic.main.options.view.spinner_language
+import kotlinx.android.synthetic.main.options.view.spinner_source
+import kotlinx.android.synthetic.main.options_everything.view.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /**
@@ -41,6 +55,8 @@ class Everything : Fragment() {
     private lateinit var sourceCheckBox: CheckBox
     private lateinit var keyWordCheckBox: CheckBox
     private lateinit var languageCheckBox: CheckBox
+    private lateinit var fromDateCheckBox: CheckBox
+    private lateinit var toDateCheckBox: CheckBox
     private lateinit var keyWordEditText: EditText
     private lateinit var checkBoxes: ArrayList<CheckBox>
     private lateinit var ftbAction: Button
@@ -56,6 +72,10 @@ class Everything : Fragment() {
     @Inject
     lateinit var everythingViewModelFactory: EverythingViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
+    private lateinit var calendarView: CalendarView
+    private lateinit var calendar: Calendar
+    private lateinit var fromDateTextView: TextView
+    private lateinit var toDateTextView: TextView
     var map: HashMap<String, String> = HashMap()
 
     override fun onCreateView(
@@ -121,8 +141,13 @@ class Everything : Fragment() {
         sourceCheckBox = binding.includedOptions.checkBox_source
         keyWordCheckBox = binding.includedOptions.checkBox_keyword
         languageCheckBox = binding.includedOptions.checkBox_language
+        fromDateCheckBox = binding.includedOptions.checkBox_from
+        toDateCheckBox = binding.includedOptions.checkBox_to
 
         keyWordEditText = binding.includedOptions.editText_keyword
+
+        fromDateTextView = binding.includedOptions.tv_from
+        toDateTextView = binding.includedOptions.tv_to
 
         ftbAction = binding.includedOptions.action_button
         ftbCancel = binding.includedOptions.cancel_button
@@ -132,6 +157,8 @@ class Everything : Fragment() {
         checkBoxes.add(sourceCheckBox)
         checkBoxes.add(keyWordCheckBox)
         checkBoxes.add(languageCheckBox)
+        checkBoxes.add(fromDateCheckBox)
+        checkBoxes.add(toDateCheckBox)
 
         iconCancel = getDrawable(fragContext, R.drawable.ic_cancel_white_24dp)!!
         iconCancel.setBounds(0, 0, 60, 60)
@@ -139,10 +166,12 @@ class Everything : Fragment() {
         iconMenu.setBounds(0, 0, 60, 60)
         iconSearch = getDrawable(fragContext, R.drawable.ic_search_white_24dp)!!
         iconSearch.setBounds(0, 0, 60, 60)
-        refreshLayout.setOnRefreshListener {
-            everythingViewModel!!.getEverythingWithoutDates()
-            refreshLayout.isRefreshing = false
-        }
+        calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.YEAR, 2020);
+        calendarView = binding.includedOptions.calendarView
+        calendarView.setDate(calendar.timeInMillis, true, true);
         return binding.root
     }
 
@@ -150,6 +179,7 @@ class Everything : Fragment() {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) everythingViewModel?.getEverythingWithoutDates()
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeView()
     }
@@ -157,7 +187,6 @@ class Everything : Fragment() {
     private fun toggleOptions() {
         when (horizontalOptions.visibility) {
             View.VISIBLE -> {
-//                snackBar(view!!, "Snack", "Undo", SnackBarAction)
                 val selectedSource: String
                 val selectedKeyword: String
                 map.clear()
@@ -184,6 +213,20 @@ class Everything : Fragment() {
                     }
                 }
 
+                if (fromDateCheckBox.isChecked && !fromDateTextView.text.isNullOrBlank()) {
+//                    map["to"] and map["from"] must both be set or unset so we cannot set map["from"] right here
+                    when (toDateCheckBox.isChecked){
+                        true -> {
+                            map["to"] = toDateTextView.text?.toString() ?: getYMD()
+                            map["from"] = fromDateTextView.text.toString()
+                        }
+                        false -> {
+                            map["from"] = fromDateTextView.text.toString()
+                            map["to"] = getYMD()
+                        }
+                    }
+                }
+
                 if (map.isEmpty()) {
                     Notify.snackBar(
                         view = binding.root,
@@ -198,7 +241,6 @@ class Everything : Fragment() {
             View.GONE -> {
                 Show.show(horizontalOptions)
                 Show.show(ftbCancel)
-//                Show.show(ftbReload)
                 ftbAction.text = getString(R.string.search)
                 ftbAction.setCompoundDrawables(iconSearch, null, null, null)
             }
@@ -207,14 +249,15 @@ class Everything : Fragment() {
 
     private fun initializeView() {
 
+        Hide.hide(calendarView)
+        refreshLayout.setOnRefreshListener {
+            everythingViewModel!!.getEverythingWithoutDates()
+            refreshLayout.isRefreshing = false
+        }
+
         ftbCancel.setOnClickListener {
             reset()
         }
-
-        /*ftbReload.setOnClickListener {
-            reset()
-            topHeadlinesViewModel.getTopHeadlines()
-        }*/
 
         ftbAction.setOnClickListener {
             toggleOptions()
@@ -227,20 +270,44 @@ class Everything : Fragment() {
         sourceCheckBox.setOnClickListener { checkbox ->
             Checkbox.connectCheckboxToView(checkbox, sourceSpinner)
         }
+
         keyWordCheckBox.setOnClickListener { checkBox ->
-            checkBox as CheckBox
-            if (checkBox.isChecked) {
-                Show.show(keyWordEditText)
-            } else {
-                Hide.hide(keyWordEditText)
-            }
+            Checkbox.connectCheckboxToView(checkBox, keyWordEditText)
+        }
+
+        calendarView.setOnDateChangeListener { calendarView1, year, month, dayOfMonth ->
+            val mon = month + 1
+            val date = "$year-$mon-$dayOfMonth"
+            setDate(date)
+            Hide.hide(calendarView1)
+        }
+
+        fromDateCheckBox.setOnClickListener {checkBox->
+            dateSetter = DateSetter.CHECKBOX_FROM
+            Checkbox.connectCheckboxToView(checkBox, calendarView)
+            Checkbox.connectCheckboxToView(checkBox, fromDateTextView)
+        }
+
+        toDateCheckBox.setOnClickListener { checkBox->
+            dateSetter = DateSetter.CHECKBOX_TO
+            Checkbox.connectCheckboxToView(checkBox, calendarView)
+            Checkbox.connectCheckboxToView(checkBox, toDateTextView)
+        }
+
+        fromDateTextView.setOnClickListener {
+            dateSetter = DateSetter.TEXT_VIEW_FROM
+            Show.show(calendarView)
+        }
+
+        toDateTextView.setOnClickListener {
+            dateSetter = DateSetter.TEXT_VIEW_TO
+            Show.show(calendarView)
         }
 
         Hide.hide(sourceSpinner)
         Hide.hide(languageSpinner)
         Hide.hide(keyWordEditText)
         Hide.hide(ftbCancel)
-//        hide(ftbReload)
 
     }
 
@@ -250,13 +317,41 @@ class Everything : Fragment() {
         Hide.hide(keyWordEditText)
         Hide.hide(sourceSpinner)
         Hide.hide(ftbCancel)
+        Hide.hide(fromDateTextView)
+        Hide.hide(toDateTextView)
         Hide.hide(languageSpinner)
-//        hide(ftbReload)sourceSpinner
+        Hide.hide(calendarView)
 
         Checkbox.uncheck(checkBoxes)
 
         ftbAction.text = getString(R.string.options)
         ftbAction.setCompoundDrawables(iconMenu, null, null, null)
 
+    }
+
+    companion object {
+        var dateSetter: DateSetter? = null
+    }
+
+    private fun setDate(date: String) {
+
+        when (dateSetter) {
+            DateSetter.CHECKBOX_FROM, DateSetter.TEXT_VIEW_FROM -> {
+                fromDateTextView.text = date
+                toast(context = context!!, message = "From $date")
+            }
+            DateSetter.CHECKBOX_TO, DateSetter.TEXT_VIEW_TO -> {
+                toDateTextView.text = date
+                toast(context = context!!, message = "To $date")
+            }
+            else -> {}
+        }
+
+    }
+    enum class DateSetter {
+        CHECKBOX_FROM,
+        CHECKBOX_TO,
+        TEXT_VIEW_FROM,
+        TEXT_VIEW_TO
     }
 }
