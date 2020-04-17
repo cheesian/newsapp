@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:letterSpacing="0.2"
             android:textColor="@color/white"
+            android:gravity="start"
             app:layout_constraintBottom_toBottomOf="@id/checkBox_from"
             app:layout_constraintEnd_toStartOf="@id/checkBox_from"
             app:layout_constraintTop_toTopOf="@id/checkBox_from" />
@@ -50,7 +51,7 @@
         <CheckBox
             android:id="@+id/checkBox_from"
             style="@style/checkbox"
-            android:text="From date"
+            android:text="@string/from_date"
             app:layout_constraintBottom_toTopOf="@id/checkBox_to"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -60,6 +61,7 @@
             android:layout_height="wrap_content"
             android:letterSpacing="0.2"
             android:textColor="@color/white"
+            android:gravity="start"
             app:layout_constraintBottom_toBottomOf="@id/checkBox_to"
             app:layout_constraintEnd_toStartOf="@id/checkBox_to"
             app:layout_constraintTop_toTopOf="@id/checkBox_to" />
