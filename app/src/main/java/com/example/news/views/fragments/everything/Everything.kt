@@ -164,9 +164,9 @@ class Everything : Fragment() {
         iconSearch.setBounds(0, 0, 60, 60)
 
         calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, Calendar.JANUARY)
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        calendar.set(Calendar.YEAR, 2020)
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH))
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH))
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
         calendarView = binding.includedOptions.calendarView
         calendarView.setDate(calendar.timeInMillis, true, true)
 
