@@ -2,6 +2,7 @@ package com.example.news.views.fragments.everything
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -72,7 +73,7 @@ class Everything : Fragment() {
     @Inject
     lateinit var everythingViewModelFactory: EverythingViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
-    private lateinit var calendarView: CalendarView
+    private lateinit var datePicker: DatePicker
     private lateinit var calendar: Calendar
     private lateinit var fromDateTextView: TextView
     private lateinit var toDateTextView: TextView
@@ -163,12 +164,18 @@ class Everything : Fragment() {
         iconSearch = getDrawable(fragContext, R.drawable.ic_search_white_24dp)!!
         iconSearch.setBounds(0, 0, 60, 60)
 
+        datePicker = binding.includedOptions.date_picker
         calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH))
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH))
-        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
-        calendarView = binding.includedOptions.calendarView
-        calendarView.setDate(calendar.timeInMillis, true, true)
+        val minAllowedDate = with (calendar.clone() as Calendar) {
+            add(Calendar.DATE, -30)
+            this
+        }
+        val maxAllowedDate = with (calendar.clone() as Calendar) {
+            add(Calendar.DATE, 1)
+            this
+        }
+        datePicker.minDate = minAllowedDate.timeInMillis
+        datePicker.maxDate = maxAllowedDate.timeInMillis
 
         return binding.root
     }
@@ -247,7 +254,7 @@ class Everything : Fragment() {
 
     private fun initializeView() {
 
-        Hide.hide(calendarView)
+        Hide.hide(datePicker)
         refreshLayout.setOnRefreshListener {
             everythingViewModel!!.getEverythingWithoutDates()
             refreshLayout.isRefreshing = false
@@ -273,40 +280,42 @@ class Everything : Fragment() {
             Checkbox.connectCheckboxToView(checkBox, keyWordEditText)
         }
 
-        calendarView.setOnDateChangeListener { calendarView1, year, month, dayOfMonth ->
-            val mon = month + 1
-            val date = "$year-$mon-$dayOfMonth"
-            setDate(date)
-            Hide.hide(calendarView1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            datePicker.setOnDateChangedListener { calendarView1, year, month, dayOfMonth ->
+                val mon = month + 1
+                val date = "$year-$mon-$dayOfMonth"
+                setDate(date)
+                Hide.hide(calendarView1)
+            }
         }
 
         fromDateCheckBox.setOnClickListener {checkBox->
             dateSetter = DateSetter.CHECKBOX_FROM
-            Checkbox.connectCheckboxToView(checkBox, calendarView)
+            Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, fromDateTextView)
         }
 
         toDateCheckBox.setOnClickListener { checkBox->
             dateSetter = DateSetter.CHECKBOX_TO
-            Checkbox.connectCheckboxToView(checkBox, calendarView)
+            Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, toDateTextView)
         }
 
         fromDateTextView.setOnClickListener {
             dateSetter = DateSetter.TEXT_VIEW_FROM
-            Show.show(calendarView)
+            Show.show(datePicker)
         }
 
         toDateTextView.setOnClickListener {
             dateSetter = DateSetter.TEXT_VIEW_TO
-            Show.show(calendarView)
+            Show.show(datePicker)
         }
 
         Hide.hide(sourceSpinner)
         Hide.hide(languageSpinner)
         Hide.hide(keyWordEditText)
         Hide.hide(ftbCancel)
-        Hide.hide(calendarView)
+        Hide.hide(datePicker)
 
     }
 
@@ -319,7 +328,7 @@ class Everything : Fragment() {
         Hide.hide(fromDateTextView)
         Hide.hide(toDateTextView)
         Hide.hide(languageSpinner)
-        Hide.hide(calendarView)
+        Hide.hide(datePicker)
 
         Checkbox.uncheck(checkBoxes)
 
