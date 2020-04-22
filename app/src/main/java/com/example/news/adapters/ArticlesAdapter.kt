@@ -61,7 +61,7 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
             articlesHolder.articleFooter.text = footer
             if (currentArticle.urlToImage.isNullOrBlank()) {
                 Glide.with(articlesHolder.itemView)
-                    .load(R.drawable.no_image)
+                    .load(R.drawable.ic_broken_image_black_24dp)
                     .transform(CircleTransform(adapterContext))
                     .into(articlesHolder.articleImage)
             } else {
