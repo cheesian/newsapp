@@ -44,7 +44,7 @@ class EverythingViewModel (
                     for (entity in list) {
                         everythingRepository.insertArticle(entity)
                         entity.sourceResponseEntity?.let {
-                            if (!it.id.isNullOrBlank())
+                            if (!it.id.isBlank())
                                 everythingRepository.insertSource(it)
                         }
                     }

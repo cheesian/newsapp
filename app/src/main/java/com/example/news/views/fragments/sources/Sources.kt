@@ -76,7 +76,7 @@ class Sources : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.sourcesRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
         val adapter = SourcesAdapter(context!!)
         recyclerView.adapter = adapter
@@ -87,7 +87,7 @@ class Sources : Fragment() {
 
         sourcesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
-            layoutManager.scrollToPosition(0)
+            layoutManager.scrollToPosition(it.size - 1)
         })
 
         sourcesViewModel!!.visibility.observe(viewLifecycleOwner, Observer {
@@ -146,11 +146,6 @@ class Sources : Fragment() {
         return binding.root
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) sourcesViewModel?.getSources()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeView()
     }
@@ -207,7 +202,16 @@ class Sources : Fragment() {
         }
     }
 
+//    when you start the app for the first time it does not get the articles on its own, you have to swipe down
+//    this function checks solves that bug
+    private fun populateViewIfEmpty () {
+        val list = sourcesViewModel?.sourceList?.value
+        if (list.isNullOrEmpty()) sourcesViewModel?.getSources()
+    }
+
     private fun initializeView() {
+
+        populateViewIfEmpty()
 
         ftbCancel.setOnClickListener {
             reset()

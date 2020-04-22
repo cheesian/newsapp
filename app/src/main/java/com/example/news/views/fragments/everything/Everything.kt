@@ -90,7 +90,7 @@ class Everything : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.everythingRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
@@ -101,7 +101,7 @@ class Everything : Fragment() {
 
         everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
-            layoutManager.scrollToPosition(0)
+            layoutManager.scrollToPosition(it.size - 1)
         })
 
         everythingViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -180,11 +180,6 @@ class Everything : Fragment() {
         return binding.root
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) everythingViewModel?.getEverythingWithoutDates()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeView()
     }
@@ -252,9 +247,19 @@ class Everything : Fragment() {
         }
     }
 
+//    when you start the app for the first time it does not get the articles on its own, you have to swipe down
+//    this function checks solves that bug
+    private fun populateViewIfEmpty () {
+        val list = everythingViewModel?.articleList?.value
+        if (list.isNullOrEmpty()) everythingViewModel?.getEverythingWithoutDates()
+    }
+
     private fun initializeView() {
 
+        populateViewIfEmpty()
+
         Hide.hide(datePicker)
+
         refreshLayout.setOnRefreshListener {
             everythingViewModel!!.getEverythingWithoutDates()
             refreshLayout.isRefreshing = false
@@ -356,6 +361,7 @@ class Everything : Fragment() {
         }
 
     }
+
     enum class DateSetter {
         CHECKBOX_FROM,
         CHECKBOX_TO,

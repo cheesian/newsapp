@@ -25,11 +25,6 @@ class SourcesViewModel (
     var message: MutableLiveData<String> = MutableLiveData()
     var visibility: MutableLiveData<Int> = MutableLiveData()
     var sourceList = sourcesRepository.getLocalSources()
-    var isInitialized: Boolean = false
-
-    fun initialize () {
-        isInitialized = true
-    }
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse

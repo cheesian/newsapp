@@ -65,7 +65,7 @@ class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter
     }
 
     fun setItems(items: List<SourceResponseEntity>) {
-        this.listItems = items
+        this.listItems = items.sortedByDescending { it.name }
         notifyDataSetChanged()
     }
 }

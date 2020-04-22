@@ -26,11 +26,6 @@ class TopHeadlinesViewModel(
     var visibility: MutableLiveData<Int> = MutableLiveData()
     var articleList = topHeadlinesRepository.getArticles()
     var sourceList = topHeadlinesRepository.getSources()
-    var isInitialized: Boolean = false
-
-    fun initialize () {
-        isInitialized = true
-    }
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse
@@ -46,7 +41,7 @@ class TopHeadlinesViewModel(
                     for (entity in list) {
                         topHeadlinesRepository.insertArticle(entity)
                         entity.sourceResponseEntity?.let {
-                            if (!it.id.isNullOrBlank())
+                            if (!it.id.isBlank())
                             topHeadlinesRepository.insertSource(it)
                         }
                     }
