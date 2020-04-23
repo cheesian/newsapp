@@ -42,9 +42,7 @@ class SourcesViewModel (
                 Notify.log(message = "Status.SUCCESS")
                 visibility.value = View.GONE
                 generalResponse.sourcesResponseEntity?.sourceResponseEntities?.let {list->
-                    for (entity in list) {
-                        sourcesRepository.insertSource(entity)
-                    }
+                    sourcesRepository.insertSourceList(list)
                     val size = list.size
                     message.value = "Found $size sources"
                 }

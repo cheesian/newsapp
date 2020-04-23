@@ -23,6 +23,9 @@ interface TopHeadlinesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertArticle(article: TopHeadlinesResponseEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertArticleList(list: List<TopHeadlinesResponseEntity>)
+
     @Query("SELECT * from sourceIDs")
     fun getSources(): LiveData<List<SourceResponseEntity>>
 

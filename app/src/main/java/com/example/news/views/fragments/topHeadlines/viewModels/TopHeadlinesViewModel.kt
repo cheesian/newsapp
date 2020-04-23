@@ -38,8 +38,8 @@ class TopHeadlinesViewModel(
                 log(message = "Status.SUCCESS")
                 visibility.value = View.GONE
                 generalResponse.topResponseEntity?.articleResponseEntities?.let { list ->
+                    topHeadlinesRepository.insertArticleList(list)
                     for (entity in list) {
-                        topHeadlinesRepository.insertArticle(entity)
                         entity.sourceResponseEntity?.let {
                             if (!it.id.isBlank())
                             topHeadlinesRepository.insertSource(it)

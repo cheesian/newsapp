@@ -48,6 +48,10 @@ class TopHeadlinesRepository @Inject constructor(
         topHeadlinesDao.insertArticle(article)
     }
 
+    fun insertArticleList(list: List<TopHeadlinesResponseEntity>){
+        topHeadlinesDao.insertArticleList(list)
+    }
+
     fun deleteAllSources(){
         topHeadlinesDao.deleteAllSources()
     }
