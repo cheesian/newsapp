@@ -17,9 +17,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/drawerFab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="@string/open_and_close_drawer"
+                android:src="@drawable/ic_menu_white"
+                app:borderWidth="0dp"/>
+
             <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_anchor="@id/drawerFab"
+                app:layout_anchorGravity="top|start">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"

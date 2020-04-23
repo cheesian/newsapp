@@ -28,6 +28,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var headerView: View
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var drawerFab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +40,12 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         navigationView.setupWithNavController(navController)
         navigationView.setNavigationItemSelectedListener(this)
         drawerLayout = binding.drawer
-        initializeDrawer()
-    }
-
-    private fun initializeDrawer() {
-
+        drawerFab = binding.drawerFab
+        drawerFab.setOnClickListener {
+            when (drawerLayout.isOpen) {
+                false -> drawerLayout.open()
+            }
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
