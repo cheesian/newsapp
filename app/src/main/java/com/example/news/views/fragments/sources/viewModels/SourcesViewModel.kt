@@ -25,11 +25,6 @@ class SourcesViewModel (
     var message: MutableLiveData<String> = MutableLiveData()
     var visibility: MutableLiveData<Int> = MutableLiveData()
     var sourceList = sourcesRepository.getLocalSources()
-    var isInitialized: Boolean = false
-
-    fun initialize () {
-        isInitialized = true
-    }
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse
@@ -47,9 +42,7 @@ class SourcesViewModel (
                 Notify.log(message = "Status.SUCCESS")
                 visibility.value = View.GONE
                 generalResponse.sourcesResponseEntity?.sourceResponseEntities?.let {list->
-                    for (entity in list) {
-                        sourcesRepository.insertSource(entity)
-                    }
+                    sourcesRepository.insertSourceList(list)
                     val size = list.size
                     message.value = "Found $size sources"
                 }

@@ -59,10 +59,18 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
             val timeText = "At $publishedAt"
             val footer = "$authorText \n$timeText"
             articlesHolder.articleFooter.text = footer
-            Glide.with(articlesHolder.itemView)
-                .load(currentArticle.urlToImage)
-                .transform(CircleTransform(adapterContext))
-                .into(articlesHolder.articleImage)
+            if (currentArticle.urlToImage.isNullOrBlank()) {
+                Glide.with(articlesHolder.itemView)
+                    .load(R.drawable.ic_broken_image_black_24dp)
+                    .transform(CircleTransform(adapterContext))
+                    .into(articlesHolder.articleImage)
+            } else {
+                Glide.with(articlesHolder.itemView)
+                    .load(currentArticle.urlToImage)
+                    .transform(CircleTransform(adapterContext))
+                    .into(articlesHolder.articleImage)
+            }
+
             if (currentArticle.url.isNullOrBlank()) {
                 articlesHolder.itemView.setOnClickListener {
                     toast(it.context, "No link was provided for this article")

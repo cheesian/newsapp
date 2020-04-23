@@ -24,6 +24,9 @@ interface ArticlesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertArticle(article: ArticleResponseEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertArticleList(list: List<ArticleResponseEntity>)
+
     @Query("SELECT * from sourceIDs")
     fun getSources(): LiveData<List<SourceResponseEntity>>
 

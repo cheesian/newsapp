@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             app:layout_anchor="@id/refresh_layout"
             app:layout_anchorGravity="bottom"
-            app:layout_dodgeInsetEdges="bottom" />
+            app:layout_dodgeInsetEdges="bottom|top" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

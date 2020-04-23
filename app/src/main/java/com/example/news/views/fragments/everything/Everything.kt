@@ -2,6 +2,7 @@ package com.example.news.views.fragments.everything
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -72,7 +73,7 @@ class Everything : Fragment() {
     @Inject
     lateinit var everythingViewModelFactory: EverythingViewModelFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
-    private lateinit var calendarView: CalendarView
+    private lateinit var datePicker: DatePicker
     private lateinit var calendar: Calendar
     private lateinit var fromDateTextView: TextView
     private lateinit var toDateTextView: TextView
@@ -89,7 +90,7 @@ class Everything : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.everythingRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
@@ -100,7 +101,7 @@ class Everything : Fragment() {
 
         everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
-            layoutManager.scrollToPosition(0)
+            layoutManager.scrollToPosition(it.size - 1)
         })
 
         everythingViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -154,11 +155,7 @@ class Everything : Fragment() {
 
         horizontalOptions = binding.includedOptions.options_horizontal
 
-        checkBoxes.add(sourceCheckBox)
-        checkBoxes.add(keyWordCheckBox)
-        checkBoxes.add(languageCheckBox)
-        checkBoxes.add(fromDateCheckBox)
-        checkBoxes.add(toDateCheckBox)
+        checkBoxes.addAll(listOf(sourceCheckBox, keyWordCheckBox, languageCheckBox, fromDateCheckBox, toDateCheckBox))
 
         iconCancel = getDrawable(fragContext, R.drawable.ic_cancel_white_24dp)!!
         iconCancel.setBounds(0, 0, 60, 60)
@@ -166,18 +163,21 @@ class Everything : Fragment() {
         iconMenu.setBounds(0, 0, 60, 60)
         iconSearch = getDrawable(fragContext, R.drawable.ic_search_white_24dp)!!
         iconSearch.setBounds(0, 0, 60, 60)
-        calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, Calendar.JANUARY);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.YEAR, 2020);
-        calendarView = binding.includedOptions.calendarView
-        calendarView.setDate(calendar.timeInMillis, true, true);
-        return binding.root
-    }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) everythingViewModel?.getEverythingWithoutDates()
+        datePicker = binding.includedOptions.date_picker
+        calendar = Calendar.getInstance()
+        val minAllowedDate = with (calendar.clone() as Calendar) {
+            add(Calendar.DATE, -30)
+            this
+        }
+        val maxAllowedDate = with (calendar.clone() as Calendar) {
+            add(Calendar.DATE, 1)
+            this
+        }
+        datePicker.minDate = minAllowedDate.timeInMillis
+        datePicker.maxDate = maxAllowedDate.timeInMillis
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -187,21 +187,21 @@ class Everything : Fragment() {
     private fun toggleOptions() {
         when (horizontalOptions.visibility) {
             View.VISIBLE -> {
-                val selectedSource: String
-                val selectedKeyword: String
                 map.clear()
 
                 if (sourceCheckBox.isChecked && sourceSpinner.selectedItem != null && sourceSpinner.selectedItem.toString() != getString(
                         R.string.spinner_prompt
                     )
                 ) {
-                    selectedSource = sourceSpinner.selectedItem.toString()
-                    map["sources"] = selectedSource
+                    sourceSpinner.selectedItem.toString().apply {
+                        map["sources"] = this
+                    }
                 }
 
                 if (keyWordCheckBox.isChecked && !keyWordEditText.getText().toString().isBlank()) {
-                    selectedKeyword = keyWordEditText.getText().toString()
-                    map["q"] = selectedKeyword
+                    keyWordEditText.getText().toString().apply {
+                        map["q"] = this
+                    }
                 }
 
                 if (languageCheckBox.isChecked && languageSpinner.selectedItem != null && languageSpinner.selectedItem.toString() != getString(
@@ -247,9 +247,19 @@ class Everything : Fragment() {
         }
     }
 
+//    when you start the app for the first time it does not get the articles on its own, you have to swipe down
+//    this function checks solves that bug
+    private fun populateViewIfEmpty () {
+        val list = everythingViewModel?.articleList?.value
+        if (list.isNullOrEmpty()) everythingViewModel?.getEverythingWithoutDates()
+    }
+
     private fun initializeView() {
 
-        Hide.hide(calendarView)
+        populateViewIfEmpty()
+
+        Hide.hide(datePicker)
+
         refreshLayout.setOnRefreshListener {
             everythingViewModel!!.getEverythingWithoutDates()
             refreshLayout.isRefreshing = false
@@ -275,39 +285,42 @@ class Everything : Fragment() {
             Checkbox.connectCheckboxToView(checkBox, keyWordEditText)
         }
 
-        calendarView.setOnDateChangeListener { calendarView1, year, month, dayOfMonth ->
-            val mon = month + 1
-            val date = "$year-$mon-$dayOfMonth"
-            setDate(date)
-            Hide.hide(calendarView1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            datePicker.setOnDateChangedListener { calendarView1, year, month, dayOfMonth ->
+                val mon = month + 1
+                val date = "$year-$mon-$dayOfMonth"
+                setDate(date)
+                Hide.hide(calendarView1)
+            }
         }
 
         fromDateCheckBox.setOnClickListener {checkBox->
             dateSetter = DateSetter.CHECKBOX_FROM
-            Checkbox.connectCheckboxToView(checkBox, calendarView)
+            Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, fromDateTextView)
         }
 
         toDateCheckBox.setOnClickListener { checkBox->
             dateSetter = DateSetter.CHECKBOX_TO
-            Checkbox.connectCheckboxToView(checkBox, calendarView)
+            Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, toDateTextView)
         }
 
         fromDateTextView.setOnClickListener {
             dateSetter = DateSetter.TEXT_VIEW_FROM
-            Show.show(calendarView)
+            Show.show(datePicker)
         }
 
         toDateTextView.setOnClickListener {
             dateSetter = DateSetter.TEXT_VIEW_TO
-            Show.show(calendarView)
+            Show.show(datePicker)
         }
 
         Hide.hide(sourceSpinner)
         Hide.hide(languageSpinner)
         Hide.hide(keyWordEditText)
         Hide.hide(ftbCancel)
+        Hide.hide(datePicker)
 
     }
 
@@ -320,7 +333,7 @@ class Everything : Fragment() {
         Hide.hide(fromDateTextView)
         Hide.hide(toDateTextView)
         Hide.hide(languageSpinner)
-        Hide.hide(calendarView)
+        Hide.hide(datePicker)
 
         Checkbox.uncheck(checkBoxes)
 
@@ -348,6 +361,7 @@ class Everything : Fragment() {
         }
 
     }
+
     enum class DateSetter {
         CHECKBOX_FROM,
         CHECKBOX_TO,

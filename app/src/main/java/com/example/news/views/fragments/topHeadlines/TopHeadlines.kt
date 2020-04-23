@@ -74,7 +74,7 @@ class TopHeadlines : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.topHeadlinesRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!)
         recyclerView.adapter = adapter
@@ -85,7 +85,7 @@ class TopHeadlines : Fragment() {
 
         topHeadlinesViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setTopHeadlinesItems(it)
-            layoutManager.scrollToPosition(0)
+            layoutManager.scrollToPosition(it.size - 1)
         })
 
         topHeadlinesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -157,13 +157,7 @@ class TopHeadlines : Fragment() {
             topHeadlinesViewModel!!.getTopHeadlines()
             refreshLayout.isRefreshing = false
         }
-        topHeadlinesViewModel!!.initialize()
         return binding.root
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) topHeadlinesViewModel?.getTopHeadlines()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -235,8 +229,16 @@ class TopHeadlines : Fragment() {
             }
         }
     }
+//    when you start the app for the first time it does not get the articles on its own, you have to swipe down
+//    this function checks solves that bug
+    private fun populateViewIfEmpty () {
+        val list = topHeadlinesViewModel?.articleList?.value
+        if (list.isNullOrEmpty()) topHeadlinesViewModel?.getTopHeadlines()
+    }
 
     private fun initializeView() {
+
+        populateViewIfEmpty()
 
         ftbCancel.setOnClickListener {
             reset()

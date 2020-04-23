@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,14 +27,15 @@
         android:id="@+id/options_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/action_button"
-        app:layout_constraintBottom_toTopOf="@id/action_button"
+        android:layout_marginTop="@dimen/options_spacing"
         android:layout_marginBottom="@dimen/options_spacing"
-        android:gravity="center_vertical"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:background="@drawable/layout_background_shape"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/action_button"
+        app:layout_constraintEnd_toEndOf="@id/action_button"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/tv_from"
@@ -74,11 +74,11 @@
             app:layout_constraintStart_toStartOf="@id/checkBox_from" />
 
         <Spinner
-            app:layout_constraintTop_toTopOf="@id/checkBox_language"
+            android:id="@+id/spinner_language"
+            style="@style/spinner"
             app:layout_constraintBottom_toBottomOf="@id/checkBox_language"
             app:layout_constraintEnd_toStartOf="@id/checkBox_language"
-            android:id="@+id/spinner_language"
-            style="@style/spinner" />
+            app:layout_constraintTop_toTopOf="@id/checkBox_language" />
 
         <CheckBox
             android:id="@+id/checkBox_language"
@@ -88,11 +88,11 @@
             app:layout_constraintStart_toStartOf="@id/checkBox_from" />
 
         <Spinner
-            app:layout_constraintBottom_toBottomOf="@id/checkBox_source"
-            app:layout_constraintTop_toTopOf="@id/checkBox_source"
-            app:layout_constraintEnd_toStartOf="@id/checkBox_source"
             android:id="@+id/spinner_source"
-            style="@style/spinner" />
+            style="@style/spinner"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_source"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_source"
+            app:layout_constraintTop_toTopOf="@id/checkBox_source" />
 
         <CheckBox
             android:id="@+id/checkBox_source"
@@ -102,19 +102,19 @@
             app:layout_constraintStart_toStartOf="@id/checkBox_from" />
 
         <EditText
-            app:layout_constraintTop_toTopOf="@id/checkBox_keyword"
-            app:layout_constraintBottom_toBottomOf="@id/checkBox_keyword"
-            app:layout_constraintEnd_toStartOf="@id/checkBox_keyword"
             android:id="@+id/editText_keyword"
             android:layout_width="150dp"
-            android:maxLines="1"
             android:layout_height="wrap_content"
             android:hint="@string/type"
             android:importantForAutofill="no"
             android:inputType="text"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textColorHint="@color/colorPressed"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_keyword"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_keyword"
+            app:layout_constraintTop_toTopOf="@id/checkBox_keyword" />
 
         <CheckBox
             android:id="@+id/checkBox_keyword"
@@ -125,16 +125,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/ftb_margins"
-        android:background="@drawable/layout_background_shape"
-        android:dateTextAppearance="@style/CalenderViewDateCustomText"
+        android:headerBackground="@color/colorPrimary"
         android:theme="@style/CalenderViewCustom"
-        android:visibility="visible"
-        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

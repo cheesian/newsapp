@@ -41,10 +41,10 @@ class EverythingViewModel (
                 Notify.log(message = "Status.SUCCESS")
                 visibility.value = View.GONE
                 generalResponse.allResponseEntity?.articleResponseEntities?.let { list ->
+                    everythingRepository.insertArticleList(list)
                     for (entity in list) {
-                        everythingRepository.insertArticle(entity)
                         entity.sourceResponseEntity?.let {
-                            if (!it.id.isNullOrBlank())
+                            if (!it.id.isBlank())
                                 everythingRepository.insertSource(it)
                         }
                     }

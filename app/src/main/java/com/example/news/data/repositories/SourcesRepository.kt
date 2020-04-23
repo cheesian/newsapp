@@ -43,7 +43,12 @@ class SourcesRepository @Inject constructor(
         sourcesDao.deleteSource(source)
 
     }
+
     fun insertSource(source: SourceResponseEntity) {
         sourcesDao.insertSource(source)
+    }
+
+    fun insertSourceList(list: List<SourceResponseEntity>) {
+        sourcesDao.insertSourceList(list)
     }
 }

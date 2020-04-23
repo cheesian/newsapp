@@ -22,4 +22,7 @@ interface SourcesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSource(source: SourceResponseEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertSourceList(list: List<SourceResponseEntity>)
 }
