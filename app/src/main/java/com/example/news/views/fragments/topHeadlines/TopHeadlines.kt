@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.news.NewsApp
 import com.example.news.R
+import com.example.news.VMFactory
 import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.TopHeadlinesBinding
 import com.example.news.utils.*
@@ -25,7 +26,6 @@ import com.example.news.utils.Hide.hide
 import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel
-import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModelFactory
 import kotlinx.android.synthetic.main.options.view.*
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class TopHeadlines : Fragment() {
     private var sourceList = mutableListOf<String>()
     private var topHeadlinesViewModel: TopHeadlinesViewModel? = null
     @Inject
-    lateinit var topHeadlinesViewModelFactory: TopHeadlinesViewModelFactory
+    lateinit var topHeadlinesViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
     var map: HashMap<String, String> = HashMap()
 
@@ -137,7 +137,6 @@ class TopHeadlines : Fragment() {
 
         ftbAction = binding.includedOptions.action_button
         ftbCancel = binding.includedOptions.cancel_button
-//        ftbReload = binding.includedOptions.reload_button
 
         horizontalOptions = binding.includedOptions.options_horizontal
 
@@ -167,7 +166,6 @@ class TopHeadlines : Fragment() {
     private fun toggleOptions() {
         when (horizontalOptions.visibility) {
             View.VISIBLE -> {
-//                snackBar(view!!, "Snack", "Undo", SnackBarAction)
                 val selectedCategory: String?
                 val selectedSource: String
                 val selectedKeyword: String
@@ -244,11 +242,6 @@ class TopHeadlines : Fragment() {
             reset()
         }
 
-        /*ftbReload.setOnClickListener {
-            reset()
-            topHeadlinesViewModel.getTopHeadlines()
-        }*/
-
         ftbAction.setOnClickListener {
             toggleOptions()
         }
@@ -281,7 +274,6 @@ class TopHeadlines : Fragment() {
         hide(languageSpinner)
         hide(keyWordEditText)
         hide(ftbCancel)
-//        hide(ftbReload)
 
     }
 
@@ -294,7 +286,6 @@ class TopHeadlines : Fragment() {
         hide(countrySpinner)
         hide(ftbCancel)
         hide(languageSpinner)
-//        hide(ftbReload)
 
         Checkbox.uncheck(checkBoxes)
 

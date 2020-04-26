@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.news.NewsApp
 import com.example.news.R
+import com.example.news.VMFactory
 import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.EverythingBinding
 import com.example.news.utils.*
@@ -26,7 +27,6 @@ import com.example.news.utils.DateTimeUtil.getYMD
 import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
-import com.example.news.views.fragments.everything.viewModels.EverythingViewModelFactory
 import kotlinx.android.synthetic.main.options.view.action_button
 import kotlinx.android.synthetic.main.options.view.cancel_button
 import kotlinx.android.synthetic.main.options.view.checkBox_keyword
@@ -71,7 +71,7 @@ class Everything : Fragment() {
     private var sourceList = mutableListOf<String>()
     private var everythingViewModel: EverythingViewModel? = null
     @Inject
-    lateinit var everythingViewModelFactory: EverythingViewModelFactory
+    lateinit var everythingViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var datePicker: DatePicker
     private lateinit var calendar: Calendar

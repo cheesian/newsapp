@@ -8,7 +8,6 @@ import com.example.news.data.request.URLs.LANGUAGE
 import com.example.news.data.request.URLs.Q
 import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.GeneralResponse
-import com.example.news.data.response.everything.AllResponseEntity
 import com.example.news.utils.Notify
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -65,19 +64,6 @@ class EverythingViewModel (
                 Notify.setErrorMessage(generalResponse.error!!, message)
             }
         }
-    }
-
-    fun getEverything(q: String = Q, from: String, to: String, language: String = LANGUAGE, sortBy: String = SORT_BY) {
-        disposable.add(
-            everythingRepository.getEverything(q, from, to, language, sortBy)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { generalResponse.value = GeneralResponse.loading() }
-                .subscribe(
-                    { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
-                    { error -> generalResponse.value = GeneralResponse.error(error)}
-                )
-        )
     }
 
     fun getEverythingWithoutDates(q: String = Q, language: String = LANGUAGE, sortBy: String = SORT_BY) {

@@ -1,16 +1,15 @@
 package com.example.news.utils
 
 import android.app.Activity
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import com.example.news.views.activities.MainActivity
 
 /**
 Created by ian
  */
 
 object FullScreen {
+//    Should be called before the contentView is set
     fun setFullScreen (activity: Activity) {
         activity.requestWindowFeature(Window.FEATURE_NO_TITLE)
         activity.window.setFlags(

@@ -18,19 +18,6 @@ Created by ian
 
 interface TopHeadlinesApiService {
 
-    /*@GET(TOP_HEADLINES_ENDPOINT)
-    fun getTopHeadlines(
-        @Query("apiKey")
-        apiKey:String,
-        @Query("country")
-        country:String,
-        @Query("category")
-        category:String,
-        @Query("sources")
-        sources:String,
-        @Query("q")
-        q:String
-    ): Observable<AllResponseEntity>*/
 //    country: country_list.xml
 //    category: category_list.xml
 //    sources: generate dynamically

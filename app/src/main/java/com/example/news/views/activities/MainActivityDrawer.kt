@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -12,7 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.news.R
 import com.example.news.databinding.MainActivityDrawerBinding
-import com.example.news.utils.Notify.toast
+import com.example.news.utils.FullScreen.setFullScreen
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
@@ -32,11 +31,12 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setFullScreen(this)
         binding = DataBindingUtil.setContentView(this, R.layout.drawer_activity_main)
         navigationView = binding.navigationView
         headerView = navigationView.getHeaderView(0)
         navController = findNavController(R.id.nav_host_fragment)
-        // this ensures the selected item is highlighted automatically
+//        this ensures the selected item is highlighted automatically
         navigationView.setupWithNavController(navController)
         navigationView.setNavigationItemSelectedListener(this)
         drawerLayout = binding.drawer

@@ -24,10 +24,6 @@ class EverythingRepository @Inject constructor(
     private val articlesDao: ArticlesDao
 ) {
 
-    fun getEverything(q: String, from: String, to: String, language: String, sortBy: String): Observable<AllResponseEntity>{
-        return everythingApiService.getEverything(API_KEY, q, from, to, language, sortBy)
-    }
-
     fun getCustomEverything(map: HashMap<String, String>): Observable<AllResponseEntity> {
         if (!map.containsKey("q")) map["q"] = Q
         return everythingApiService.getCustomEverything(API_KEY, URLs.PAGE_SIZE, URLs.SORT_BY, map)

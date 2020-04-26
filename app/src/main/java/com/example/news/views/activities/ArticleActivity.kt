@@ -15,7 +15,6 @@ import com.example.news.R
 import com.example.news.databinding.ArticleActivityBinding
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.snackBar
-import com.example.news.utils.Notify.toast
 import java.net.UnknownHostException
 
 
@@ -38,8 +37,6 @@ class ArticleActivity: AppCompatActivity() {
         progressBar = binding.progressBar
         val toolbar = binding.toolbar
         toolbar.title = ""
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = binding.progressBar
         swipeRefreshLayout = binding.swipe
         webView = binding.webview
