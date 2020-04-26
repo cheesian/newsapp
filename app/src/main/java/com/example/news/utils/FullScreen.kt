@@ -1,10 +1,8 @@
 package com.example.news.utils
 
 import android.app.Activity
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import com.example.news.views.activities.MainActivity
 
 /**
 Created by ian
