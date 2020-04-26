@@ -41,7 +41,7 @@ class TopHeadlinesViewModel(
                     topHeadlinesRepository.insertArticleList(list)
                     for (entity in list) {
                         entity.sourceResponseEntity?.let {
-                            if (!it.id.isBlank())
+                            if (!it.id.isNullOrBlank())
                             topHeadlinesRepository.insertSource(it)
                         }
                     }
