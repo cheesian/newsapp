@@ -8,7 +8,6 @@ import com.example.news.data.request.URLs.LANGUAGE
 import com.example.news.data.request.URLs.Q
 import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.GeneralResponse
-import com.example.news.data.response.everything.AllResponseEntity
 import com.example.news.utils.Notify
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

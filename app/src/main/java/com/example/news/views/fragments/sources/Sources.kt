@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.news.NewsApp
 import com.example.news.R
+import com.example.news.VMFactory
 import com.example.news.adapters.SourcesAdapter
 import com.example.news.databinding.SourcesBinding
 import com.example.news.utils.Checkbox
@@ -27,7 +28,6 @@ import com.example.news.utils.Notify
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.utils.Show.show
 import com.example.news.views.fragments.sources.viewModels.SourcesViewModel
-import com.example.news.views.fragments.sources.viewModels.SourcesViewModelFactory
 import kotlinx.android.synthetic.main.options.view.*
 import javax.inject.Inject
 
@@ -61,7 +61,7 @@ class Sources : Fragment() {
     private lateinit var progressBar: ProgressBar
     private var sourcesViewModel: SourcesViewModel? = null
     @Inject
-    lateinit var sourcesViewModelFactory: SourcesViewModelFactory
+    lateinit var sourcesViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
     var map: HashMap<String, String> = HashMap()
 

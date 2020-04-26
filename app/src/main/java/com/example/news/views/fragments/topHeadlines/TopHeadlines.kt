@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.news.NewsApp
 import com.example.news.R
+import com.example.news.VMFactory
 import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.TopHeadlinesBinding
 import com.example.news.utils.*
@@ -25,7 +26,6 @@ import com.example.news.utils.Hide.hide
 import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel
-import com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModelFactory
 import kotlinx.android.synthetic.main.options.view.*
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class TopHeadlines : Fragment() {
     private var sourceList = mutableListOf<String>()
     private var topHeadlinesViewModel: TopHeadlinesViewModel? = null
     @Inject
-    lateinit var topHeadlinesViewModelFactory: TopHeadlinesViewModelFactory
+    lateinit var topHeadlinesViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
     var map: HashMap<String, String> = HashMap()
 
