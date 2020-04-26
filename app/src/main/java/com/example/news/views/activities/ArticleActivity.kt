@@ -15,7 +15,6 @@ import com.example.news.R
 import com.example.news.databinding.ArticleActivityBinding
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.snackBar
-import com.example.news.utils.Notify.toast
 import java.net.UnknownHostException
 
 
