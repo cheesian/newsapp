@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/button_background_rounded"
+        android:background="@drawable/news_header_background"
         tools:text="Corona Virus Defeated"
         android:textColor="#000"
         android:textStyle="bold|normal"
