@@ -11,31 +11,31 @@ Created by ian
 
 class GeneralResponse private constructor(
     val status: Status,
-    val allResponseEntity: AllResponseEntity?,
-    val sourcesResponseEntity: SourcesResponseEntity?,
-    val error: Throwable?,
-    val topResponseEntity: TopResponseEntity?
+    val allResponseEntity: AllResponseEntity? = null,
+    val sourcesResponseEntity: SourcesResponseEntity? = null,
+    val error: Throwable? = null,
+    val topResponseEntity: TopResponseEntity? = null
 ) {
 
     companion object {
         fun loading(): GeneralResponse {
-            return GeneralResponse(Status.LOADING, null, null, null, null)
+            return GeneralResponse(status = Status.LOADING)
         }
 
         fun error(error: Throwable): GeneralResponse {
-            return GeneralResponse(Status.ERROR, null, null, error, null)
+            return GeneralResponse(status = Status.ERROR, error = error)
         }
 
         fun allResponseSuccess(allResponseEntity: AllResponseEntity): GeneralResponse {
-            return GeneralResponse(Status.SUCCESS, allResponseEntity, null, null, null)
+            return GeneralResponse(status = Status.SUCCESS, allResponseEntity = allResponseEntity)
         }
 
         fun topResponseSuccess(topResponseEntity: TopResponseEntity?): GeneralResponse {
-            return GeneralResponse(Status.SUCCESS, null, null, null, topResponseEntity)
+            return GeneralResponse(status = Status.SUCCESS, topResponseEntity = topResponseEntity)
         }
 
         fun sourcesResponseSuccess(sourcesResponseEntity: SourcesResponseEntity): GeneralResponse {
-            return GeneralResponse(Status.SUCCESS, null, sourcesResponseEntity, null, null)
+            return GeneralResponse(status = Status.SUCCESS, sourcesResponseEntity = sourcesResponseEntity)
         }
     }
 

@@ -85,7 +85,7 @@ class EverythingViewModel (
             everythingRepository.getEverythingWithoutDates(q, language, sortBy)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { generalResponse.value = GeneralResponse.loading() }
+                .doOnSubscribe { generalResponse.setValue(GeneralResponse.loading()) }
                 .subscribe(
                     { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
                     { error -> generalResponse.value = GeneralResponse.error(error)}
