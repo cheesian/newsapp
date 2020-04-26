@@ -20,26 +20,12 @@ Created by ian
 
 interface EverythingApiService {
 
-    @GET(EVERYTHING_ENDPOINT)
-    fun getEverything(
-        @Query("apiKey")
-        apiKey:String,
-        @Query("q")
-        q:String,
-        @Query("from")
-        from:String,
-        @Query("to")
-        to:String,
-        @Query("language")
-        language:String,
-        @Query("sortBy")
-        sortBy:String
-    ): Observable<AllResponseEntity>
 //    q: editText input
 //    from: date e.g. 2020-02-21
 //    to: date e.g. 2020-02-21
 //    language: languages_list.xml
 //    sort_by: [ popularity, publishedAt ]
+
 @GET(EVERYTHING_ENDPOINT)
 fun getEverythingWithoutDates(
     @Query("apiKey")

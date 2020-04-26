@@ -36,7 +36,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         navigationView = binding.navigationView
         headerView = navigationView.getHeaderView(0)
         navController = findNavController(R.id.nav_host_fragment)
-        // this ensures the selected item is highlighted automatically
+//        this ensures the selected item is highlighted automatically
         navigationView.setupWithNavController(navController)
         navigationView.setNavigationItemSelectedListener(this)
         drawerLayout = binding.drawer

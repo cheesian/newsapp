@@ -66,19 +66,6 @@ class EverythingViewModel (
         }
     }
 
-    fun getEverything(q: String = Q, from: String, to: String, language: String = LANGUAGE, sortBy: String = SORT_BY) {
-        disposable.add(
-            everythingRepository.getEverything(q, from, to, language, sortBy)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { generalResponse.value = GeneralResponse.loading() }
-                .subscribe(
-                    { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
-                    { error -> generalResponse.value = GeneralResponse.error(error)}
-                )
-        )
-    }
-
     fun getEverythingWithoutDates(q: String = Q, language: String = LANGUAGE, sortBy: String = SORT_BY) {
         disposable.add(
             everythingRepository.getEverythingWithoutDates(q, language, sortBy)
