@@ -37,8 +37,6 @@ class ArticleActivity: AppCompatActivity() {
         progressBar = binding.progressBar
         val toolbar = binding.toolbar
         toolbar.title = ""
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = binding.progressBar
         swipeRefreshLayout = binding.swipe
         webView = binding.webview
