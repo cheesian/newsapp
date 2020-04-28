@@ -61,4 +61,8 @@
         <item name="android:textColorPrimary">@color/black</item>
     </style>
 
+    <style name="TextAppearance.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>
