@@ -3,6 +3,7 @@ package com.example.news.views.activities
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -35,6 +36,10 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         binding = DataBindingUtil.setContentView(this, R.layout.drawer_activity_main)
         navigationView = binding.navigationView
         headerView = navigationView.getHeaderView(0)
+        headerView.findViewById<TextView>(R.id.name_tag).apply {
+//            the person's initials should be shown in this textview
+            text = getInitials()
+        }
         navController = findNavController(R.id.nav_host_fragment)
 //        this ensures the selected item is highlighted automatically
         navigationView.setupWithNavController(navController)
@@ -83,6 +88,17 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     private fun replaceFragment(id: Int) {
         navController.navigate(id)
+    }
+
+    private fun getInitials(name: String = "Johnny Cage"): String {
+        return when {
+            name.trim().isEmpty() -> "JC"
+            else -> with(name.split(" ")) {
+                val initial1 = this[0].take(1)
+                val initial2 = this[1].take(1)
+                "$initial1$initial2"
+            }
+        }
     }
 
 }
