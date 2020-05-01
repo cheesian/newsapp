@@ -13,6 +13,7 @@ import com.example.news.R
 import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 import com.example.news.utils.CircleTransform
+import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.Notify.toast
 import com.example.news.views.activities.ArticleActivity
 
@@ -23,8 +24,9 @@ Created by ian
 
 class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.ArticlesHolder>() {
 
-    private var articleList: List<ArticleResponseEntity> = emptyList()
+    private var articleList = mutableListOf<ArticleResponseEntity>()
     private val adapterContext = context
+    private var rootView: View? = null
     private var origin = 0
 
     inner class ArticlesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,6 +39,7 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesHolder {
         val inflater: LayoutInflater = LayoutInflater.from(adapterContext)
         val itemView = inflater.inflate(R.layout.list_items, parent, false)
+        rootView =itemView.rootView
         return ArticlesHolder(itemView)
     }
 
@@ -88,7 +91,8 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
     }
 
     fun setItems(itemList: List<ArticleResponseEntity>) {
-        this.articleList = itemList
+        this.articleList = mutableListOf()
+        this.articleList.addAll(itemList)
         origin++
         notifyDataSetChanged()
     }
@@ -110,6 +114,23 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
         }
         origin++
         setItems(list)
+    }
+
+    fun deleteItem(position: Int) {
+        val deletedItem = articleList[position]
+        articleList.removeAt(position)
+        notifyItemRemoved(position)
+        snackBar(
+            view = rootView!!,
+            message = "Item removed",
+            actionMessage = "Undo",
+            function = { undoDelete(position, deletedItem) }
+        )
+    }
+
+    private fun undoDelete (position: Int, articleResponseEntity: ArticleResponseEntity) {
+        articleList.add(position, articleResponseEntity)
+        notifyItemInserted(position)
     }
 
 }
