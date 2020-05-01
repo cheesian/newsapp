@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -92,8 +93,9 @@ class Everything : Fragment() {
         recyclerView = binding.everythingRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = ArticlesAdapter(context!!)
+        val adapter = ArticlesAdapter(context!!, binding.root)
         recyclerView.adapter = adapter
+        ItemTouchHelper(SwipeToDismiss(adapter)).attachToRecyclerView(recyclerView)
         everythingViewModel = ViewModelProvider(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
         everythingViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {
             everythingViewModel!!.consume(it)

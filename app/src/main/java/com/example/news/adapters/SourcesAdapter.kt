@@ -3,6 +3,7 @@ package com.example.news.adapters
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.data.response.sources.SourceResponseEntity
@@ -17,7 +18,8 @@ Created by ian
 
 class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter.SourcesHolder> () {
 
-    var listItems: List<SourceResponseEntity> = emptyList()
+    private var listItems = mutableListOf<SourceResponseEntity>()
+    private var rootView: View? = null
 
     inner class SourcesHolder(binding: SourcesItemBinding): RecyclerView.ViewHolder(binding.root) {
         val title = binding.titleViewSources
@@ -29,6 +31,7 @@ class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SourcesHolder {
         val layoutInflater = LayoutInflater.from(context)
         val binding = SourcesItemBinding.inflate(layoutInflater, parent, false)
+        rootView = binding.root
         return SourcesHolder(binding)
     }
 
@@ -64,7 +67,25 @@ class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter
     }
 
     fun setItems(items: List<SourceResponseEntity>) {
-        this.listItems = items.sortedByDescending { it.name }
+        this.listItems = mutableListOf()
+        this.listItems.addAll(items.sortedByDescending { it.name })
         notifyDataSetChanged()
+    }
+
+    fun deleteItem(position: Int) {
+        val deletedItem = listItems[position]
+        listItems.removeAt(position)
+        notifyItemRemoved(position)
+        Notify.snackBar(
+            view = rootView!!,
+            message = "Item removed",
+            actionMessage = "Undo",
+            function = { undoDelete(position, deletedItem) }
+        )
+    }
+
+    private fun undoDelete (position: Int, sourceResponseEntity: SourceResponseEntity) {
+        listItems.add(position, sourceResponseEntity)
+        notifyItemInserted(position)
     }
 }

@@ -22,11 +22,9 @@ import com.example.news.views.activities.ArticleActivity
 Created by ian
  */
 
-class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.ArticlesHolder>() {
+class ArticlesAdapter (private val adapterContext: Context, private val rootView: View) : RecyclerView.Adapter<ArticlesAdapter.ArticlesHolder>() {
 
     private var articleList = mutableListOf<ArticleResponseEntity>()
-    private val adapterContext = context
-    private var rootView: View? = null
     private var origin = 0
 
     inner class ArticlesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,7 +37,6 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesHolder {
         val inflater: LayoutInflater = LayoutInflater.from(adapterContext)
         val itemView = inflater.inflate(R.layout.list_items, parent, false)
-        rootView =itemView.rootView
         return ArticlesHolder(itemView)
     }
 
@@ -121,7 +118,7 @@ class ArticlesAdapter (context: Context) : RecyclerView.Adapter<ArticlesAdapter.
         articleList.removeAt(position)
         notifyItemRemoved(position)
         snackBar(
-            view = rootView!!,
+            view = rootView,
             message = "Item removed",
             actionMessage = "Undo",
             function = { undoDelete(position, deletedItem) }

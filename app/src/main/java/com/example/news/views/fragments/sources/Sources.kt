@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -27,6 +29,7 @@ import com.example.news.utils.Hide.hide
 import com.example.news.utils.Notify
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.utils.Show.show
+import com.example.news.utils.SwipeToDismiss
 import com.example.news.views.fragments.sources.viewModels.SourcesViewModel
 import kotlinx.android.synthetic.main.options.view.*
 import javax.inject.Inject
@@ -80,6 +83,9 @@ class Sources : Fragment() {
         recyclerView.layoutManager = layoutManager
         val adapter = SourcesAdapter(context!!)
         recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        ItemTouchHelper(SwipeToDismiss(sourcesAdapter = adapter)).attachToRecyclerView(recyclerView)
+
         sourcesViewModel = ViewModelProvider(this, sourcesViewModelFactory).get(SourcesViewModel::class.java)
         sourcesViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             sourcesViewModel!!.consume(it)

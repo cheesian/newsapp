@@ -77,14 +77,14 @@ class TopHeadlines : Fragment() {
         recyclerView = binding.topHeadlinesRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = ArticlesAdapter(context!!)
+        val adapter = ArticlesAdapter(context!!, binding.root)
         recyclerView.adapter = adapter
+        ItemTouchHelper(SwipeToDismiss(articlesAdapter = adapter)).attachToRecyclerView(recyclerView)
+
         topHeadlinesViewModel = ViewModelProvider(this, topHeadlinesViewModelFactory).get(TopHeadlinesViewModel::class.java)
         topHeadlinesViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {
             topHeadlinesViewModel!!.consume(it)
         })
-        ItemTouchHelper(Swipe(adapter, topHeadlinesViewModel)).attachToRecyclerView(recyclerView)
-
         topHeadlinesViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setTopHeadlinesItems(it)
             layoutManager.scrollToPosition(it.size - 1)
