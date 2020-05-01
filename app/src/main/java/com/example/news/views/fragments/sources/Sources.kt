@@ -81,7 +81,7 @@ class Sources : Fragment() {
         recyclerView = binding.sourcesRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = SourcesAdapter(context!!)
+        val adapter = SourcesAdapter(context!!, binding.root)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         ItemTouchHelper(SwipeToDismiss(sourcesAdapter = adapter)).attachToRecyclerView(recyclerView)

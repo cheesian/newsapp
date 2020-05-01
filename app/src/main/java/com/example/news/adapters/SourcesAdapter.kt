@@ -16,10 +16,9 @@ import com.example.news.views.activities.ArticleActivity
 Created by ian
  */
 
-class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter.SourcesHolder> () {
+class SourcesAdapter (var context: Context, private val rootView: View): RecyclerView.Adapter<SourcesAdapter.SourcesHolder> () {
 
     private var listItems = mutableListOf<SourceResponseEntity>()
-    private var rootView: View? = null
 
     inner class SourcesHolder(binding: SourcesItemBinding): RecyclerView.ViewHolder(binding.root) {
         val title = binding.titleViewSources
@@ -31,7 +30,6 @@ class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SourcesHolder {
         val layoutInflater = LayoutInflater.from(context)
         val binding = SourcesItemBinding.inflate(layoutInflater, parent, false)
-        rootView = binding.root
         return SourcesHolder(binding)
     }
 
@@ -77,7 +75,7 @@ class SourcesAdapter (var context: Context): RecyclerView.Adapter<SourcesAdapter
         listItems.removeAt(position)
         notifyItemRemoved(position)
         Notify.snackBar(
-            view = rootView!!,
+            view = rootView,
             message = "Item removed",
             actionMessage = "Undo",
             function = { undoDelete(position, deletedItem) }
