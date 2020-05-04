@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     app:contentScrim="@color/colorPrimary"
-                    android:background="@color/white"
+                    android:background="@color/colorPressed"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
