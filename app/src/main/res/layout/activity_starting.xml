@@ -54,6 +54,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPressed"
             app:layout_constraintBottom_toBottomOf="@id/viewPager" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.news.views.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -29,6 +30,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerFab: FloatingActionButton
+    private lateinit var logoutText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,12 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         headerView.findViewById<TextView>(R.id.name_tag).apply {
 //            the person's initials should be shown in this textview
             text = getInitials()
+        }
+        logoutText = headerView.findViewById<TextView>(R.id.tv_logout).apply {
+            setOnClickListener {
+//            Log out and redirect to StartingActivity
+                logout()
+            }
         }
         navController = findNavController(R.id.nav_host_fragment)
 //        this ensures the selected item is highlighted automatically
@@ -51,6 +59,11 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 false -> drawerLayout.open()
             }
         }
+    }
+
+    private fun logout() {
+        startActivity(Intent(this, StartingActivity::class.java))
+        finish()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

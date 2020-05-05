@@ -27,4 +27,9 @@
     <string name="programiq_solutions">Programiq Solutions</string>
     <string name="programiq">PROGRAMIQ</string>
     <string name="sign_up_title">SIGN UP TO READ THE NEWS</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="create_account">Create account</string>
 </resources>
