@@ -12,7 +12,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="@dimen/ftb_margins"
         android:layout_marginBottom="@dimen/ftb_margins"
-        android:background="@drawable/clickable_list_items"
+        android:background="@drawable/selected_item_shape"
         android:clickable="true"
         android:focusable="true"
         android:paddingStart="0dp"
