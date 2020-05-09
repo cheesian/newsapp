@@ -8,6 +8,8 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.news.R
+import com.example.news.data.Constants
+import com.example.news.data.Constants.PASSWORD_LENGTH
 import com.example.news.databinding.SignUpBinding
 import com.example.news.utils.Validation
 import com.example.news.utils.Validation.checkEmailValidity
@@ -62,8 +64,8 @@ class SignUp: Fragment() {
         nameLayout.error = if (!isValidNames) "Invalid Names" else null
         val isValidEmail = checkEmailValidity(email.text.toString())
         emailLayout.error = if (!isValidEmail) "Invalid Email" else null
-        val isValidPassword = checkPasswordValidity(pass.text.toString(), 5)
-        passLayout.error = if (!isValidPassword) "Invalid Password" else null
+        val isValidPassword = checkPasswordValidity(pass.text.toString(), PASSWORD_LENGTH)
+        passLayout.error = if (!isValidPassword) "Use at least $PASSWORD_LENGTH characters" else null
         val passMatch = pass.text.toString() == pass2.text.toString()
         pass2Layout.error = if (!passMatch) "Passwords do not match" else null
         return isValidEmail && isValidPassword
