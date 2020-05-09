@@ -8,6 +8,7 @@ import com.example.news.R
 import com.example.news.adapters.StartingPagerAdapter
 import com.example.news.databinding.StartingActivityBinding
 import com.example.news.utils.FullScreen.setFullScreen
+import com.example.news.utils.Notify.toast
 import com.example.news.views.fragments.start.SignIn
 import com.example.news.views.fragments.start.SignUp
 import com.example.news.views.fragments.start.Welcome
@@ -28,6 +29,7 @@ class StartingActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        INSTANCE = this
 
         setFullScreen(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_starting)
@@ -58,6 +60,15 @@ class StartingActivity: AppCompatActivity() {
 
             }
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        INSTANCE = null
+    }
+
+    companion object {
+        var INSTANCE: StartingActivity? = null
     }
 
 }
