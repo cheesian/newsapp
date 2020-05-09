@@ -24,7 +24,7 @@
     <string name="to">To</string>
     <string name="from_date">From date</string>
     <string name="open_and_close_drawer">Open and close drawer</string>
-    <string name="programiq_solutions">Programiq Solutions</string>
+    <string name="programiq_solutions">PROGRAMIQ SOLUTIONS</string>
     <string name="programiq">PROGRAMIQ</string>
     <string name="sign_up_title">SIGN UP TO READ THE NEWS</string>
     <string name="enter_name">Enter your name</string>
@@ -35,4 +35,10 @@
     <string name="welcome">WELCOME</string>
     <string name="sign_in">SIGN IN</string>
     <string name="sign_in_title">SIGN IN TO READ THE NEWS</string>
+    <string name="made_by">MADE BY:</string>
+    <string name="website_link">https://www.programiqsolutions.com</string>
+    <string name="website">WEBSITE:</string>
+    <string name="get_started">OK. LET\'S GET STARTED</string>
+    <string name="sign_up_to_register">SIGN UP TO CREATE AN ACCOUNT</string>
+    <string name="sign_in_to_account">LOGIN IF YOU HAVE AN ACCOUNT</string>
 </resources>
