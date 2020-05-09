@@ -4,10 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.news.R
 import com.example.news.databinding.SignUpBinding
+import com.example.news.utils.Validation
+import com.example.news.utils.Validation.checkEmailValidity
+import com.example.news.utils.Validation.checkPasswordValidity
+import com.example.news.utils.Validation.hasOnlyLettersAndSpaces
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 
 /**
@@ -17,6 +24,15 @@ Created by ian
 class SignUp: Fragment() {
 
     lateinit var binding: SignUpBinding
+    lateinit var name: TextInputEditText
+    lateinit var nameLayout: TextInputLayout
+    lateinit var email: TextInputEditText
+    lateinit var emailLayout: TextInputLayout
+    lateinit var pass: TextInputEditText
+    lateinit var passLayout: TextInputLayout
+    lateinit var pass2: TextInputEditText
+    lateinit var pass2Layout: TextInputLayout
+    lateinit var signUpButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +40,32 @@ class SignUp: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
+
+        name = binding.nameText
+        nameLayout = binding.nameLayout
+        email = binding.emailText
+        emailLayout = binding.emailLayout
+        pass = binding.passText
+        passLayout = binding.passLayout
+        pass2 = binding.pass2Text
+        pass2Layout = binding.pass2Layout
+
+        signUpButton = binding.signUpButton
+        signUpButton.setOnClickListener {
+            checkFormValidity()
+        }
         return binding.root
+    }
+
+    private fun checkFormValidity(): Boolean {
+        val isValidNames = hasOnlyLettersAndSpaces(name.text.toString())
+        nameLayout.error = if (!isValidNames) "Invalid Names" else null
+        val isValidEmail = checkEmailValidity(email.text.toString())
+        emailLayout.error = if (!isValidEmail) "Invalid Email" else null
+        val isValidPassword = checkPasswordValidity(pass.text.toString(), 5)
+        passLayout.error = if (!isValidPassword) "Invalid Password" else null
+        val passMatch = pass.text.toString() == pass2.text.toString()
+        pass2Layout.error = if (!passMatch) "Passwords do not match" else null
+        return isValidEmail && isValidPassword
     }
 }
