@@ -30,31 +30,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/news_header_background"
                 android:padding="15dp"
-                android:text="@string/sign_up_title"
+                android:text="@string/sign_in_title"
                 android:textColor="#000"
                 android:textStyle="bold|normal"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/name_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ftb_margins"
-                android:layout_marginTop="@dimen/ftb_margins"
-                android:layout_marginEnd="@dimen/ftb_margins"
-                android:textColorHint="@color/black"
-                app:boxStrokeColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/sign_in_title">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/enter_name"
-                    android:inputType="text"
-                    android:textColor="@color/black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/email_layout"
@@ -65,7 +44,7 @@
                 android:layout_marginEnd="@dimen/ftb_margins"
                 android:textColorHint="@color/black"
                 app:boxStrokeColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/name_layout">
+                app:layout_constraintTop_toBottomOf="@id/sign_in_title">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email_text"
@@ -78,27 +57,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/pass_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ftb_margins"
-                android:layout_marginTop="@dimen/ftb_margins"
-                android:layout_marginEnd="@dimen/ftb_margins"
-                android:textColorHint="@color/black"
-                app:boxStrokeColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/email_layout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/pass_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/enter_password"
-                    android:inputType="textPassword"
-                    android:textColor="@color/black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/pass2_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +64,7 @@
                 android:textColorHint="@color/black"
                 app:boxStrokeColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/sign_up_button"
-                app:layout_constraintTop_toBottomOf="@id/pass_layout">
+                app:layout_constraintTop_toBottomOf="@id/email_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/pass2_text"
@@ -125,7 +83,7 @@
                 android:layout_marginEnd="0dp"
                 android:background="@drawable/button_background_rounded"
                 android:backgroundTint="@color/colorAccent"
-                android:text="@string/create_account"
+                android:text="@string/sign_in"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
