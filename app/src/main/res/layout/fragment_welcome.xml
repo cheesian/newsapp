@@ -12,10 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/ftb_margins"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="@dimen/ftb_margins"
-            android:layout_marginBottom="@dimen/ftb_margins">
+            android:layout_margin="@dimen/ftb_margins">
 
             <include
                 android:id="@+id/included_content"

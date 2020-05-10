@@ -7,8 +7,9 @@ import androidx.viewpager.widget.ViewPager
 import com.example.news.R
 import com.example.news.adapters.StartingPagerAdapter
 import com.example.news.databinding.StartingActivityBinding
+import com.example.news.utils.DepthPageTransformer
 import com.example.news.utils.FullScreen.setFullScreen
-import com.example.news.utils.Notify.toast
+import com.example.news.utils.ZoomOutPageTransformer
 import com.example.news.views.fragments.start.SignIn
 import com.example.news.views.fragments.start.SignUp
 import com.example.news.views.fragments.start.Welcome
@@ -41,6 +42,7 @@ class StartingActivity: AppCompatActivity() {
 
         viewPager = binding.viewPager
         viewPager.adapter = pagerAdapter
+        viewPager.setPageTransformer(true, DepthPageTransformer())
 
         tabLayout = binding.tabs
         tabLayout.setupWithViewPager(viewPager)
