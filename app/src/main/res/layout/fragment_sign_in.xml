@@ -20,9 +20,7 @@
             android:paddingStart="0dp"
             android:paddingTop="0dp"
             android:paddingEnd="0dp"
-            android:paddingBottom="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingBottom="0dp">
 
             <TextView
                 android:id="@+id/sign_in_title"

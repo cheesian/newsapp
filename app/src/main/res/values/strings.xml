@@ -33,8 +33,8 @@
     <string name="confirm_password">Confirm password</string>
     <string name="create_account">Create account</string>
     <string name="welcome">WELCOME</string>
-    <string name="sign_in">SIGN IN</string>
-    <string name="sign_in_title">SIGN IN TO READ THE NEWS</string>
+    <string name="sign_in">LOGIN</string>
+    <string name="sign_in_title">LOGIN TO READ THE NEWS</string>
     <string name="made_by">MADE BY:</string>
     <string name="website_link">https://www.programiqsolutions.com</string>
     <string name="website">WEBSITE:</string>
