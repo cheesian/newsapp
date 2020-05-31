@@ -28,6 +28,7 @@ class EverythingViewModel (
     var visibility: MutableLiveData<Int> = MutableLiveData()
     var articleList = everythingRepository.getArticles()
     var sourceList = everythingRepository.getSources()
+    var lastRequest = MutableLiveData<HashMap<String, String>>()
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse
@@ -67,6 +68,11 @@ class EverythingViewModel (
     }
 
     fun getEverythingWithoutDates(q: String = Q, language: String = LANGUAGE, sortBy: String = SORT_BY) {
+        val query = HashMap<String, String>()
+        query["q"] = q
+        query["language"] = language
+        query["sortBy"] = sortBy
+        recordLastQuery(query)
         disposable.add(
             everythingRepository.getEverythingWithoutDates(q, language, sortBy)
                 .subscribeOn(Schedulers.io())
@@ -80,6 +86,7 @@ class EverythingViewModel (
     }
 
     fun getCustomEverything(map: HashMap<String, String>) {
+        recordLastQuery(map)
         disposable.add(
             everythingRepository.getCustomEverything(map)
                 .subscribeOn(Schedulers.io())
@@ -96,5 +103,12 @@ class EverythingViewModel (
                     }
                 )
         )
+    }
+
+    private fun recordLastQuery (hashMap: HashMap<String, String>) {
+//        This function helps keep a record of the previous query for the refresh function
+        lastRequest.apply {
+            value = hashMap
+        }
     }
 }

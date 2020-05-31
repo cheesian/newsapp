@@ -80,6 +80,7 @@ class Everything : Fragment() {
     private lateinit var fromDateTextView: TextView
     private lateinit var toDateTextView: TextView
     var map: HashMap<String, String> = HashMap()
+    lateinit var prevRequest: HashMap<String, String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -164,6 +165,11 @@ class Everything : Fragment() {
                 function = { everythingViewModel!!.getEverythingWithoutDates() }
             )
 
+        })
+
+        everythingViewModel!!.lastRequest.observe(viewLifecycleOwner, Observer {
+            prevRequest = it
+            toast(context!!, it.toString())
         })
 
         sourceSpinner = binding.includedOptions.spinner_source
@@ -413,5 +419,11 @@ class Everything : Fragment() {
         CHECKBOX_TO,
         TEXT_VIEW_FROM,
         TEXT_VIEW_TO
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        Memory management for companion objects
+        dateSetter = null
     }
 }
