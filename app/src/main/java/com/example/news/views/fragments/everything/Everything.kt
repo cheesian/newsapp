@@ -71,6 +71,7 @@ class Everything : Fragment() {
     private lateinit var progressBar: ProgressBar
     private var sourceList = mutableListOf<String>()
     private var everythingViewModel: EverythingViewModel? = null
+
     @Inject
     lateinit var everythingViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
@@ -95,8 +96,32 @@ class Everything : Fragment() {
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!, binding.root)
         recyclerView.adapter = adapter
+        recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (progressBar.visibility != View.VISIBLE) {
+                        with (layoutManager.findLastCompletelyVisibleItemPosition()) {
+                            when (this) {
+                                in 0..3 -> {
+                                    toast(
+                                        context = context!!,
+                                        message = this.toString(),
+                                        length = Toast.LENGTH_SHORT
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        )
+
         ItemTouchHelper(SwipeToDismiss(adapter)).attachToRecyclerView(recyclerView)
-        everythingViewModel = ViewModelProvider(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
+        everythingViewModel =
+            ViewModelProvider(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
         everythingViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {
             everythingViewModel!!.consume(it)
         })
@@ -114,7 +139,12 @@ class Everything : Fragment() {
                     sourceList.add(sourceId)
                 }
                 sourceList.sort()
-                populateSpinner(spinner = sourceSpinner, context = context!!, arrayList = sourceList, textViewResource = R.layout.spinner_text)
+                populateSpinner(
+                    spinner = sourceSpinner,
+                    context = context!!,
+                    arrayList = sourceList,
+                    textViewResource = R.layout.spinner_text
+                )
             }
         })
 
@@ -138,7 +168,12 @@ class Everything : Fragment() {
 
         sourceSpinner = binding.includedOptions.spinner_source
         languageSpinner = binding.includedOptions.spinner_language
-        populateSpinner(languageSpinner, fragContext, R.array.languages, textViewResource = R.layout.spinner_text)
+        populateSpinner(
+            languageSpinner,
+            fragContext,
+            R.array.languages,
+            textViewResource = R.layout.spinner_text
+        )
 
         checkBoxes = ArrayList()
         sourceCheckBox = binding.includedOptions.checkBox_source
@@ -157,7 +192,15 @@ class Everything : Fragment() {
 
         horizontalOptions = binding.includedOptions.options_horizontal
 
-        checkBoxes.addAll(listOf(sourceCheckBox, keyWordCheckBox, languageCheckBox, fromDateCheckBox, toDateCheckBox))
+        checkBoxes.addAll(
+            listOf(
+                sourceCheckBox,
+                keyWordCheckBox,
+                languageCheckBox,
+                fromDateCheckBox,
+                toDateCheckBox
+            )
+        )
 
         iconCancel = getDrawable(fragContext, R.drawable.ic_cancel_white_24dp)!!
         iconCancel.setBounds(0, 0, 60, 60)
@@ -168,11 +211,11 @@ class Everything : Fragment() {
 
         datePicker = binding.includedOptions.date_picker
         calendar = Calendar.getInstance()
-        val minAllowedDate = with (calendar.clone() as Calendar) {
+        val minAllowedDate = with(calendar.clone() as Calendar) {
             add(Calendar.DATE, -30)
             this
         }
-        val maxAllowedDate = with (calendar.clone() as Calendar) {
+        val maxAllowedDate = with(calendar.clone() as Calendar) {
             add(Calendar.DATE, 1)
             this
         }
@@ -217,7 +260,7 @@ class Everything : Fragment() {
 
                 if (fromDateCheckBox.isChecked && !fromDateTextView.text.isNullOrBlank()) {
 //                    map["to"] and map["from"] must both be set or unset so we cannot set map["from"] right here
-                    when (toDateCheckBox.isChecked){
+                    when (toDateCheckBox.isChecked) {
                         true -> {
                             map["to"] = toDateTextView.text?.toString() ?: getYMD()
                             map["from"] = fromDateTextView.text.toString()
@@ -251,7 +294,7 @@ class Everything : Fragment() {
 
 //    when you start the app for the first time it does not get the articles on its own, you have to swipe down
 //    this function checks solves that bug
-    private fun populateViewIfEmpty () {
+    private fun populateViewIfEmpty() {
         val list = everythingViewModel?.articleList?.value
         if (list.isNullOrEmpty()) everythingViewModel?.getEverythingWithoutDates()
     }
@@ -296,13 +339,13 @@ class Everything : Fragment() {
             }
         }
 
-        fromDateCheckBox.setOnClickListener {checkBox->
+        fromDateCheckBox.setOnClickListener { checkBox ->
             dateSetter = DateSetter.CHECKBOX_FROM
             Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, fromDateTextView)
         }
 
-        toDateCheckBox.setOnClickListener { checkBox->
+        toDateCheckBox.setOnClickListener { checkBox ->
             dateSetter = DateSetter.CHECKBOX_TO
             Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, toDateTextView)
@@ -359,7 +402,8 @@ class Everything : Fragment() {
                 toDateTextView.text = date
                 toast(context = context!!, message = "To $date")
             }
-            else -> {}
+            else -> {
+            }
         }
 
     }

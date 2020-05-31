@@ -14,8 +14,8 @@ Created by ian
 
 object Notify {
 
-    fun toast (context: Context, message:String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    fun toast (context: Context, message:String, length: Int = Toast.LENGTH_LONG) {
+        Toast.makeText(context, message, length).show()
     }
 
     // Only set the actionMessage when you want to specify the action
