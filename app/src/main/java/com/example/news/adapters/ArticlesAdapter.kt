@@ -125,7 +125,7 @@ class ArticlesAdapter (private val adapterContext: Context, private val rootView
         )
     }
 
-    private fun undoDelete (position: Int, articleResponseEntity: ArticleResponseEntity) {
+    fun undoDelete (position: Int, articleResponseEntity: ArticleResponseEntity) {
         articleList.add(position, articleResponseEntity)
         notifyItemInserted(position)
     }

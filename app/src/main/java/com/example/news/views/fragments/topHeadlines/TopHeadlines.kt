@@ -21,6 +21,7 @@ import com.example.news.NewsApp
 import com.example.news.R
 import com.example.news.VMFactory
 import com.example.news.adapters.ArticlesAdapter
+import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.databinding.TopHeadlinesBinding
 import com.example.news.utils.*
 import com.example.news.utils.Hide.hide
@@ -61,7 +62,9 @@ class TopHeadlines : Fragment() {
     @Inject
     lateinit var topHeadlinesViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
+    private var currentPage: Int = 1
     var map: HashMap<String, String> = HashMap()
+    lateinit var prevRequest: HashMap<String, String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,6 +82,25 @@ class TopHeadlines : Fragment() {
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!, binding.root)
         recyclerView.adapter = adapter
+        recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (progressBar.visibility != View.VISIBLE) {
+                        with (layoutManager.findLastCompletelyVisibleItemPosition()) {
+                            when (this) {
+                                3 -> {
+                                    fetchNextPage()
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        )
+
         ItemTouchHelper(SwipeToDismiss(articlesAdapter = adapter)).attachToRecyclerView(recyclerView)
 
         topHeadlinesViewModel = ViewModelProvider(this, topHeadlinesViewModelFactory).get(TopHeadlinesViewModel::class.java)
@@ -88,6 +110,8 @@ class TopHeadlines : Fragment() {
         topHeadlinesViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setTopHeadlinesItems(it)
             layoutManager.scrollToPosition(it.size - 1)
+//            The current page should be reset to 1 when the user swipes to refresh or makes a custom request
+            currentPage = 1
         })
 
         topHeadlinesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -115,9 +139,32 @@ class TopHeadlines : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = { topHeadlinesViewModel!!.getTopHeadlines() }
+                function = { reload() }
             )
 
+        })
+
+        topHeadlinesViewModel!!.lastRequest.observe(viewLifecycleOwner, Observer {
+            prevRequest = it
+        })
+
+        topHeadlinesViewModel!!.nextPageList.observe(viewLifecycleOwner, Observer {nextPageList->
+            currentPage++
+            nextPageList.forEach {
+                adapter.undoDelete(
+                    position = 0,
+                    articleResponseEntity = ArticleResponseEntity(
+                        author = it.author,
+                        title = it.title,
+                        description = it.description,
+                        url = it.url,
+                        urlToImage = it.urlToImage,
+                        publishedAt = it.publishedAt,
+                        content = it.content,
+                        sourceResponseEntity = it.sourceResponseEntity
+                    )
+                )
+            }
         })
 
         categorySpinner = binding.includedOptions.spinner_category
@@ -159,6 +206,23 @@ class TopHeadlines : Fragment() {
             refreshLayout.isRefreshing = false
         }
         return binding.root
+    }
+
+    private fun fetchNextPage() {
+//        This function will make a request for the next page using the same parameters which the user had specified in the previous query
+        val nextPageRequest = prevRequest
+        val nextPage = currentPage + 1
+        nextPageRequest["page"] = nextPage.toString()
+        Notify.log(
+            tag = "fetchNextPage",
+            message = nextPageRequest.toString()
+        )
+        topHeadlinesViewModel!!.getNextPage(nextPageRequest)
+    }
+
+    private fun reload() {
+//        The reloading should use the previous query
+        topHeadlinesViewModel!!.getNextPage(prevRequest)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

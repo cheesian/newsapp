@@ -24,8 +24,8 @@ class TopHeadlinesRepository @Inject constructor(
     private val topHeadlinesDao: TopHeadlinesDao
 ) {
 
-    fun getTopHeadlines(): Observable<TopResponseEntity> {
-        return topHeadlinesApiService.getTopHeadlines(API_KEY, PAGE_SIZE, Q)
+    fun getTopHeadlines(q: String): Observable<TopResponseEntity> {
+        return topHeadlinesApiService.getTopHeadlines(API_KEY, PAGE_SIZE, q)
     }
 
     fun getCustomTopHeadlines(map: HashMap<String, String>): Observable<TopResponseEntity> {

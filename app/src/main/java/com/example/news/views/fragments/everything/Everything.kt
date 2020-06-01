@@ -25,6 +25,7 @@ import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.EverythingBinding
 import com.example.news.utils.*
 import com.example.news.utils.DateTimeUtil.getYMD
+import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
@@ -71,6 +72,7 @@ class Everything : Fragment() {
     private lateinit var progressBar: ProgressBar
     private var sourceList = mutableListOf<String>()
     private var everythingViewModel: EverythingViewModel? = null
+
     @Inject
     lateinit var everythingViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
@@ -78,7 +80,9 @@ class Everything : Fragment() {
     private lateinit var calendar: Calendar
     private lateinit var fromDateTextView: TextView
     private lateinit var toDateTextView: TextView
+    private var currentPage: Int = 1
     var map: HashMap<String, String> = HashMap()
+    lateinit var prevRequest: HashMap<String, String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,8 +99,28 @@ class Everything : Fragment() {
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(context!!, binding.root)
         recyclerView.adapter = adapter
+        recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (progressBar.visibility != View.VISIBLE) {
+                        with (layoutManager.findLastCompletelyVisibleItemPosition()) {
+                            when (this) {
+                                3 -> {
+                                    fetchNextPage()
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        )
+
         ItemTouchHelper(SwipeToDismiss(adapter)).attachToRecyclerView(recyclerView)
-        everythingViewModel = ViewModelProvider(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
+        everythingViewModel =
+            ViewModelProvider(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
         everythingViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {
             everythingViewModel!!.consume(it)
         })
@@ -104,6 +128,8 @@ class Everything : Fragment() {
         everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
             layoutManager.scrollToPosition(it.size - 1)
+//            The current page should be reset to 1 when the user swipes to refresh or makes a custom request
+            currentPage = 1
         })
 
         everythingViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -114,7 +140,12 @@ class Everything : Fragment() {
                     sourceList.add(sourceId)
                 }
                 sourceList.sort()
-                populateSpinner(spinner = sourceSpinner, context = context!!, arrayList = sourceList, textViewResource = R.layout.spinner_text)
+                populateSpinner(
+                    spinner = sourceSpinner,
+                    context = context!!,
+                    arrayList = sourceList,
+                    textViewResource = R.layout.spinner_text
+                )
             }
         })
 
@@ -131,14 +162,34 @@ class Everything : Fragment() {
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = { everythingViewModel!!.getEverythingWithoutDates() }
+                function = { reload() }
             )
 
         })
 
+        everythingViewModel!!.lastRequest.observe(viewLifecycleOwner, Observer {
+            prevRequest = it
+        })
+
+        everythingViewModel!!.nextPageList.observe(viewLifecycleOwner, Observer {nextPageList->
+            currentPage++
+            nextPageList.forEach {
+//                Insert the new items to the bottom of the list
+                adapter.undoDelete(
+                    position = 0,
+                    articleResponseEntity = it
+                )
+            }
+        })
+
         sourceSpinner = binding.includedOptions.spinner_source
         languageSpinner = binding.includedOptions.spinner_language
-        populateSpinner(languageSpinner, fragContext, R.array.languages, textViewResource = R.layout.spinner_text)
+        populateSpinner(
+            languageSpinner,
+            fragContext,
+            R.array.languages,
+            textViewResource = R.layout.spinner_text
+        )
 
         checkBoxes = ArrayList()
         sourceCheckBox = binding.includedOptions.checkBox_source
@@ -157,7 +208,15 @@ class Everything : Fragment() {
 
         horizontalOptions = binding.includedOptions.options_horizontal
 
-        checkBoxes.addAll(listOf(sourceCheckBox, keyWordCheckBox, languageCheckBox, fromDateCheckBox, toDateCheckBox))
+        checkBoxes.addAll(
+            listOf(
+                sourceCheckBox,
+                keyWordCheckBox,
+                languageCheckBox,
+                fromDateCheckBox,
+                toDateCheckBox
+            )
+        )
 
         iconCancel = getDrawable(fragContext, R.drawable.ic_cancel_white_24dp)!!
         iconCancel.setBounds(0, 0, 60, 60)
@@ -168,11 +227,11 @@ class Everything : Fragment() {
 
         datePicker = binding.includedOptions.date_picker
         calendar = Calendar.getInstance()
-        val minAllowedDate = with (calendar.clone() as Calendar) {
+        val minAllowedDate = with(calendar.clone() as Calendar) {
             add(Calendar.DATE, -30)
             this
         }
-        val maxAllowedDate = with (calendar.clone() as Calendar) {
+        val maxAllowedDate = with(calendar.clone() as Calendar) {
             add(Calendar.DATE, 1)
             this
         }
@@ -180,6 +239,23 @@ class Everything : Fragment() {
         datePicker.maxDate = maxAllowedDate.timeInMillis
 
         return binding.root
+    }
+
+    private fun fetchNextPage() {
+//        This function will make a request for the next page using the same parameters which the user had specified in the previous query
+        val nextPageRequest = prevRequest
+        val nextPage = currentPage + 1
+        nextPageRequest["page"] = nextPage.toString()
+        log(
+            tag = "fetchNextPage",
+            message = nextPageRequest.toString()
+        )
+        everythingViewModel!!.getNextPage(nextPageRequest)
+    }
+
+    private fun reload() {
+//        The reloading should use the previous query
+        everythingViewModel!!.getNextPage(prevRequest)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -217,7 +293,7 @@ class Everything : Fragment() {
 
                 if (fromDateCheckBox.isChecked && !fromDateTextView.text.isNullOrBlank()) {
 //                    map["to"] and map["from"] must both be set or unset so we cannot set map["from"] right here
-                    when (toDateCheckBox.isChecked){
+                    when (toDateCheckBox.isChecked) {
                         true -> {
                             map["to"] = toDateTextView.text?.toString() ?: getYMD()
                             map["from"] = fromDateTextView.text.toString()
@@ -251,7 +327,7 @@ class Everything : Fragment() {
 
 //    when you start the app for the first time it does not get the articles on its own, you have to swipe down
 //    this function checks solves that bug
-    private fun populateViewIfEmpty () {
+    private fun populateViewIfEmpty() {
         val list = everythingViewModel?.articleList?.value
         if (list.isNullOrEmpty()) everythingViewModel?.getEverythingWithoutDates()
     }
@@ -296,13 +372,13 @@ class Everything : Fragment() {
             }
         }
 
-        fromDateCheckBox.setOnClickListener {checkBox->
+        fromDateCheckBox.setOnClickListener { checkBox ->
             dateSetter = DateSetter.CHECKBOX_FROM
             Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, fromDateTextView)
         }
 
-        toDateCheckBox.setOnClickListener { checkBox->
+        toDateCheckBox.setOnClickListener { checkBox ->
             dateSetter = DateSetter.CHECKBOX_TO
             Checkbox.connectCheckboxToView(checkBox, datePicker)
             Checkbox.connectCheckboxToView(checkBox, toDateTextView)
@@ -359,7 +435,8 @@ class Everything : Fragment() {
                 toDateTextView.text = date
                 toast(context = context!!, message = "To $date")
             }
-            else -> {}
+            else -> {
+            }
         }
 
     }
@@ -369,5 +446,11 @@ class Everything : Fragment() {
         CHECKBOX_TO,
         TEXT_VIEW_FROM,
         TEXT_VIEW_TO
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        Memory management for companion objects
+        dateSetter = null
     }
 }

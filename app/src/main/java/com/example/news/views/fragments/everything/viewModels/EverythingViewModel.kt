@@ -8,10 +8,12 @@ import com.example.news.data.request.URLs.LANGUAGE
 import com.example.news.data.request.URLs.Q
 import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.GeneralResponse
+import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.utils.Notify
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.net.UnknownHostException
 
 
 /**
@@ -28,6 +30,8 @@ class EverythingViewModel (
     var visibility: MutableLiveData<Int> = MutableLiveData()
     var articleList = everythingRepository.getArticles()
     var sourceList = everythingRepository.getSources()
+    var lastRequest = MutableLiveData<HashMap<String, String>>()
+    var nextPageList = MutableLiveData<List<ArticleResponseEntity>>()
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse
@@ -67,6 +71,11 @@ class EverythingViewModel (
     }
 
     fun getEverythingWithoutDates(q: String = Q, language: String = LANGUAGE, sortBy: String = SORT_BY) {
+        val query = HashMap<String, String>()
+        query["q"] = q
+        query["language"] = language
+        query["sortBy"] = sortBy
+        recordLastQuery(query)
         disposable.add(
             everythingRepository.getEverythingWithoutDates(q, language, sortBy)
                 .subscribeOn(Schedulers.io())
@@ -79,7 +88,31 @@ class EverythingViewModel (
         )
     }
 
+    fun getNextPage(map: HashMap<String, String>) {
+//        This function will not store data using ROOM
+//        The purpose is to save on memory usage
+        recordLastQuery(map)
+        disposable.add(
+            everythingRepository.getCustomEverything(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { visibility.value = View.VISIBLE }
+                .subscribe(
+                    { result ->
+                        visibility.value = View.GONE
+                        result.articleResponseEntities.let {
+                            nextPageList.value = it
+                        }
+                    },
+                    { error ->
+                        generalResponse.value = GeneralResponse.error(error)
+                    }
+                )
+        )
+    }
+
     fun getCustomEverything(map: HashMap<String, String>) {
+        recordLastQuery(map)
         disposable.add(
             everythingRepository.getCustomEverything(map)
                 .subscribeOn(Schedulers.io())
@@ -96,5 +129,12 @@ class EverythingViewModel (
                     }
                 )
         )
+    }
+
+    private fun recordLastQuery (hashMap: HashMap<String, String>) {
+//        This function helps keep a record of the previous query for the refresh function
+        lastRequest.apply {
+            value = hashMap
+        }
     }
 }
