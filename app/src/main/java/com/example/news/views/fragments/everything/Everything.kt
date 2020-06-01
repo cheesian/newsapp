@@ -25,6 +25,7 @@ import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.EverythingBinding
 import com.example.news.utils.*
 import com.example.news.utils.DateTimeUtil.getYMD
+import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.toast
 import com.example.news.utils.PopulateSpinner.populateSpinner
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
@@ -79,6 +80,7 @@ class Everything : Fragment() {
     private lateinit var calendar: Calendar
     private lateinit var fromDateTextView: TextView
     private lateinit var toDateTextView: TextView
+    private var currentPage: Int = 1
     var map: HashMap<String, String> = HashMap()
     lateinit var prevRequest: HashMap<String, String>
 
@@ -105,12 +107,8 @@ class Everything : Fragment() {
                     if (progressBar.visibility != View.VISIBLE) {
                         with (layoutManager.findLastCompletelyVisibleItemPosition()) {
                             when (this) {
-                                in 0..3 -> {
-                                    toast(
-                                        context = context!!,
-                                        message = this.toString(),
-                                        length = Toast.LENGTH_SHORT
-                                    )
+                                3 -> {
+                                    fetchNextPage()
                                 }
                             }
                         }
@@ -130,6 +128,7 @@ class Everything : Fragment() {
         everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
             layoutManager.scrollToPosition(it.size - 1)
+            currentPage = 1
         })
 
         everythingViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -155,7 +154,7 @@ class Everything : Fragment() {
 
         everythingViewModel!!.message.observe(viewLifecycleOwner, Observer {
             val action = when (it) {
-                "Fetching data ..." -> ""
+                "Check your connection", "Fetching data ..." -> ""
                 else -> "Reload"
             }
             Notify.snackBar(
@@ -169,7 +168,17 @@ class Everything : Fragment() {
 
         everythingViewModel!!.lastRequest.observe(viewLifecycleOwner, Observer {
             prevRequest = it
-            toast(context!!, it.toString())
+        })
+
+        everythingViewModel!!.nextPageList.observe(viewLifecycleOwner, Observer {nextPageList->
+            currentPage++
+            nextPageList.forEach {
+//                Insert the new items to the bottom of the list
+                adapter.undoDelete(
+                    position = 0,
+                    articleResponseEntity = it
+                )
+            }
         })
 
         sourceSpinner = binding.includedOptions.spinner_source
@@ -229,6 +238,18 @@ class Everything : Fragment() {
         datePicker.maxDate = maxAllowedDate.timeInMillis
 
         return binding.root
+    }
+
+    private fun fetchNextPage() {
+//        This function will make a request for the next page using the same parameters which the user had specified in the previous query
+        val nextPageRequest = prevRequest
+        val nextPage = currentPage + 1
+        nextPageRequest["page"] = nextPage.toString()
+        log(
+            tag = "fetchNextPage",
+            message = nextPageRequest.toString()
+        )
+        everythingViewModel!!.getNextPage(nextPageRequest)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

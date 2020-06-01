@@ -8,10 +8,12 @@ import com.example.news.data.request.URLs.LANGUAGE
 import com.example.news.data.request.URLs.Q
 import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.GeneralResponse
+import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.utils.Notify
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.net.UnknownHostException
 
 
 /**
@@ -29,6 +31,7 @@ class EverythingViewModel (
     var articleList = everythingRepository.getArticles()
     var sourceList = everythingRepository.getSources()
     var lastRequest = MutableLiveData<HashMap<String, String>>()
+    var nextPageList = MutableLiveData<List<ArticleResponseEntity>>()
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse
@@ -81,6 +84,30 @@ class EverythingViewModel (
                 .subscribe(
                     { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
                     { error -> generalResponse.value = GeneralResponse.error(error)}
+                )
+        )
+    }
+
+    fun getNextPage(map: HashMap<String, String>) {
+//        This function will not store data using ROOM
+//        The purpose is to save on memory usage
+        recordLastQuery(map)
+        disposable.add(
+            everythingRepository.getCustomEverything(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { visibility.value = View.VISIBLE }
+                .subscribe(
+                    { result ->
+                        visibility.value = View.GONE
+                        result.articleResponseEntities.let {
+                            nextPageList.value = it
+                        }
+                    },
+                    { error ->
+                        if (error is UnknownHostException) message.value = "Check your connection"
+                        visibility.value = View.GONE
+                    }
                 )
         )
     }
