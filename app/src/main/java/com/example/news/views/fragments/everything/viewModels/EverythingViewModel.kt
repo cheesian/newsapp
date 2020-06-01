@@ -105,8 +105,7 @@ class EverythingViewModel (
                         }
                     },
                     { error ->
-                        if (error is UnknownHostException) message.value = "Check your connection"
-                        visibility.value = View.GONE
+                        generalResponse.value = GeneralResponse.error(error)
                     }
                 )
         )

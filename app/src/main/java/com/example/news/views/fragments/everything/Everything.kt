@@ -154,14 +154,14 @@ class Everything : Fragment() {
 
         everythingViewModel!!.message.observe(viewLifecycleOwner, Observer {
             val action = when (it) {
-                "Check your connection", "Fetching data ..." -> ""
+                "Fetching data ..." -> ""
                 else -> "Reload"
             }
             Notify.snackBar(
                 view = binding.root,
                 message = it,
                 actionMessage = action,
-                function = { everythingViewModel!!.getEverythingWithoutDates() }
+                function = { reload() }
             )
 
         })
@@ -250,6 +250,11 @@ class Everything : Fragment() {
             message = nextPageRequest.toString()
         )
         everythingViewModel!!.getNextPage(nextPageRequest)
+    }
+
+    private fun reload() {
+//        The reloading should use the previous query
+        everythingViewModel!!.getNextPage(prevRequest)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
