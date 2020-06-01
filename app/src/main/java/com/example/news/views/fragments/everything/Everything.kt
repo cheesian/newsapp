@@ -128,6 +128,7 @@ class Everything : Fragment() {
         everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
             layoutManager.scrollToPosition(it.size - 1)
+//            The current page should be reset to 1 when the user swipes to refresh or makes a custom request
             currentPage = 1
         })
 

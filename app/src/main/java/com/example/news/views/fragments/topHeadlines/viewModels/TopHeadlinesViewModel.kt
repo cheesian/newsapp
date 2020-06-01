@@ -4,7 +4,10 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.news.data.repositories.TopHeadlinesRepository
+import com.example.news.data.request.URLs.Q
 import com.example.news.data.response.GeneralResponse
+import com.example.news.data.response.everything.ArticleResponseEntity
+import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.setErrorMessage
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,6 +28,8 @@ class TopHeadlinesViewModel(
     var visibility: MutableLiveData<Int> = MutableLiveData()
     var articleList = topHeadlinesRepository.getArticles()
     var sourceList = topHeadlinesRepository.getSources()
+    var lastRequest = MutableLiveData<HashMap<String, String>>()
+    var nextPageList = MutableLiveData<List<TopHeadlinesResponseEntity>>()
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse
@@ -63,9 +68,12 @@ class TopHeadlinesViewModel(
         }
     }
 
-    fun getTopHeadlines() {
+    fun getTopHeadlines(q: String = Q) {
+        val query = HashMap<String, String>()
+        query["q"] = q
+        recordLastQuery(query)
         disposable.add(
-            topHeadlinesRepository.getTopHeadlines()
+            topHeadlinesRepository.getTopHeadlines(q)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { generalResponse.setValue(GeneralResponse.loading()) }
@@ -77,6 +85,7 @@ class TopHeadlinesViewModel(
     }
 
     fun getCustomTopHeadlines(map: HashMap<String, String>) {
+        recordLastQuery(map)
         disposable.add(
             topHeadlinesRepository.getCustomTopHeadlines(map)
                 .subscribeOn(Schedulers.io())
@@ -93,5 +102,35 @@ class TopHeadlinesViewModel(
                     }
                 )
         )
+    }
+
+    fun getNextPage(map: HashMap<String, String>) {
+//        This function will not store data using ROOM
+//        The purpose is to save on memory usage
+        recordLastQuery(map)
+        disposable.add(
+            topHeadlinesRepository.getCustomTopHeadlines(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { visibility.value = View.VISIBLE }
+                .subscribe(
+                    { result ->
+                        visibility.value = View.GONE
+                        result.articleResponseEntities.let {
+                            nextPageList.value = it
+                        }
+                    },
+                    { error ->
+                        generalResponse.value = GeneralResponse.error(error)
+                    }
+                )
+        )
+    }
+
+    private fun recordLastQuery (hashMap: HashMap<String, String>) {
+//        This function helps keep a record of the previous query for the refresh function
+        lastRequest.apply {
+            value = hashMap
+        }
     }
 }
