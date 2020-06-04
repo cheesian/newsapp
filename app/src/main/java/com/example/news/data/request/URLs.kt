@@ -9,6 +9,7 @@ object URLs {
     const val PROGRAMIQ_BASE_URL = "https://programiqsolutions.com/mine/api/"
     const val SIGN_UP_ENDPOINT = "auth/signup"
     const val SIGN_IN_ENDPOINT = "auth/login"
+    const val GET_USER_ENDPOINT = "auth/user"
     const val Q = "a"
     const val LANGUAGE = "en"
     const val SORT_BY = "publishedAt"
