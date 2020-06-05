@@ -63,7 +63,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     private fun logout() {
         startActivity(Intent(this, StartingActivity::class.java))
-        finish()
+//        finish()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
