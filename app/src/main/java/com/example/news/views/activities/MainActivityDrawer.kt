@@ -1,19 +1,27 @@
 package com.example.news.views.activities
 
+import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.news.R
+import com.example.news.data.Constants.STORAGE_PERMISSIONS_REQUEST_CODE
 import com.example.news.databinding.MainActivityDrawerBinding
 import com.example.news.utils.FullScreen.setFullScreen
+import com.example.news.utils.Notify.snackBar
+import com.example.news.utils.Notify.toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
@@ -55,15 +63,66 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         drawerLayout = binding.drawer
         drawerFab = binding.drawerFab
         drawerFab.setOnClickListener {
-            when (drawerLayout.isOpen) {
-                false -> drawerLayout.open()
+            requestStoragePermissions()
+        }
+    }
+
+    private fun showStoragePermissionsRationale () {
+        val builder = with (AlertDialog.Builder(binding.root.context, R.style.AlertDialog)) {
+            setTitle("Storage permission")
+            setMessage("This permission is needed to store news on your device")
+            setPositiveButton("Ok") { _: DialogInterface, _: Int ->
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_PERMISSIONS_REQUEST_CODE)
+            }
+            setNegativeButton("Cancel") { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+                snackBar(
+                    view = binding.root,
+                    message = "Local storage disabled"
+                )
+            }
+            this
+        }
+        builder.apply {
+            create()
+            show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            STORAGE_PERMISSIONS_REQUEST_CODE -> {
+                if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
+                    snackBar(binding.root, "Storage permission granted")
+                } else {
+                    snackBar(binding.root, "Storage permission denied")
+                }
+                return
+            }
+        }
+    }
+
+    private fun requestStoragePermissions(){
+        when (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            PackageManager.PERMISSION_GRANTED -> {
+                toast(this, "Storage permission granted")
+            }
+
+            PackageManager.PERMISSION_DENIED -> {
+                showStoragePermissionsRationale()
             }
         }
     }
 
     private fun logout() {
         startActivity(Intent(this, StartingActivity::class.java))
-        finish()
+//        finish()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
