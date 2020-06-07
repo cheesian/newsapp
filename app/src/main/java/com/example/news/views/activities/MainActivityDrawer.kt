@@ -67,6 +67,46 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
+    private fun showStoragePermissionsRationale () {
+        val builder = with (AlertDialog.Builder(binding.root.context, R.style.AlertDialog)) {
+            setTitle("Storage permission")
+            setMessage("This permission is needed to store news on your device")
+            setPositiveButton("Ok") { _: DialogInterface, _: Int ->
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_PERMISSIONS_REQUEST_CODE)
+            }
+            setNegativeButton("Cancel") { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+                snackBar(
+                    view = binding.root,
+                    message = "Local storage disabled"
+                )
+            }
+            this
+        }
+        builder.apply {
+            create()
+            show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            STORAGE_PERMISSIONS_REQUEST_CODE -> {
+                if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
+                    snackBar(binding.root, "Storage permission granted")
+                } else {
+                    snackBar(binding.root, "Storage permission denied")
+                }
+                return
+            }
+        }
+    }
+
     private fun requestStoragePermissions(){
         when (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
@@ -75,7 +115,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
             }
 
             PackageManager.PERMISSION_DENIED -> {
-
+                showStoragePermissionsRationale()
             }
         }
     }
