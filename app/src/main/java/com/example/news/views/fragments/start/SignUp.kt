@@ -105,7 +105,7 @@ class SignUp: Fragment() {
         passLayout.error = if (!isValidPassword) "Use at least $PASSWORD_LENGTH characters" else null
         val passMatch = pass.text.toString() == pass2.text.toString()
         pass2Layout.error = if (!passMatch) "Passwords do not match" else null
-        return isValidEmail && isValidPassword
+        return isValidNames && isValidEmail && isValidPassword && passMatch
     }
 
     private fun signUp () {
