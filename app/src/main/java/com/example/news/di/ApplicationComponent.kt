@@ -1,7 +1,6 @@
 package com.example.news.di
 
 import android.app.Application
-import androidx.fragment.app.Fragment
 import com.example.news.views.fragments.everything.Everything
 import com.example.news.views.fragments.sources.Sources
 import com.example.news.views.fragments.topHeadlines.TopHeadlines
@@ -13,7 +12,7 @@ import javax.inject.Singleton
 Created by ian
  */
 @Singleton
-@Component (modules = [APIModule::class, DaoModule::class, AppModule::class])
+@Component (modules = [NewsAPIModule::class, DaoModule::class, AppModule::class, BaseAPIModule::class, ProgramiqAPIModule::class])
 interface ApplicationComponent {
 
     fun inject(app: Application)

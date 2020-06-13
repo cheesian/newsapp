@@ -2,7 +2,7 @@ package com.example.news.data.request
 
 object URLs {
     const val API_KEY = "c1d6f774dc61411fb14f79f3137488fb"
-    const val BASE_URL = "https://newsapi.org/v2/"
+    const val NEWS_BASE_URL = "https://newsapi.org/v2/"
     const val SOURCES_ENDPOINT = "sources"
     const val EVERYTHING_ENDPOINT = "everything"
     const val TOP_HEADLINES_ENDPOINT = "top-headlines"
@@ -14,4 +14,6 @@ object URLs {
     const val LANGUAGE = "en"
     const val SORT_BY = "publishedAt"
     const val PAGE_SIZE = 40
+    const val PROGRAMIQ_RETROFIT = "PROGRAMIQ_RETROFIT"
+    const val NEWS_RETROFIT = "NEWS_RETROFIT"
 }
