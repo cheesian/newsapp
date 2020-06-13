@@ -3,6 +3,8 @@ package com.example.news.di
 import android.app.Application
 import com.example.news.views.fragments.everything.Everything
 import com.example.news.views.fragments.sources.Sources
+import com.example.news.views.fragments.start.SignIn
+import com.example.news.views.fragments.start.SignUp
 import com.example.news.views.fragments.topHeadlines.TopHeadlines
 import dagger.Component
 import javax.inject.Singleton
@@ -19,5 +21,7 @@ interface ApplicationComponent {
     fun inject(fragment: Sources)
     fun inject(fragment: TopHeadlines)
     fun inject(fragment: Everything)
+    fun inject(fragment: SignIn)
+    fun inject(fragment: SignUp)
 
 }

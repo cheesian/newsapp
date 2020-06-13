@@ -7,16 +7,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.news.NewsApp
 import com.example.news.R
-import com.example.news.data.Constants
+import com.example.news.VMFactory
 import com.example.news.data.Constants.PASSWORD_LENGTH
 import com.example.news.databinding.SignUpBinding
-import com.example.news.utils.Validation
 import com.example.news.utils.Validation.checkEmailValidity
 import com.example.news.utils.Validation.checkPasswordValidity
 import com.example.news.utils.Validation.hasOnlyLettersAndSpaces
+import com.example.news.views.fragments.start.viewModels.SignUpViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import javax.inject.Inject
 
 
 /**
@@ -35,14 +38,19 @@ class SignUp: Fragment() {
     lateinit var pass2: TextInputEditText
     lateinit var pass2Layout: TextInputLayout
     lateinit var signUpButton: Button
+    @Inject lateinit var factory: VMFactory
+    lateinit var viewModel: SignUpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (context!!.applicationContext as NewsApp).applicationComponent.inject(this)
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
 
+        viewModel = ViewModelProvider(this, factory).get(SignUpViewModel::class.java)
         name = binding.nameText
         nameLayout = binding.nameLayout
         email = binding.emailText
