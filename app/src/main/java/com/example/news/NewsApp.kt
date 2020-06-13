@@ -18,7 +18,10 @@ Created by ian
 
 class NewsApp: Application() {
 
-    lateinit var preferences: SharedPreferences
+    companion object {
+        lateinit var preferences: SharedPreferences
+    }
+
     val applicationComponent: ApplicationComponent by lazy {
         DaggerApplicationComponent.builder()
             .appModule(AppModule(this))

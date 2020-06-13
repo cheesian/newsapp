@@ -9,5 +9,5 @@ data class SignInRequest(
     @SerializedName("password")
     val password: String,
     @SerializedName("remember_me")
-    val rememberMe: Boolean
+    val rememberMe: Boolean = true
 )
