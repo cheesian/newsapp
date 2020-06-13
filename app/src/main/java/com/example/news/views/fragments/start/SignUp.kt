@@ -5,17 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.news.NewsApp
 import com.example.news.R
 import com.example.news.VMFactory
 import com.example.news.data.Constants.PASSWORD_LENGTH
+import com.example.news.data.request.signUp.SignUpRequest
 import com.example.news.databinding.SignUpBinding
+import com.example.news.utils.Notify.snackBar
+import com.example.news.utils.Notify.toast
 import com.example.news.utils.Validation.checkEmailValidity
 import com.example.news.utils.Validation.checkPasswordValidity
 import com.example.news.utils.Validation.hasOnlyLettersAndSpaces
+import com.example.news.views.activities.StartingActivity
 import com.example.news.views.fragments.start.viewModels.SignUpViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -38,6 +44,7 @@ class SignUp: Fragment() {
     lateinit var pass2: TextInputEditText
     lateinit var pass2Layout: TextInputLayout
     lateinit var signUpButton: Button
+    lateinit var progressBar: ProgressBar
     @Inject lateinit var factory: VMFactory
     lateinit var viewModel: SignUpViewModel
 
@@ -59,10 +66,32 @@ class SignUp: Fragment() {
         passLayout = binding.passLayout
         pass2 = binding.pass2Text
         pass2Layout = binding.pass2Layout
+        progressBar = binding.progress
+
+        viewModel.generalResponse.observe(viewLifecycleOwner, Observer {
+            viewModel.consumeResponse(it)
+        })
+        viewModel.progressBarVisibility.observe(viewLifecycleOwner, Observer {
+            progressBar.visibility = it
+        })
+        viewModel.message.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                "Account created successfully" -> {
+                    toast(context = context!!, message = it)
+                    StartingActivity.INSTANCE!!.viewPager.currentItem = 2
+                }
+                else -> {
+                    snackBar(
+                        view = binding.root,
+                        message = it
+                    )
+                }
+            }
+        })
 
         signUpButton = binding.signUpButton
         signUpButton.setOnClickListener {
-            checkFormValidity()
+            signUp()
         }
         return binding.root
     }
@@ -77,5 +106,18 @@ class SignUp: Fragment() {
         val passMatch = pass.text.toString() == pass2.text.toString()
         pass2Layout.error = if (!passMatch) "Passwords do not match" else null
         return isValidEmail && isValidPassword
+    }
+
+    private fun signUp () {
+        if (checkFormValidity()) {
+            viewModel.signUp(
+                SignUpRequest(
+                email = email.text.toString(),
+                name = name.text.toString(),
+                password = pass.text.toString(),
+                passwordConfirmation = pass2.text.toString()
+            )
+            )
+        }
     }
 }

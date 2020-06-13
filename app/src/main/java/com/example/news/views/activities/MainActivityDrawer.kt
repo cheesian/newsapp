@@ -63,7 +63,9 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         drawerLayout = binding.drawer
         drawerFab = binding.drawerFab
         drawerFab.setOnClickListener {
-            requestStoragePermissions()
+            when(drawerLayout.isOpen) {
+                false -> drawerLayout.open()
+            }
         }
     }
 

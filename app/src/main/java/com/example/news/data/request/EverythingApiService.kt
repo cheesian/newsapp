@@ -1,15 +1,10 @@
 package com.example.news.data.request
 
-import androidx.lifecycle.MutableLiveData
 import com.example.news.data.request.URLs.API_KEY
 import com.example.news.data.request.URLs.EVERYTHING_ENDPOINT
-import com.example.news.data.request.URLs.LANGUAGE
-import com.example.news.data.request.URLs.Q
-import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.everything.AllResponseEntity
 import io.reactivex.Observable
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
