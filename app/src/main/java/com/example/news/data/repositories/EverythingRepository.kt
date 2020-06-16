@@ -1,15 +1,15 @@
 package com.example.news.data.repositories
 
 import androidx.lifecycle.LiveData
+import com.example.news.data.Constants.API_KEY
+import com.example.news.data.Constants.LANGUAGE
+import com.example.news.data.Constants.PAGE_SIZE
+import com.example.news.data.Constants.Q
+import com.example.news.data.Constants.SORT_BY
 import com.example.news.data.request.EverythingApiService
-import com.example.news.data.request.URLs
-import com.example.news.data.request.URLs.API_KEY
-import com.example.news.data.request.URLs.LANGUAGE
-import com.example.news.data.request.URLs.SORT_BY
 import com.example.news.data.response.everything.AllResponseEntity
 import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.data.daos.ArticlesDao
-import com.example.news.data.request.URLs.Q
 import com.example.news.data.response.everything.SourceResponseEntity
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class EverythingRepository @Inject constructor(
 
     fun getCustomEverything(map: HashMap<String, String>): Observable<AllResponseEntity> {
         if (!map.containsKey("q")) map["q"] = Q
-        return everythingApiService.getCustomEverything(API_KEY, URLs.PAGE_SIZE, URLs.SORT_BY, map)
+        return everythingApiService.getCustomEverything(API_KEY, PAGE_SIZE, SORT_BY, map)
     }
 
     fun getEverythingWithoutDates(q: String, language: String = LANGUAGE, sortBy: String = SORT_BY): Observable<AllResponseEntity>{

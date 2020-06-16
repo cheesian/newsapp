@@ -1,9 +1,9 @@
 package com.example.news.data.repositories
 
 import androidx.lifecycle.LiveData
+import com.example.news.data.Constants.API_KEY
+import com.example.news.data.Constants.LANGUAGE
 import com.example.news.data.request.SourcesApiService
-import com.example.news.data.request.URLs.API_KEY
-import com.example.news.data.request.URLs.LANGUAGE
 import com.example.news.data.response.sources.SourceResponseEntity
 import com.example.news.data.daos.SourcesDao
 import com.example.news.data.response.sources.SourcesResponseEntity

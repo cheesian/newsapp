@@ -1,6 +1,6 @@
 package com.example.news.data.request
 
-import com.example.news.data.request.URLs.API_KEY
+import com.example.news.data.Constants.API_KEY
 import com.example.news.data.request.URLs.EVERYTHING_ENDPOINT
 import com.example.news.data.response.everything.AllResponseEntity
 import io.reactivex.Observable

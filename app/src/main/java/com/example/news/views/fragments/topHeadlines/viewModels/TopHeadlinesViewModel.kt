@@ -3,10 +3,9 @@ package com.example.news.views.fragments.topHeadlines.viewModels
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.news.data.Constants.Q
 import com.example.news.data.repositories.TopHeadlinesRepository
-import com.example.news.data.request.URLs.Q
 import com.example.news.data.response.GeneralResponse
-import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.setErrorMessage

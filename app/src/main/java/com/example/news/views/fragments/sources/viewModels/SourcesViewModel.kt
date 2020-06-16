@@ -3,8 +3,8 @@ package com.example.news.views.fragments.sources.viewModels
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.news.data.Constants.LANGUAGE
 import com.example.news.data.repositories.SourcesRepository
-import com.example.news.data.request.URLs.LANGUAGE
 import com.example.news.data.response.GeneralResponse
 import com.example.news.utils.Notify
 import io.reactivex.android.schedulers.AndroidSchedulers

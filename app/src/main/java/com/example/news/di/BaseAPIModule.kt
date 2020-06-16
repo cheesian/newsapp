@@ -1,6 +1,8 @@
 package com.example.news.di
 
 import com.example.news.BuildConfig
+import com.example.news.data.Constants.NEWS_RETROFIT
+import com.example.news.data.Constants.PROGRAMIQ_RETROFIT
 import com.example.news.data.request.URLs
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -38,7 +40,7 @@ class BaseAPIModule {
     }
 
     @Provides
-    @Named(URLs.NEWS_RETROFIT)
+    @Named(NEWS_RETROFIT)
     fun provideNewsRetrofit (okHttpClient: OkHttpClient): Retrofit {
 
         return Retrofit.Builder()
@@ -51,7 +53,7 @@ class BaseAPIModule {
     }
 
     @Provides
-    @Named(URLs.PROGRAMIQ_RETROFIT)
+    @Named(PROGRAMIQ_RETROFIT)
     fun provideProgramiqRetrofit (okHttpClient: OkHttpClient): Retrofit {
 
         return Retrofit.Builder()
