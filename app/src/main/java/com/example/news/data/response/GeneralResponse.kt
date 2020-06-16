@@ -1,6 +1,7 @@
 package com.example.news.data.response
 
 import com.example.news.data.response.everything.AllResponseEntity
+import com.example.news.data.response.signIn.GetUserResponse
 import com.example.news.data.response.signIn.SignInResponse
 import com.example.news.data.response.signUp.SignUpResponse
 import com.example.news.data.response.sources.SourcesResponseEntity
@@ -18,7 +19,8 @@ class GeneralResponse private constructor(
     val error: Throwable? = null,
     val topResponseEntity: TopResponseEntity? = null,
     val signUpResponse: SignUpResponse? = null,
-    val signInResponse: SignInResponse? = null
+    val signInResponse: SignInResponse? = null,
+    val getUserResponse: GetUserResponse? = null
 ) {
 
     companion object {
@@ -48,6 +50,10 @@ class GeneralResponse private constructor(
 
         fun signInResponseSuccess(signInResponse: SignInResponse): GeneralResponse {
             return GeneralResponse(status = Status.SUCCESS, signInResponse = signInResponse)
+        }
+
+        fun getUserSuccess(userResponse: GetUserResponse): GeneralResponse {
+            return GeneralResponse(status = Status.SUCCESS, getUserResponse = userResponse)
         }
     }
 

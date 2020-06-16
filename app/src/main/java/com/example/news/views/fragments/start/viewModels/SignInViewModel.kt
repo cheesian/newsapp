@@ -44,7 +44,20 @@ class SignInViewModel (
     }
 
     fun getUser() {
-
+        compositeDisposable.add(
+            accountRepository.getUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { generalResponse.value = GeneralResponse.loading() }
+                .subscribe(
+                    {
+                        generalResponse.value = GeneralResponse.getUserSuccess(it)
+                    },
+                    {
+                        generalResponse.value = GeneralResponse.error(it)
+                    }
+                )
+        )
     }
 
     fun consumeResponse(generalResponse: GeneralResponse) {
@@ -62,6 +75,14 @@ class SignInViewModel (
                         token.value = it.token
                     } else {
                         message.value = it.message
+                    }
+                }
+
+                generalResponse.getUserResponse?.let {
+                    message.value = if (it.success) {
+                        "Welcome back " + it.name
+                    } else {
+                        "Something went wrong. Please try again"
                     }
                 }
             }

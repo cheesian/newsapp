@@ -76,9 +76,10 @@ class SignIn: Fragment() {
         viewModel.token.observe(viewLifecycleOwner, Observer {
             NewsApp.preferences.edit().apply {
                 putString(PROGRAMIQ_TOKEN_PREFERENCE_KEY, it)
-                apply()
+                commit()
             }
             log("token",it)
+            viewModel.getUser()
         })
 
         signInButton = binding.signInButton
