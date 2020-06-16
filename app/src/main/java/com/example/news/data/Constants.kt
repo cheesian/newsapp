@@ -11,6 +11,7 @@ object Constants {
     const val PROGRAMIQ_RETROFIT = "PROGRAMIQ_RETROFIT"
     const val NEWS_RETROFIT = "NEWS_RETROFIT"
     const val PROGRAMIQ_TOKEN_OKHTTP = "TOKEN_OKHTTP"
+    const val PROGRAMIQ_TOKEN_RETROFIT = "PROGRAMIQ_TOKEN_RETROFIT"
 
 //    App Constants
     const val PASSWORD_LENGTH = 5

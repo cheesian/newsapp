@@ -6,6 +6,7 @@ import com.example.news.data.Constants.NEWS_RETROFIT
 import com.example.news.data.Constants.PROGRAMIQ_RETROFIT
 import com.example.news.data.Constants.PROGRAMIQ_TOKEN_PREFERENCE_KEY
 import com.example.news.data.Constants.PROGRAMIQ_TOKEN_OKHTTP
+import com.example.news.data.Constants.PROGRAMIQ_TOKEN_RETROFIT
 import com.example.news.data.request.URLs
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -80,6 +81,19 @@ class BaseAPIModule {
     @Provides
     @Named(PROGRAMIQ_RETROFIT)
     fun provideProgramiqRetrofit (okHttpClient: OkHttpClient): Retrofit {
+
+        return Retrofit.Builder()
+            .baseUrl(URLs.PROGRAMIQ_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+
+    }
+
+    @Provides
+    @Named(PROGRAMIQ_TOKEN_RETROFIT)
+    fun provideProgramiqTokenRetrofit (@Named(PROGRAMIQ_TOKEN_OKHTTP) okHttpClient: OkHttpClient): Retrofit {
 
         return Retrofit.Builder()
             .baseUrl(URLs.PROGRAMIQ_BASE_URL)
