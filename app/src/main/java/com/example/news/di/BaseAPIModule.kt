@@ -1,8 +1,11 @@
 package com.example.news.di
 
 import com.example.news.BuildConfig
+import com.example.news.NewsApp
 import com.example.news.data.Constants.NEWS_RETROFIT
 import com.example.news.data.Constants.PROGRAMIQ_RETROFIT
+import com.example.news.data.Constants.PROGRAMIQ_TOKEN_PREFERENCE_KEY
+import com.example.news.data.Constants.PROGRAMIQ_TOKEN_OKHTTP
 import com.example.news.data.request.URLs
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -23,8 +26,7 @@ Created by ian
 class BaseAPIModule {
 
     @Provides
-    fun provideOkhttp(): OkHttpClient {
-
+    fun provideInterceptor():HttpLoggingInterceptor {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
 //        Only display the detailed HTTP logs when in development
         httpLoggingInterceptor.level = if (BuildConfig.DEBUG) {
@@ -32,11 +34,34 @@ class BaseAPIModule {
         } else {
             HttpLoggingInterceptor.Level.BASIC
         }
+        return httpLoggingInterceptor
+    }
+
+    @Provides
+    fun provideOkhttp(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
 
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
+    }
+
+    @Provides
+    @Named(PROGRAMIQ_TOKEN_OKHTTP)
+    fun provideTokenOkhttp(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+
+        val token = NewsApp.preferences.getString(PROGRAMIQ_TOKEN_PREFERENCE_KEY, "")
+        return OkHttpClient.Builder().apply {
+            addInterceptor(httpLoggingInterceptor)
+            addInterceptor{
+                val req = it.request().newBuilder()
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .addHeader("Authorization",  "Bearer $token")
+                    .build()
+                it.proceed(req)
+            }
+        }.build()
     }
 
     @Provides

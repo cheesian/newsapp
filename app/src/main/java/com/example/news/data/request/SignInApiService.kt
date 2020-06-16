@@ -22,7 +22,4 @@ interface SignInApiService {
         data: SignInRequest
     ): Observable<SignInResponse>
 
-    @GET(GET_USER_ENDPOINT)
-    fun getUser()
-
 }
