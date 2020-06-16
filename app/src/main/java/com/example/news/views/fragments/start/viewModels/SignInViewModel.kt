@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.news.data.repositories.AccountRepository
 import com.example.news.data.request.signIn.SignInRequest
 import com.example.news.data.response.GeneralResponse
-import com.example.news.utils.Notify
+import com.example.news.utils.Notify.setErrorMessage
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -68,7 +68,7 @@ class SignInViewModel (
 
             GeneralResponse.Status.ERROR -> {
                 progressBarVisibility.value = View.GONE
-                Notify.setErrorMessage(
+                setErrorMessage(
                     error = generalResponse.error!!,
                     errorMessageVariable = message
                 )

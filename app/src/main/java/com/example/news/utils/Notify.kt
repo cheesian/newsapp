@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
+import retrofit2.HttpException
 import java.net.UnknownHostException
 
 /**
@@ -36,11 +37,26 @@ object Notify {
     }
 
     fun setErrorMessage(error: Throwable, errorMessageVariable: MutableLiveData<String>) {
-        log(message = error.message.toString())
-        if (error is UnknownHostException) {
-            errorMessageVariable.value = "Check your connection and try again"
-        } else {
-            errorMessageVariable.value = "Something went wrong. Please try again"
+        log(tag = "ErrorLog", message = error.message.toString())
+        errorMessageVariable.value = with (error) {
+            when (this) {
+
+                is HttpException -> {
+                    val errorMessage: String
+                    val body = this.response()!!.errorBody()
+                    errorMessage = try {
+                        val json = org.json.JSONObject(body!!.string())
+                        json.getString("message")
+                    } catch (e: Exception) {
+                        e.message.toString()
+                    }
+                    errorMessage
+                }
+
+                is UnknownHostException -> "Check your connection and try again"
+
+                else -> "Something went wrong. Please try again"
+            }
         }
     }
 
