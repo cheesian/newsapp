@@ -70,10 +70,6 @@ class SignIn: Fragment() {
                 message = it
             )
         })
-        viewModel.token.observe(viewLifecycleOwner, Observer {
-            log("token",it)
-            viewModel.getUser()
-        })
 
         signInButton = binding.signInButton
         signInButton.setOnClickListener {

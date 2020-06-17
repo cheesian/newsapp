@@ -8,11 +8,11 @@ object Constants {
     const val SORT_BY = "publishedAt"
     const val PAGE_SIZE = 40
 
-    const val PROGRAMIQ_RETROFIT = "PROGRAMIQ_RETROFIT"
-    const val NEWS_RETROFIT = "NEWS_RETROFIT"
-    const val PROGRAMIQ_TOKEN_OKHTTP = "TOKEN_OKHTTP"
-    const val PROGRAMIQ_TOKEN_RETROFIT = "PROGRAMIQ_TOKEN_RETROFIT"
-    const val SIMPLE_OKHTTP = "OKHTTP"
+    const val PROGRAMIQ_RETROFIT = "programiqRetrofit"
+    const val NEWS_RETROFIT = "newsRetrofit"
+    const val PROGRAMIQ_TOKEN_OKHTTP = "programiqTokenOkhttp"
+    const val PROGRAMIQ_TOKEN_RETROFIT = "programiqTokenRetrofit"
+    const val SIMPLE_OKHTTP = "simpleOkhttp"
 
 //    App Constants
     const val PASSWORD_LENGTH = 5

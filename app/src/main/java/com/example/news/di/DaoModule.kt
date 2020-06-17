@@ -3,6 +3,7 @@ package com.example.news.di
 import android.app.Application
 import androidx.room.Room
 import com.example.news.data.NewsDB
+import com.example.news.data.daos.AccountDao
 import com.example.news.data.daos.ArticlesDao
 import com.example.news.data.daos.SourcesDao
 import com.example.news.data.daos.TopHeadlinesDao
@@ -47,6 +48,12 @@ class DaoModule (private val application: Application) {
     @Reusable
     fun provideTopHeadlinesDao (newsDB: NewsDB): TopHeadlinesDao {
         return newsDB.topHeadlinesDao()
+    }
+
+    @Provides
+    @Reusable
+    fun provideAccountDao (newsDB: NewsDB): AccountDao {
+        return newsDB.accountDao()
     }
 
 }

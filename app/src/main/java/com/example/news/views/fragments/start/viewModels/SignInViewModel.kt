@@ -3,6 +3,7 @@ package com.example.news.views.fragments.start.viewModels
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.news.data.entities.UserEntity
 import com.example.news.data.repositories.AccountRepository
 import com.example.news.data.request.signIn.SignInRequest
 import com.example.news.data.response.GeneralResponse
@@ -24,9 +25,9 @@ class SignInViewModel (
     var compositeDisposable = CompositeDisposable()
     var progressBarVisibility = MutableLiveData<Int>()
     var message = MutableLiveData<String>()
-    var token = MutableLiveData<String>()
 
     fun signIn(data: SignInRequest){
+        accountRepository.deleteAllAccounts()
         compositeDisposable.add(
             accountRepository.signIn(data)
                 .subscribeOn(Schedulers.io())
@@ -72,7 +73,9 @@ class SignInViewModel (
                 generalResponse.signInResponse?.let {
                     if (it.success) {
 //                        Store the token and look at the expiry date
-                        token.value = it.token
+                        accountRepository.insertUser(UserEntity(programiq_token = it.token))
+                        val ext = accountRepository.getUsers()
+                        getUser()
                     } else {
                         message.value = it.message
                     }

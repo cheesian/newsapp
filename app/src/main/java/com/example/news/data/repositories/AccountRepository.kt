@@ -1,5 +1,7 @@
 package com.example.news.data.repositories
 
+import com.example.news.data.daos.AccountDao
+import com.example.news.data.entities.UserEntity
 import com.example.news.data.request.SignInApiService
 import com.example.news.data.request.SignUpApiService
 import com.example.news.data.request.UserApiService
@@ -19,7 +21,8 @@ Created by ian
 class AccountRepository @Inject constructor(
     var signInApiService: SignInApiService,
     var signUpApiService: SignUpApiService,
-    var userApiService: UserApiService
+    var userApiService: UserApiService,
+    var accountDao: AccountDao
 ){
     fun signUp(data: SignUpRequest): Observable<SignUpResponse> {
         return signUpApiService.signUp(data)
@@ -31,5 +34,21 @@ class AccountRepository @Inject constructor(
 
     fun getUser(): Observable<GetUserResponse> {
         return userApiService.getUser()
+    }
+
+    fun insertUser(user: UserEntity) {
+        accountDao.insertUser(user)
+    }
+
+    fun deleteAllAccounts() {
+        accountDao.deleteAllAccounts()
+    }
+
+    fun deleteUser(user: UserEntity) {
+        accountDao.deleteUser(user)
+    }
+
+    fun getUsers(): List<UserEntity> {
+        return accountDao.getUsers()
     }
 }

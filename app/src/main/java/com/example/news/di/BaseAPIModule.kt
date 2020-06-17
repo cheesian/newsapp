@@ -1,13 +1,12 @@
 package com.example.news.di
 
 import com.example.news.BuildConfig
-import com.example.news.NewsApp
 import com.example.news.data.Constants.SIMPLE_OKHTTP
 import com.example.news.data.Constants.NEWS_RETROFIT
 import com.example.news.data.Constants.PROGRAMIQ_RETROFIT
-import com.example.news.data.Constants.PROGRAMIQ_TOKEN_PREFERENCE_KEY
 import com.example.news.data.Constants.PROGRAMIQ_TOKEN_OKHTTP
 import com.example.news.data.Constants.PROGRAMIQ_TOKEN_RETROFIT
+import com.example.news.data.daos.AccountDao
 import com.example.news.data.request.URLs
 import com.example.news.utils.Notify.log
 import com.google.gson.GsonBuilder
@@ -52,16 +51,14 @@ class BaseAPIModule {
 
     @Provides
     @Named(PROGRAMIQ_TOKEN_OKHTTP)
-    fun provideTokenOkhttp(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideTokenOkhttp(httpLoggingInterceptor: HttpLoggingInterceptor, accountDao: AccountDao): OkHttpClient {
 
-        val token = ""
-        log(PROGRAMIQ_TOKEN_OKHTTP, token)
         return OkHttpClient.Builder().apply {
             addInterceptor{
                 val req = it.request().newBuilder()
                     .addHeader("Content-Type", "application/json")
                     .addHeader("X-Requested-With", "XMLHttpRequest")
-                    .addHeader("Authorization",  "Bearer $token")
+                    .addHeader("Authorization",  "Bearer " + accountDao.getUsers()[0].programiq_token)
                     .build()
                 it.proceed(req)
             }
