@@ -21,7 +21,7 @@ import com.example.news.utils.Notify.toast
 import com.example.news.utils.Validation.checkEmailValidity
 import com.example.news.utils.Validation.checkPasswordValidity
 import com.example.news.utils.Validation.hasOnlyLettersAndSpaces
-import com.example.news.views.activities.StartingActivity
+import com.example.news.views.activities.start.StartingActivity
 import com.example.news.views.fragments.start.viewModels.SignUpViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout

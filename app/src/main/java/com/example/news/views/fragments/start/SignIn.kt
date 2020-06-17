@@ -20,7 +20,6 @@ import com.example.news.databinding.SignInBinding
 import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.Validation.checkEmailValidity
 import com.example.news.utils.Validation.checkPasswordValidity
-import com.example.news.views.activities.StartingActivity
 import com.example.news.views.activities.main.MainActivityDrawer
 import com.example.news.views.fragments.start.viewModels.SignInViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -71,12 +70,6 @@ class SignIn: Fragment() {
                 view = binding.root,
                 message = it
             )
-            if (it.startsWith("Welcome back")) {
-                StartingActivity.INSTANCE!!.apply {
-                    startActivity(Intent(this, MainActivityDrawer::class.java))
-                    this.finish()
-                }
-            }
         })
 
         signInButton = binding.signInButton

@@ -7,6 +7,7 @@ import com.example.news.data.repositories.EverythingRepository
 import com.example.news.data.repositories.SourcesRepository
 import com.example.news.data.repositories.TopHeadlinesRepository
 import com.example.news.views.activities.main.viewModels.MainActivityViewModel
+import com.example.news.views.activities.start.viewModels.StartingViewModel
 import com.example.news.views.fragments.everything.viewModels.EverythingViewModel
 import com.example.news.views.fragments.sources.viewModels.SourcesViewModel
 import com.example.news.views.fragments.start.viewModels.SignInViewModel
@@ -67,6 +68,13 @@ class VMFactory @Inject constructor(
         if (modelClass.isAssignableFrom(MainActivityViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return MainActivityViewModel(
+                accountRepository
+            ) as T
+        }
+
+        if (modelClass.isAssignableFrom(StartingViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return StartingViewModel(
                 accountRepository
             ) as T
         }

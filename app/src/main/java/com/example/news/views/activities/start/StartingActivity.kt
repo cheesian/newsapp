@@ -1,20 +1,26 @@
-package com.example.news.views.activities
+package com.example.news.views.activities.start
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
+import com.example.news.NewsApp
 import com.example.news.R
+import com.example.news.VMFactory
 import com.example.news.adapters.StartingPagerAdapter
 import com.example.news.databinding.StartingActivityBinding
 import com.example.news.utils.DepthPageTransformer
 import com.example.news.utils.FullScreen.setFullScreen
-import com.example.news.utils.Notify.toast
-import com.example.news.utils.ZoomOutPageTransformer
+import com.example.news.views.activities.main.MainActivityDrawer
+import com.example.news.views.activities.start.viewModels.StartingViewModel
 import com.example.news.views.fragments.start.SignIn
 import com.example.news.views.fragments.start.SignUp
 import com.example.news.views.fragments.start.Welcome
 import com.google.android.material.tabs.TabLayout
+import javax.inject.Inject
 
 
 /**
@@ -27,15 +33,28 @@ class StartingActivity: AppCompatActivity() {
     lateinit var viewPager: ViewPager
     lateinit var binding: StartingActivityBinding
     lateinit var pagerAdapter: StartingPagerAdapter
+    @Inject lateinit var factory: VMFactory
+    lateinit var viewModel: StartingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        (applicationContext as NewsApp).applicationComponent.inject(this)
         INSTANCE = this
         PAGE_STACK.add(0)
 
         setFullScreen(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_starting)
+        viewModel = ViewModelProvider(this, factory).get(StartingViewModel::class.java)
+        viewModel.users.observe(this, Observer {
+            val userList = it.filter { userEntity ->
+                userEntity.email != "janet@doe.com"
+            }
+            if (userList.isNotEmpty()) {
+                startActivity(Intent(this, MainActivityDrawer::class.java))
+                finish()
+            }
+        })
 
         pagerAdapter = StartingPagerAdapter(supportFragmentManager)
         pagerAdapter.addFragment("1", Welcome())

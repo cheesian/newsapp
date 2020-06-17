@@ -27,7 +27,7 @@ import com.example.news.databinding.MainActivityDrawerBinding
 import com.example.news.utils.FullScreen.setFullScreen
 import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.Notify.toast
-import com.example.news.views.activities.StartingActivity
+import com.example.news.views.activities.start.StartingActivity
 import com.example.news.views.activities.main.viewModels.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView

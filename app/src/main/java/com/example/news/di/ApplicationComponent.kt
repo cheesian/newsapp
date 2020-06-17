@@ -2,6 +2,7 @@ package com.example.news.di
 
 import android.app.Application
 import com.example.news.views.activities.main.MainActivityDrawer
+import com.example.news.views.activities.start.StartingActivity
 import com.example.news.views.fragments.everything.Everything
 import com.example.news.views.fragments.sources.Sources
 import com.example.news.views.fragments.start.SignIn
@@ -25,5 +26,6 @@ interface ApplicationComponent {
     fun inject(fragment: SignIn)
     fun inject(fragment: SignUp)
     fun inject(activity: MainActivityDrawer)
+    fun inject(activity: StartingActivity)
 
 }
