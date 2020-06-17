@@ -57,7 +57,6 @@ class BaseAPIModule {
         val token = NewsApp.preferences.getString(PROGRAMIQ_TOKEN_PREFERENCE_KEY, "")
         log(PROGRAMIQ_TOKEN_OKHTTP, token!!)
         return OkHttpClient.Builder().apply {
-            addInterceptor(httpLoggingInterceptor)
             addInterceptor{
                 val req = it.request().newBuilder()
                     .addHeader("Content-Type", "application/json")
@@ -66,6 +65,7 @@ class BaseAPIModule {
                     .build()
                 it.proceed(req)
             }
+            addInterceptor(httpLoggingInterceptor)
         }.build()
     }
 
