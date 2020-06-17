@@ -1,8 +1,6 @@
 package com.example.news.views.fragments.start
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import com.example.news.NewsApp
 import com.example.news.R
 import com.example.news.VMFactory
 import com.example.news.data.Constants.PASSWORD_LENGTH
-import com.example.news.data.Constants.PROGRAMIQ_TOKEN_PREFERENCE_KEY
 import com.example.news.data.request.signIn.SignInRequest
 import com.example.news.databinding.SignInBinding
 import com.example.news.utils.Notify.log
@@ -74,10 +71,6 @@ class SignIn: Fragment() {
             )
         })
         viewModel.token.observe(viewLifecycleOwner, Observer {
-            NewsApp.preferences.edit().apply {
-                putString(PROGRAMIQ_TOKEN_PREFERENCE_KEY, it)
-                commit()
-            }
             log("token",it)
             viewModel.getUser()
         })

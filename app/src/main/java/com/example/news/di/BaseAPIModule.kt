@@ -54,8 +54,8 @@ class BaseAPIModule {
     @Named(PROGRAMIQ_TOKEN_OKHTTP)
     fun provideTokenOkhttp(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
 
-        val token = NewsApp.preferences.getString(PROGRAMIQ_TOKEN_PREFERENCE_KEY, "")
-        log(PROGRAMIQ_TOKEN_OKHTTP, token!!)
+        val token = ""
+        log(PROGRAMIQ_TOKEN_OKHTTP, token)
         return OkHttpClient.Builder().apply {
             addInterceptor{
                 val req = it.request().newBuilder()
