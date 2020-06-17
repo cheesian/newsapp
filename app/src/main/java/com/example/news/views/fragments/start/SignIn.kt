@@ -1,5 +1,6 @@
 package com.example.news.views.fragments.start
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,8 @@ import com.example.news.databinding.SignInBinding
 import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.Validation.checkEmailValidity
 import com.example.news.utils.Validation.checkPasswordValidity
+import com.example.news.views.activities.StartingActivity
+import com.example.news.views.activities.main.MainActivityDrawer
 import com.example.news.views.fragments.start.viewModels.SignInViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -68,6 +71,12 @@ class SignIn: Fragment() {
                 view = binding.root,
                 message = it
             )
+            if (it.startsWith("Welcome back")) {
+                StartingActivity.INSTANCE!!.apply {
+                    startActivity(Intent(this, MainActivityDrawer::class.java))
+                    this.finish()
+                }
+            }
         })
 
         signInButton = binding.signInButton

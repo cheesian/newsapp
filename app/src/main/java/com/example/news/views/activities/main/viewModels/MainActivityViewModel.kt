@@ -1,6 +1,7 @@
 package com.example.news.views.activities.main.viewModels
 
 import androidx.lifecycle.ViewModel
+import com.example.news.data.entities.UserEntity
 import com.example.news.data.repositories.AccountRepository
 
 
@@ -16,6 +17,10 @@ class MainActivityViewModel(
 
     fun deleteAccounts() {
         accountRepository.deleteAllAccounts()
+    }
+
+    fun getUserList(): List<UserEntity> {
+        return accountRepository.getUsers()
     }
 
 }

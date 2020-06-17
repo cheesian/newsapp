@@ -57,6 +57,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         setFullScreen(this)
         binding = DataBindingUtil.setContentView(this, R.layout.drawer_activity_main)
         viewModel = ViewModelProvider(this, factory).get(MainActivityViewModel::class.java)
+        user = viewModel.getUserList()[0]
         viewModel.users.observe(this, Observer {
             if (it.isNullOrEmpty()) {
 //                Here the user accounts have been deleted
@@ -72,6 +73,14 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         headerView.findViewById<TextView>(R.id.name_tag).apply {
 //            the person's initials should be shown in this textview
             text = getInitials(user.username)
+        }
+        headerView.findViewById<TextView>(R.id.tv_name).apply {
+//            the person's initials should be shown in this textview
+            text = user.username
+        }
+        headerView.findViewById<TextView>(R.id.tv_email).apply {
+//            the person's initials should be shown in this textview
+            text = user.email
         }
         logoutText = headerView.findViewById<TextView>(R.id.tv_logout).apply {
             setOnClickListener {
