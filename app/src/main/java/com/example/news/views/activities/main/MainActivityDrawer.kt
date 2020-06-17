@@ -200,9 +200,14 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         return when {
             name.trim().isEmpty() -> "JC"
             else -> with(name.split(" ")) {
-                val initial1 = this[0].take(1)
-                val initial2 = this[1].take(1)
-                "$initial1$initial2"
+                if (this.size > 1) {
+                    val initial1 = this[0].take(1)
+                    val initial2 = this[1].take(1)
+                    "$initial1$initial2"
+                } else {
+                    this[0].take(1)
+                }
+
             }
         }
     }
