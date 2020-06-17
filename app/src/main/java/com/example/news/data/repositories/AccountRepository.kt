@@ -1,5 +1,6 @@
 package com.example.news.data.repositories
 
+import androidx.lifecycle.LiveData
 import com.example.news.data.daos.AccountDao
 import com.example.news.data.entities.UserEntity
 import com.example.news.data.request.SignInApiService
@@ -50,5 +51,9 @@ class AccountRepository @Inject constructor(
 
     fun getUsers(): List<UserEntity> {
         return accountDao.getUsers()
+    }
+
+    fun getUsersLiveData(): LiveData<List<UserEntity>> {
+        return accountDao.getUsersLiveData()
     }
 }

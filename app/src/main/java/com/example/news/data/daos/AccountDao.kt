@@ -1,5 +1,6 @@
 package com.example.news.data.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.news.data.entities.UserEntity
 
@@ -23,4 +24,6 @@ interface AccountDao {
     @Query("SELECT * FROM users")
     fun getUsers(): List<UserEntity>
 
+    @Query("SELECT * FROM users")
+    fun getUsersLiveData(): LiveData<List<UserEntity>>
 }

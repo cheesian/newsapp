@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.activities.ArticleActivity"/>
-        <activity android:name=".views.activities.MainActivityDrawer" />
+        <activity android:name=".views.activities.main.MainActivityDrawer" />
     </application>
 
 </manifest>
