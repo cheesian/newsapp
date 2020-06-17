@@ -25,6 +25,7 @@ class SignInViewModel (
     var compositeDisposable = CompositeDisposable()
     var progressBarVisibility = MutableLiveData<Int>()
     var message = MutableLiveData<String>()
+    var token = MutableLiveData<String>()
 
     fun signIn(data: SignInRequest){
         accountRepository.deleteAllAccounts()
@@ -44,7 +45,7 @@ class SignInViewModel (
         )
     }
 
-    fun getUser() {
+    private fun getUser() {
         compositeDisposable.add(
             accountRepository.getUser()
                 .subscribeOn(Schedulers.io())
@@ -72,7 +73,8 @@ class SignInViewModel (
                 progressBarVisibility.value = View.GONE
                 generalResponse.signInResponse?.let {
                     if (it.success) {
-//                        Store the token and look at the expiry date
+                        token.value = it.token
+//                        Dependency injection will fetch the token from the user entity
                         accountRepository.insertUser(UserEntity(programiq_token = it.token))
                         val ext = accountRepository.getUsers()
                         getUser()
@@ -83,6 +85,10 @@ class SignInViewModel (
 
                 generalResponse.getUserResponse?.let {
                     message.value = if (it.success) {
+                        accountRepository.apply {
+                            deleteAllAccounts()
+                            insertUser(UserEntity(it.name, it.email, token.value!!))
+                        }
                         "Welcome back " + it.name
                     } else {
                         "Something went wrong. Please try again"

@@ -16,7 +16,6 @@ import com.example.news.VMFactory
 import com.example.news.data.Constants.PASSWORD_LENGTH
 import com.example.news.data.request.signIn.SignInRequest
 import com.example.news.databinding.SignInBinding
-import com.example.news.utils.Notify.log
 import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.Validation.checkEmailValidity
 import com.example.news.utils.Validation.checkPasswordValidity

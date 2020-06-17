@@ -17,6 +17,5 @@ object Constants {
 //    App Constants
     const val PASSWORD_LENGTH = 5
     const val STORAGE_PERMISSIONS_REQUEST_CODE = 34500
-    const val PROGRAMIQ_TOKEN_PREFERENCE_KEY = "token"
     const val PREFERENCE_FILE = "com.example.news.newsPreference"
 }
