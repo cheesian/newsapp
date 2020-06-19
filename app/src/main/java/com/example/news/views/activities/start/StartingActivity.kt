@@ -1,7 +1,10 @@
 package com.example.news.views.activities.start
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -14,6 +17,7 @@ import com.example.news.adapters.StartingPagerAdapter
 import com.example.news.databinding.StartingActivityBinding
 import com.example.news.utils.DepthPageTransformer
 import com.example.news.utils.FullScreen.setFullScreen
+import com.example.news.utils.TabLayout.createTabWithIcon
 import com.example.news.views.activities.main.MainActivityDrawer
 import com.example.news.views.activities.start.viewModels.StartingViewModel
 import com.example.news.views.fragments.start.SignIn
@@ -35,6 +39,9 @@ class StartingActivity: AppCompatActivity() {
     lateinit var pagerAdapter: StartingPagerAdapter
     @Inject lateinit var factory: VMFactory
     lateinit var viewModel: StartingViewModel
+    lateinit var welcomeTab: TextView
+    lateinit var signUpTab: TextView
+    lateinit var signInTab: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -96,6 +103,27 @@ class StartingActivity: AppCompatActivity() {
 
             }
         )
+        welcomeTab = createTabWithIcon(
+            rootContext = binding.root.context,
+            tabTemplate = R.layout.activity_starting_tabs,
+            tabText = "",
+            tabIcon = R.drawable.ic_home_white
+        )
+        signUpTab = createTabWithIcon(
+            rootContext = binding.root.context,
+            tabTemplate = R.layout.activity_starting_tabs,
+            tabText = "",
+            tabIcon = R.drawable.ic_add_user_white
+        )
+        signInTab = createTabWithIcon(
+            rootContext = binding.root.context,
+            tabTemplate = R.layout.activity_starting_tabs,
+            tabText = "",
+            tabIcon = R.drawable.ic_user_account_white
+        )
+        tabLayout.getTabAt(0)?.customView = welcomeTab
+        tabLayout.getTabAt(1)?.customView = signUpTab
+        tabLayout.getTabAt(2)?.customView = signInTab
     }
 
     override fun onDestroy() {
