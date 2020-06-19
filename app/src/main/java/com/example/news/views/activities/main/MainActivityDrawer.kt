@@ -1,4 +1,4 @@
-package com.example.news.views.activities
+package com.example.news.views.activities.main
 
 import android.Manifest
 import android.content.DialogInterface
@@ -13,17 +13,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.news.NewsApp
 import com.example.news.R
+import com.example.news.VMFactory
 import com.example.news.data.Constants.STORAGE_PERMISSIONS_REQUEST_CODE
+import com.example.news.data.entities.UserEntity
 import com.example.news.databinding.MainActivityDrawerBinding
 import com.example.news.utils.FullScreen.setFullScreen
 import com.example.news.utils.Notify.snackBar
 import com.example.news.utils.Notify.toast
+import com.example.news.views.activities.start.StartingActivity
+import com.example.news.views.activities.main.viewModels.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import javax.inject.Inject
 
 
 /**
@@ -39,16 +47,40 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerFab: FloatingActionButton
     private lateinit var logoutText: TextView
+    private lateinit var user: UserEntity
+    @Inject lateinit var factory: VMFactory
+    lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (applicationContext as NewsApp).applicationComponent.inject(this)
         setFullScreen(this)
         binding = DataBindingUtil.setContentView(this, R.layout.drawer_activity_main)
+        viewModel = ViewModelProvider(this, factory).get(MainActivityViewModel::class.java)
+        user = viewModel.getUserList()[0]
+        viewModel.users.observe(this, Observer {
+            if (it.isNullOrEmpty()) {
+//                Here the user accounts have been deleted
+                startActivity(Intent(this, StartingActivity::class.java))
+                finish()
+            } else {
+//                Get the logged in user
+                user = it[0]
+            }
+        })
         navigationView = binding.navigationView
         headerView = navigationView.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.name_tag).apply {
 //            the person's initials should be shown in this textview
-            text = getInitials()
+            text = getInitials(user.username)
+        }
+        headerView.findViewById<TextView>(R.id.tv_name).apply {
+//            the person's initials should be shown in this textview
+            text = user.username
+        }
+        headerView.findViewById<TextView>(R.id.tv_email).apply {
+//            the person's initials should be shown in this textview
+            text = user.email
         }
         logoutText = headerView.findViewById<TextView>(R.id.tv_logout).apply {
             setOnClickListener {
@@ -63,7 +95,9 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         drawerLayout = binding.drawer
         drawerFab = binding.drawerFab
         drawerFab.setOnClickListener {
-            requestStoragePermissions()
+            when(drawerLayout.isOpen) {
+                false -> drawerLayout.open()
+            }
         }
     }
 
@@ -121,8 +155,8 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     private fun logout() {
-        startActivity(Intent(this, StartingActivity::class.java))
-//        finish()
+//        clear account information before logging out
+        viewModel.deleteAccounts()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -166,9 +200,14 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         return when {
             name.trim().isEmpty() -> "JC"
             else -> with(name.split(" ")) {
-                val initial1 = this[0].take(1)
-                val initial2 = this[1].take(1)
-                "$initial1$initial2"
+                if (this.size > 1) {
+                    val initial1 = this[0].take(1)
+                    val initial2 = this[1].take(1)
+                    "$initial1$initial2"
+                } else {
+                    this[0].take(1)
+                }
+
             }
         }
     }

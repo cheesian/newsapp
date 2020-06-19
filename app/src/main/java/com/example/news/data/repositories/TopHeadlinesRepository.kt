@@ -1,12 +1,9 @@
 package com.example.news.data.repositories
 
 import androidx.lifecycle.LiveData
+import com.example.news.data.Constants.API_KEY
+import com.example.news.data.Constants.PAGE_SIZE
 import com.example.news.data.request.TopHeadlinesApiService
-import com.example.news.data.request.URLs.API_KEY
-import com.example.news.data.request.URLs.PAGE_SIZE
-import com.example.news.data.request.URLs.Q
-import com.example.news.data.response.everything.AllResponseEntity
-import com.example.news.data.response.everything.ArticleResponseEntity
 import com.example.news.data.daos.TopHeadlinesDao
 import com.example.news.data.response.everything.SourceResponseEntity
 import com.example.news.data.response.topHeadlines.TopHeadlinesResponseEntity

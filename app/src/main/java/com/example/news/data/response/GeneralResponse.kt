@@ -1,6 +1,9 @@
 package com.example.news.data.response
 
 import com.example.news.data.response.everything.AllResponseEntity
+import com.example.news.data.response.signIn.GetUserResponse
+import com.example.news.data.response.signIn.SignInResponse
+import com.example.news.data.response.signUp.SignUpResponse
 import com.example.news.data.response.sources.SourcesResponseEntity
 import com.example.news.data.response.topHeadlines.TopResponseEntity
 
@@ -14,7 +17,10 @@ class GeneralResponse private constructor(
     val allResponseEntity: AllResponseEntity? = null,
     val sourcesResponseEntity: SourcesResponseEntity? = null,
     val error: Throwable? = null,
-    val topResponseEntity: TopResponseEntity? = null
+    val topResponseEntity: TopResponseEntity? = null,
+    val signUpResponse: SignUpResponse? = null,
+    val signInResponse: SignInResponse? = null,
+    val getUserResponse: GetUserResponse? = null
 ) {
 
     companion object {
@@ -36,6 +42,18 @@ class GeneralResponse private constructor(
 
         fun sourcesResponseSuccess(sourcesResponseEntity: SourcesResponseEntity): GeneralResponse {
             return GeneralResponse(status = Status.SUCCESS, sourcesResponseEntity = sourcesResponseEntity)
+        }
+
+        fun signUpResponseSuccess(signUpResponse: SignUpResponse): GeneralResponse {
+            return GeneralResponse(status = Status.SUCCESS, signUpResponse = signUpResponse)
+        }
+
+        fun signInResponseSuccess(signInResponse: SignInResponse): GeneralResponse {
+            return GeneralResponse(status = Status.SUCCESS, signInResponse = signInResponse)
+        }
+
+        fun getUserSuccess(userResponse: GetUserResponse): GeneralResponse {
+            return GeneralResponse(status = Status.SUCCESS, getUserResponse = userResponse)
         }
     }
 

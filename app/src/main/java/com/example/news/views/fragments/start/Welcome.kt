@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.news.R
 import com.example.news.databinding.WelcomeBinding
-import com.example.news.views.activities.StartingActivity
+import com.example.news.views.activities.start.StartingActivity
 
 
 /**

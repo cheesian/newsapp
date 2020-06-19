@@ -41,4 +41,5 @@
     <string name="get_started">OK. LET\'S GET STARTED</string>
     <string name="sign_up_to_register">SIGN UP TO CREATE AN ACCOUNT</string>
     <string name="sign_in_to_account">LOGIN IF YOU HAVE AN ACCOUNT</string>
+    <string name="error_try_again">Something went wrong. Please try again</string>
 </resources>
