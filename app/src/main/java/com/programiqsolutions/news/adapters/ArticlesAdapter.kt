@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.programiqsolutions.news.R
 import com.programiqsolutions.news.data.response.everything.ArticleResponseEntity
 import com.programiqsolutions.news.data.response.topHeadlines.TopHeadlinesResponseEntity
+import com.programiqsolutions.news.databinding.ListItemsBinding
 import com.programiqsolutions.news.utils.CircleTransform
 import com.programiqsolutions.news.utils.Notify.snackBar
 import com.programiqsolutions.news.utils.Notify.toast
@@ -27,17 +28,17 @@ class ArticlesAdapter (private val adapterContext: Context, private val rootView
     private var articleList = mutableListOf<ArticleResponseEntity>()
     private var origin = 0
 
-    inner class ArticlesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val articleImage = itemView.findViewById<ImageView>(R.id.adapterImage)!!
-        val articleTitle = itemView.findViewById<TextView>(R.id.adapterTitleView)!!
-        val articleText = itemView.findViewById<TextView>(R.id.adapterTextView)!!
-        val articleFooter = itemView.findViewById<TextView>(R.id.adapterFooterView)!!
+    inner class ArticlesHolder(binding: ListItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+        val articleImage = binding.adapterImage
+        val articleTitle = binding.adapterTitleView
+        val articleText = binding.adapterTextView
+        val articleFooter = binding.adapterFooterView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesHolder {
         val inflater: LayoutInflater = LayoutInflater.from(adapterContext)
-        val itemView = inflater.inflate(R.layout.list_items, parent, false)
-        return ArticlesHolder(itemView)
+        val itemViewBinding = ListItemsBinding.inflate(inflater, parent, false)
+        return ArticlesHolder(itemViewBinding)
     }
 
     override fun getItemCount(): Int {
