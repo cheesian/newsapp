@@ -6,7 +6,7 @@
     <data class="TopHeadlinesBinding">
         <variable
             name="viewModel"
-            type="com.example.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel" />
+            type="com.programiqsolutions.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
