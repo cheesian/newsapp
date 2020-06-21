@@ -28,6 +28,7 @@ import com.programiqsolutions.news.utils.Hide.hide
 import com.programiqsolutions.news.utils.Notify.snackBar
 import com.programiqsolutions.news.utils.PopulateSpinner.populateSpinner
 import com.programiqsolutions.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel
+import kotlinx.android.synthetic.main.options.view.*
 import javax.inject.Inject
 
 /**

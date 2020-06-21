@@ -29,6 +29,7 @@ import com.programiqsolutions.news.utils.Notify.log
 import com.programiqsolutions.news.utils.Notify.toast
 import com.programiqsolutions.news.utils.PopulateSpinner.populateSpinner
 import com.programiqsolutions.news.views.fragments.everything.viewModels.EverythingViewModel
+import kotlinx.android.synthetic.main.options_everything.view.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList

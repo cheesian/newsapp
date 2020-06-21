@@ -31,6 +31,7 @@ import com.programiqsolutions.news.utils.PopulateSpinner.populateSpinner
 import com.programiqsolutions.news.utils.Show.show
 import com.programiqsolutions.news.utils.SwipeToDismiss
 import com.programiqsolutions.news.views.fragments.sources.viewModels.SourcesViewModel
+import kotlinx.android.synthetic.main.options.view.*
 import javax.inject.Inject
 
 
