@@ -6,7 +6,7 @@
     app:startDestination="@id/top_headlines_fragment">
 
     <fragment android:id="@+id/top_headlines_fragment"
-        android:name="com.example.news.views.fragments.topHeadlines.TopHeadlines"
+        android:name="com.programiqsolutions.news.views.fragments.topHeadlines.TopHeadlines"
         tools:layout="@layout/fragment_top_headlines">
         <action
             android:id="@+id/action_top_headlines_fragment_to_everything_fragment"
@@ -16,7 +16,7 @@
     </fragment>
 
     <fragment android:id="@+id/everything_fragment"
-        android:name="com.example.news.views.fragments.everything.Everything"
+        android:name="com.programiqsolutions.news.views.fragments.everything.Everything"
         tools:layout="@layout/fragment_everything">
         <action
             android:id="@+id/action_everything_fragment_to_sources_fragment"
@@ -26,7 +26,7 @@
     </fragment>
 
     <fragment android:id="@+id/sources_fragment"
-        android:name="com.example.news.views.fragments.sources.Sources"
+        android:name="com.programiqsolutions.news.views.fragments.sources.Sources"
         tools:layout="@layout/fragment_sources">
         <action
             android:id="@+id/action_sources_fragment_to_top_headlines_fragment"
