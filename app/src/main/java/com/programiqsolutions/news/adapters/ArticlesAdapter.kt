@@ -50,7 +50,7 @@ class ArticlesAdapter (
         if (articleList.isNullOrEmpty()) {
             toast(adapterContext, "No news to display")
         } else {
-            val currentArticle = articleList[position]
+            val currentArticle = getItem(position)
             articlesHolder.articleTitle.text = currentArticle.title
             articlesHolder.articleText.text = currentArticle.description
             val author = currentArticle.author ?: "Anonymous"

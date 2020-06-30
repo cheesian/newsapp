@@ -35,7 +35,7 @@ class SourcesAdapter (var context: Context, private val rootView: View): ListAda
     }
 
     override fun onBindViewHolder(holder: SourcesHolder, position: Int) {
-        val currentItem = listItems[position]
+        val currentItem = getItem(position)
         val name = currentItem.name
         val description = currentItem.description
         val url = currentItem.url
