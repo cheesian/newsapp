@@ -53,7 +53,7 @@ class SignUp: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (context!!.applicationContext as NewsApp).applicationComponent.inject(this)
+        (requireContext().applicationContext as NewsApp).applicationComponent.inject(this)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
 
@@ -77,7 +77,7 @@ class SignUp: Fragment() {
         viewModel.message.observe(viewLifecycleOwner, Observer {
             when(it) {
                 "Account created successfully" -> {
-                    toast(context = context!!, message = it)
+                    toast(context = requireContext(), message = it)
                     StartingActivity.INSTANCE!!.viewPager.currentItem = 2
                 }
                 else -> {

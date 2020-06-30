@@ -46,7 +46,7 @@ class SignIn: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (context!!.applicationContext as NewsApp).applicationComponent.inject(this)
+        (requireContext().applicationContext as NewsApp).applicationComponent.inject(this)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false)
 

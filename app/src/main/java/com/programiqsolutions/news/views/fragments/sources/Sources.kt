@@ -73,7 +73,7 @@ class Sources : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (context!!.applicationContext as NewsApp).applicationComponent.inject(this)
+        (requireContext().applicationContext as NewsApp).applicationComponent.inject(this)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sources, container, false)
         fragContext = binding.root.context
         progressBar = binding.progress
@@ -81,7 +81,7 @@ class Sources : Fragment() {
         recyclerView = binding.sourcesRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = SourcesAdapter(context!!, binding.root)
+        val adapter = SourcesAdapter(requireContext(), binding.root)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         ItemTouchHelper(SwipeToDismiss(sourcesAdapter = adapter)).attachToRecyclerView(recyclerView)

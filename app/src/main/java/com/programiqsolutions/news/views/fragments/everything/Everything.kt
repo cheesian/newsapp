@@ -80,7 +80,7 @@ class Everything : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (context!!.applicationContext as NewsApp).applicationComponent.inject(this)
+        (requireContext().applicationContext as NewsApp).applicationComponent.inject(this)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_everything, container, false)
         fragContext = binding.root.context
         progressBar = binding.progress
@@ -88,7 +88,7 @@ class Everything : Fragment() {
         recyclerView = binding.everythingRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = ArticlesAdapter(context!!, binding.root)
+        val adapter = ArticlesAdapter(requireContext(), binding.root)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
@@ -133,7 +133,7 @@ class Everything : Fragment() {
                 sourceList.sort()
                 populateSpinner(
                     spinner = sourceSpinner,
-                    context = context!!,
+                    context = requireContext(),
                     arrayList = sourceList,
                     textViewResource = R.layout.spinner_text
                 )
@@ -420,11 +420,11 @@ class Everything : Fragment() {
         when (dateSetter) {
             DateSetter.CHECKBOX_FROM, DateSetter.TEXT_VIEW_FROM -> {
                 fromDateTextView.text = date
-                toast(context = context!!, message = "From $date")
+                toast(context = requireContext(), message = "From $date")
             }
             DateSetter.CHECKBOX_TO, DateSetter.TEXT_VIEW_TO -> {
                 toDateTextView.text = date
-                toast(context = context!!, message = "To $date")
+                toast(context = requireContext(), message = "To $date")
             }
             else -> {
             }
