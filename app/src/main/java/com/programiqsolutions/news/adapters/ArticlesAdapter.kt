@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.programiqsolutions.news.R
@@ -23,7 +24,10 @@ import com.programiqsolutions.news.views.activities.ArticleActivity
 Created by ian
  */
 
-class ArticlesAdapter (private val adapterContext: Context, private val rootView: View) : RecyclerView.Adapter<ArticlesAdapter.ArticlesHolder>() {
+class ArticlesAdapter (
+    private val adapterContext: Context,
+    private val rootView: View
+) : ListAdapter<ArticleResponseEntity, ArticlesAdapter.ArticlesHolder>(ArticlesDiffCallBack()) {
 
     private var articleList = mutableListOf<ArticleResponseEntity>()
     private var origin = 0
@@ -41,16 +45,12 @@ class ArticlesAdapter (private val adapterContext: Context, private val rootView
         return ArticlesHolder(itemViewBinding)
     }
 
-    override fun getItemCount(): Int {
-        return articleList.size
-    }
-
     override fun onBindViewHolder(articlesHolder: ArticlesHolder, position: Int) {
 
         if (articleList.isNullOrEmpty()) {
             toast(adapterContext, "No news to display")
         } else {
-            val currentArticle = articleList[position]
+            val currentArticle = getItem(position)
             articlesHolder.articleTitle.text = currentArticle.title
             articlesHolder.articleText.text = currentArticle.description
             val author = currentArticle.author ?: "Anonymous"
@@ -92,7 +92,7 @@ class ArticlesAdapter (private val adapterContext: Context, private val rootView
         this.articleList = mutableListOf()
         this.articleList.addAll(itemList)
         origin++
-        notifyDataSetChanged()
+        submitList(this.articleList)
     }
 
     fun setTopHeadlinesItems(itemList: List<TopHeadlinesResponseEntity>) {

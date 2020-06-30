@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.programiqsolutions.news.data.response.sources.SourceResponseEntity
 import com.programiqsolutions.news.databinding.SourcesItemBinding
@@ -16,7 +17,7 @@ import com.programiqsolutions.news.views.activities.ArticleActivity
 Created by ian
  */
 
-class SourcesAdapter (var context: Context, private val rootView: View): RecyclerView.Adapter<SourcesAdapter.SourcesHolder> () {
+class SourcesAdapter (var context: Context, private val rootView: View): ListAdapter<SourceResponseEntity, SourcesAdapter.SourcesHolder> (SourcesDiffCallBack()) {
 
     private var listItems = mutableListOf<SourceResponseEntity>()
 
@@ -33,12 +34,8 @@ class SourcesAdapter (var context: Context, private val rootView: View): Recycle
         return SourcesHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return listItems.size
-    }
-
     override fun onBindViewHolder(holder: SourcesHolder, position: Int) {
-        val currentItem = listItems[position]
+        val currentItem = getItem(position)
         val name = currentItem.name
         val description = currentItem.description
         val url = currentItem.url
@@ -67,7 +64,7 @@ class SourcesAdapter (var context: Context, private val rootView: View): Recycle
     fun setItems(items: List<SourceResponseEntity>) {
         this.listItems = mutableListOf()
         this.listItems.addAll(items.sortedByDescending { it.name })
-        notifyDataSetChanged()
+        submitList(this.listItems)
     }
 
     fun deleteItem(position: Int) {
