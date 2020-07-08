@@ -91,6 +91,7 @@ class ArticlesAdapter (private val adapterContext: Context, private val rootView
     fun setItems(itemList: List<ArticleResponseEntity>) {
         this.articleList = mutableListOf()
         this.articleList.addAll(itemList)
+        this.articleList.distinct()
         origin++
         notifyDataSetChanged()
     }
