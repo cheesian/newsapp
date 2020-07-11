@@ -15,6 +15,10 @@
             android:title="@string/news_sources"
             android:icon="@drawable/ic_wifi_accent_24dp"/>
 
+        <item android:id="@+id/feedback_menu"
+            android:title="@string/feedback"
+            android:icon="@drawable/ic_feedback"/>
+
     </group>
 
 </menu>
