@@ -10,24 +10,9 @@
             type="com.programiqsolutions.news.views.fragments.feedback.FeedbackViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <Spinner
-            android:id="@+id/spinner_feedback"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/layout_background_shape"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/spinner_text" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_content"
@@ -39,6 +24,25 @@
             app:layout_constraintTop_toBottomOf="@id/spinner_feedback">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:mutableError="@{viewModel.spinnerError}">
+
+                <Spinner
+                    android:id="@+id/spinner_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_background_shape"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    tools:listitem="@layout/spinner_text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,10 +50,9 @@
                 app:counterMaxLength="150"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_spinner"
                 app:mutableError="@{viewModel.feedBackError}"
-                app:mutableFeedbackIcon="@{viewModel.spinnerSelectedItem}"
-                app:startIconContentDescription="Suggestion">
+                app:mutableFeedbackIcon="@{viewModel.spinnerSelectedItem}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tie_feedback"
@@ -67,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="0dp"
                 android:drawableStart="@drawable/ic_send"
                 android:onClick="@{() -> viewModel.sendFeedBack()}"
                 android:text="@string/send"
@@ -75,6 +79,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
