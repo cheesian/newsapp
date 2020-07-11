@@ -39,6 +39,9 @@ class Feedback: Fragment() {
         viewModel.message.observe(viewLifecycleOwner, Observer {
             snackBar(view = binding.root, message = it)
         })
+        viewModel.response.observe(viewLifecycleOwner, Observer {
+            viewModel.consumeResponse(it)
+        })
         spinner = binding.spinnerFeedback
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -52,6 +55,7 @@ class Feedback: Fragment() {
                 id: Long
             ) {
                 viewModel.spinnerSelectedItem.value = spinner.selectedItem.toString()
+                viewModel.spinnerError.value = null
             }
 
         }

@@ -2,11 +2,19 @@ package com.programiqsolutions.news.adapters
 
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import com.programiqsolutions.news.R
 
 object BindingAdapter {
+
+    @JvmStatic
+    @BindingAdapter("app:progressBarVisibility")
+    fun setProgressBarVisibility(view: View, visibility: Int?) {
+        view as ProgressBar
+        view.visibility = visibility ?: View.GONE
+    }
 
     @JvmStatic
     @BindingAdapter("app:mutableError")
