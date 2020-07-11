@@ -5,6 +5,9 @@
 
     <data class="FeedbackBinding">
 
+        <variable
+            name="viewModel"
+            type="com.programiqsolutions.news.views.fragments.feedback.FeedbackViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +22,8 @@
             android:layout_marginTop="50dp"
             android:layout_marginEnd="15dp"
             android:background="@drawable/layout_background_shape"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,18 +43,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:counterEnabled="true"
-                app:counterMaxLength="60"
+                app:counterMaxLength="150"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
                 app:layout_constraintTop_toTopOf="parent"
-                app:startIconContentDescription="Suggestion"
-                app:startIconDrawable="@drawable/ic_light_bulb">
+                app:mutableError="@{viewModel.feedBackError}"
+                app:mutableFeedbackIcon="@{viewModel.spinnerSelectedItem}"
+                app:startIconContentDescription="Suggestion">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tie_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/type_feedback"
+                    android:text="@={viewModel.feedback}"
                     android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -61,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:drawableStart="@drawable/ic_send"
+                android:onClick="@{() -> viewModel.sendFeedBack()}"
                 android:text="@string/send"
                 app:layout_constraintEnd_toEndOf="@id/til_feedback"
                 app:layout_constraintTop_toBottomOf="@id/til_feedback" />

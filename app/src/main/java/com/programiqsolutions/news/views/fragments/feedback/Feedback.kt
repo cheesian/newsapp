@@ -4,12 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.programiqsolutions.news.NewsApp
+import com.programiqsolutions.news.R
+import com.programiqsolutions.news.VMFactory
 import com.programiqsolutions.news.databinding.FeedbackBinding
+import com.programiqsolutions.news.utils.Notify.toast
+import com.programiqsolutions.news.utils.PopulateSpinner.populateSpinner
+import javax.inject.Inject
 
 class Feedback: Fragment() {
 
     lateinit var binding: FeedbackBinding
+    lateinit var spinner: Spinner
+    lateinit var viewModel: FeedbackViewModel
+    @Inject lateinit var factory: VMFactory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -17,7 +29,29 @@ class Feedback: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        (requireContext().applicationContext as NewsApp).applicationComponent.inject(this)
         binding = FeedbackBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        viewModel = ViewModelProvider(this, factory).get(FeedbackViewModel::class.java)
+        binding.viewModel = viewModel
+        spinner = binding.spinnerFeedback
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                viewModel.spinnerSelectedItem.value = spinner.selectedItem.toString()
+                toast(requireContext(), viewModel.spinnerSelectedItem.value!!)
+            }
+
+        }
+        populateSpinner(spinner = spinner, context = requireContext(), arrayResource = R.array.feedbacks, textViewResource = R.layout.spinner_text)
         return binding.root
     }
 }
