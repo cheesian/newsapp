@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedbacks">
+        <item>@string/spinner_prompt</item>
+        <item>Positive feedback</item>
+        <item>Negative feedback</item>
+        <item>Improvement Suggestion</item>
+    </string-array>
+</resources>
