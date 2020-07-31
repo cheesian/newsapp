@@ -2,13 +2,11 @@ package com.programiqsolutions.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.programiqsolutions.news.data.repositories.AccountRepository
-import com.programiqsolutions.news.data.repositories.EverythingRepository
-import com.programiqsolutions.news.data.repositories.SourcesRepository
-import com.programiqsolutions.news.data.repositories.TopHeadlinesRepository
+import com.programiqsolutions.news.data.repositories.*
 import com.programiqsolutions.news.views.activities.main.viewModels.MainActivityViewModel
 import com.programiqsolutions.news.views.activities.start.viewModels.StartingViewModel
 import com.programiqsolutions.news.views.fragments.everything.viewModels.EverythingViewModel
+import com.programiqsolutions.news.views.fragments.feedback.FeedbackViewModel
 import com.programiqsolutions.news.views.fragments.sources.viewModels.SourcesViewModel
 import com.programiqsolutions.news.views.fragments.start.viewModels.SignInViewModel
 import com.programiqsolutions.news.views.fragments.start.viewModels.SignUpViewModel
@@ -25,7 +23,8 @@ class VMFactory @Inject constructor(
     var everythingRepository: EverythingRepository,
     var sourcesRepository: SourcesRepository,
     var topHeadlinesRepository: TopHeadlinesRepository,
-    var accountRepository: AccountRepository
+    var accountRepository: AccountRepository,
+    var feedbackRepository: FeedbackRepository
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -77,6 +76,11 @@ class VMFactory @Inject constructor(
             return StartingViewModel(
                 accountRepository
             ) as T
+        }
+
+        if (modelClass.isAssignableFrom(FeedbackViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return FeedbackViewModel(feedbackRepository) as T
         }
 
         throw IllegalArgumentException("Unknown class name")

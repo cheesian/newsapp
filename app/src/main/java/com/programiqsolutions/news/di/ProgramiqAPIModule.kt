@@ -2,6 +2,7 @@ package com.programiqsolutions.news.di
 
 import com.programiqsolutions.news.data.Constants.PROGRAMIQ_RETROFIT
 import com.programiqsolutions.news.data.Constants.PROGRAMIQ_TOKEN_RETROFIT
+import com.programiqsolutions.news.data.request.FeedbackApiService
 import com.programiqsolutions.news.data.request.SignInApiService
 import com.programiqsolutions.news.data.request.SignUpApiService
 import com.programiqsolutions.news.data.request.UserApiService
@@ -36,6 +37,13 @@ class ProgramiqAPIModule {
     fun provideUserApiService(@Named(PROGRAMIQ_TOKEN_RETROFIT) retrofit: Retrofit): UserApiService {
 
         return retrofit.create(UserApiService::class.java)
+
+    }
+
+    @Provides
+    fun provideFeedbackApiService(@Named(PROGRAMIQ_TOKEN_RETROFIT) retrofit: Retrofit): FeedbackApiService {
+
+        return retrofit.create(FeedbackApiService::class.java)
 
     }
 

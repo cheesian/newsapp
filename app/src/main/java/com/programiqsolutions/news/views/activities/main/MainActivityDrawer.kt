@@ -181,6 +181,12 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
 
+            R.id.feedback_menu -> {
+                checkIfIsCurrentFragment(R.id.feedback_fragment) {
+                    replaceFragment(R.id.feedback_fragment)
+                }
+            }
+
         }
         return true
     }

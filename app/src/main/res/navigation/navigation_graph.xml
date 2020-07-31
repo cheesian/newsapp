@@ -29,10 +29,16 @@
         android:name="com.programiqsolutions.news.views.fragments.sources.Sources"
         tools:layout="@layout/fragment_sources">
         <action
-            android:id="@+id/action_sources_fragment_to_top_headlines_fragment"
-            app:destination="@id/top_headlines_fragment"
-            app:popUpTo="@id/top_headlines_fragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_sources_fragment_to_feedback_fragment"
+            app:destination="@id/feedback_fragment" />
+    </fragment>
+
+    <fragment android:id="@+id/feedback_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.feedback.Feedback"
+        tools:layout="@layout/fragment_feedback">
+        <action
+            android:id="@+id/action_feedback_fragment_to_top_headlines_fragment"
+            app:destination="@id/top_headlines_fragment" />
     </fragment>
 
 </navigation>

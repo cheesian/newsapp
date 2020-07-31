@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="FeedbackBinding">
+
+        <variable
+            name="viewModel"
+            type="com.programiqsolutions.news.views.fragments.feedback.FeedbackViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintTop_toBottomOf="@id/spinner_feedback">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:progressBarVisibility="@{viewModel.progressBarVisibility}"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:mutableError="@{viewModel.spinnerError}">
+
+                <Spinner
+                    android:id="@+id/spinner_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_background_shape"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    tools:listitem="@layout/spinner_text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="150"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintTop_toBottomOf="@id/til_spinner"
+                app:mutableError="@{viewModel.feedBackError}"
+                app:mutableFeedbackIcon="@{viewModel.spinnerSelectedItem}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tie_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/type_feedback"
+                    android:text="@={viewModel.feedback}"
+                    android:textColor="@color/black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/button_send"
+                style="@style/image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="0dp"
+                android:drawableStart="@drawable/ic_send"
+                android:onClick="@{() -> viewModel.sendFeedBack()}"
+                android:text="@string/send"
+                app:layout_constraintEnd_toEndOf="@id/til_feedback"
+                app:layout_constraintTop_toBottomOf="@id/til_feedback" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>

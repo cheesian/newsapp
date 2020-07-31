@@ -12,4 +12,5 @@ object URLs {
     const val SIGN_UP_ENDPOINT = "auth/signup"
     const val SIGN_IN_ENDPOINT = "auth/login"
     const val GET_USER_ENDPOINT = "auth/user"
+    const val FEEDBACK_ENDPOINT = "feedback"
 }

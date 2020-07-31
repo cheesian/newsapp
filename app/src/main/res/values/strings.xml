@@ -42,4 +42,7 @@
     <string name="sign_up_to_register">SIGN UP TO CREATE AN ACCOUNT</string>
     <string name="sign_in_to_account">LOGIN IF YOU HAVE AN ACCOUNT</string>
     <string name="error_try_again">Something went wrong. Please try again</string>
+    <string name="type_feedback">Type your feedback ...</string>
+    <string name="send">Send</string>
+    <string name="feedback">Feedback</string>
 </resources>
