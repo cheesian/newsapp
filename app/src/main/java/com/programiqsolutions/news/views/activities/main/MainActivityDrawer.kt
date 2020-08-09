@@ -187,6 +187,10 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
 
+            R.id.optimize_menu -> {
+
+            }
+
         }
         return true
     }
