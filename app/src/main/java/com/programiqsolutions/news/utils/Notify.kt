@@ -13,7 +13,9 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.programiqsolutions.news.R
 import com.programiqsolutions.news.data.Constants.CHANNEL_ID
+import com.programiqsolutions.news.data.Constants.NOTIFICATION_FAILURE
 import com.programiqsolutions.news.data.Constants.NOTIFICATION_ID
+import com.programiqsolutions.news.data.Constants.SLEEP_DELAY_MILLIS
 import com.programiqsolutions.news.data.Constants.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION
 import com.programiqsolutions.news.data.Constants.VERBOSE_NOTIFICATION_CHANNEL_NAME
 import retrofit2.HttpException
@@ -92,6 +94,15 @@ object Notify {
             .setVibrate(LongArray(0))
 
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
+    }
+
+    fun sleepNotification() {
+//        This function is intended for use where the notification is shown on the notification bar
+        try {
+            Thread.sleep(SLEEP_DELAY_MILLIS, 0)
+        } catch (exception: InterruptedException) {
+            log(tag = NOTIFICATION_FAILURE, message = exception.message.toString())
+        }
     }
 
 }

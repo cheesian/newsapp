@@ -17,6 +17,8 @@ object Constants {
 //    App Constants
     const val PASSWORD_LENGTH = 5
     const val STORAGE_PERMISSIONS_REQUEST_CODE = 34500
+    const val SLEEP_DELAY_MILLIS: Long = 3000
+    const val MAX_ARTICLE_COUNT = 50
     const val PREFERENCE_FILE = "com.example.news.newsPreference"
 
 //    Worker threads
@@ -26,9 +28,8 @@ object Constants {
     const val NOTIFICATION_ID = 1
 
 //    Tags and Keys
-    const val TOP_HEADLINES_REPOSITORY_BUNDLE_KEY = "topHeadlines"
-    const val EVERYTHING_REPOSITORY_BUNDLE_KEY = "everything"
     const val TOP_HEADLINES_WORKER_FAILURE = "THWorkerFailure"
     const val EVERYTHING_WORKER_FAILURE = "EWorkerFailure"
+    const val NOTIFICATION_FAILURE = "Notification"
 
 }
