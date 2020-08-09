@@ -1,11 +1,21 @@
 package com.programiqsolutions.news.utils
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
+import com.programiqsolutions.news.R
+import com.programiqsolutions.news.data.Constants.CHANNEL_ID
+import com.programiqsolutions.news.data.Constants.NOTIFICATION_ID
+import com.programiqsolutions.news.data.Constants.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION
+import com.programiqsolutions.news.data.Constants.VERBOSE_NOTIFICATION_CHANNEL_NAME
 import retrofit2.HttpException
 import java.net.UnknownHostException
 
@@ -58,6 +68,30 @@ object Notify {
                 else -> "Something went wrong. Please try again"
             }
         }
+    }
+
+    fun makeStatusNotification(title: String, message: String, context: Context) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            This only works on API > 26
+            val name = VERBOSE_NOTIFICATION_CHANNEL_NAME
+            val description = VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance)
+            channel.description = description
+
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+            notificationManager?.createNotificationChannel(channel)
+        }
+
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setVibrate(LongArray(0))
+
+        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }
 
 }

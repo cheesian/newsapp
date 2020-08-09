@@ -18,4 +18,17 @@ object Constants {
     const val PASSWORD_LENGTH = 5
     const val STORAGE_PERMISSIONS_REQUEST_CODE = 34500
     const val PREFERENCE_FILE = "com.example.news.newsPreference"
+
+//    Worker threads
+    const val VERBOSE_NOTIFICATION_CHANNEL_NAME = "WorkManager Notifications"
+    const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION = "Displays notifications on the notification bar as the thread executes"
+    const val CHANNEL_ID = "VERBOSE NOTIFICATION"
+    const val NOTIFICATION_ID = 1
+
+//    Tags and Keys
+    const val TOP_HEADLINES_REPOSITORY_BUNDLE_KEY = "topHeadlines"
+    const val EVERYTHING_REPOSITORY_BUNDLE_KEY = "everything"
+    const val TOP_HEADLINES_WORKER_FAILURE = "THWorkerFailure"
+    const val EVERYTHING_WORKER_FAILURE = "EWorkerFailure"
+
 }
