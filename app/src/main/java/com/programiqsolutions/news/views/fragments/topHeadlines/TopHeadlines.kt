@@ -71,7 +71,7 @@ class TopHeadlines : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (context!!.applicationContext as NewsApp).applicationComponent.inject(this)
+        (requireContext().applicationContext as NewsApp).applicationComponent.inject(this)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top_headlines, container, false)
         binding.lifecycleOwner = this
         fragContext = binding.root.context
@@ -80,7 +80,7 @@ class TopHeadlines : Fragment() {
         recyclerView = binding.topHeadlinesRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = ArticlesAdapter(context!!, binding.root)
+        val adapter = ArticlesAdapter(requireContext(), binding.root)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
@@ -122,7 +122,7 @@ class TopHeadlines : Fragment() {
                     sourceList.add(sourceId)
                 }
                 sourceList.sort()
-                populateSpinner(spinner = sourceSpinner, context = context!!, arrayList = sourceList, textViewResource = R.layout.spinner_text)
+                populateSpinner(spinner = sourceSpinner, context = requireContext(), arrayList = sourceList, textViewResource = R.layout.spinner_text)
             }
         })
 
