@@ -91,6 +91,7 @@ class ArticlesAdapter (
     fun setItems(itemList: List<ArticleResponseEntity>) {
         this.articleList = mutableListOf()
         this.articleList.addAll(itemList)
+        this.articleList.distinct()
         origin++
         submitList(this.articleList)
     }

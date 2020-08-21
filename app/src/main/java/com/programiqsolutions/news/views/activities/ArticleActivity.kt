@@ -76,23 +76,5 @@ class ArticleActivity: AppCompatActivity() {
             progressBar.visibility = View.GONE
         }
 
-        override fun onReceivedError(
-            view: WebView?,
-            request: WebResourceRequest?,
-            error: WebResourceError?
-        ) {
-            log(message = error.toString())
-            val errorMessage: String = if (error is UnknownHostException) {
-                "Check your connection and try again"
-            } else {
-                "Something went wrong. Please try again"
-            }
-            snackBar(
-                view = binding.root,
-                message = errorMessage,
-                actionMessage = "Reload",
-                function = { webView.loadUrl(url) }
-            )
-        }
     }
 }

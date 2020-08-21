@@ -6,6 +6,9 @@ import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import com.programiqsolutions.news.R
+import com.programiqsolutions.news.data.Constants
+import com.programiqsolutions.news.data.Constants.FEEDBACK_CONGRATS_OPTION
+import com.programiqsolutions.news.data.Constants.FEEDBACK_ERROR_OPTION
 
 object BindingAdapter {
 
@@ -32,11 +35,11 @@ object BindingAdapter {
         val icon: Drawable
         val contentDesc: String
         when (feedback) {
-            "Positive feedback" -> {
+            FEEDBACK_CONGRATS_OPTION -> {
                 icon = context.getDrawable(R.drawable.ic_happy)!!
                 contentDesc = "Happy"
             }
-            "Negative feedback" -> {
+            FEEDBACK_ERROR_OPTION -> {
                 icon = context.getDrawable(R.drawable.ic_disappointed)!!
                 contentDesc = "Disappointed"
             }

@@ -31,6 +31,7 @@ import com.programiqsolutions.news.views.activities.start.StartingActivity
 import com.programiqsolutions.news.views.activities.main.viewModels.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.programiqsolutions.news.services.background.storage.viewModel.WorkerViewModel
 import javax.inject.Inject
 
 
@@ -50,6 +51,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var user: UserEntity
     @Inject lateinit var factory: VMFactory
     lateinit var viewModel: MainActivityViewModel
+    lateinit var workerViewModel: WorkerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +59,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         setFullScreen(this)
         binding = DataBindingUtil.setContentView(this, R.layout.drawer_activity_main)
         viewModel = ViewModelProvider(this, factory).get(MainActivityViewModel::class.java)
+        workerViewModel = ViewModelProvider(this).get(WorkerViewModel::class.java)
         user = viewModel.getUserList()[0]
         viewModel.users.observe(this, Observer {
             if (it.isNullOrEmpty()) {
@@ -185,6 +188,10 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 checkIfIsCurrentFragment(R.id.feedback_fragment) {
                     replaceFragment(R.id.feedback_fragment)
                 }
+            }
+
+            R.id.optimize_menu -> {
+                workerViewModel.deleteExcessiveArticles()
             }
 
         }

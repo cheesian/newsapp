@@ -1,6 +1,9 @@
 package com.programiqsolutions.news.di
 
 import android.app.Application
+import com.programiqsolutions.news.services.background.storage.EverythingWorker
+import com.programiqsolutions.news.services.background.storage.TopHeadlinesWorker
+import com.programiqsolutions.news.services.background.storage.viewModel.WorkerViewModel
 import com.programiqsolutions.news.views.activities.main.MainActivityDrawer
 import com.programiqsolutions.news.views.activities.start.StartingActivity
 import com.programiqsolutions.news.views.fragments.everything.Everything
@@ -29,5 +32,8 @@ interface ApplicationComponent {
     fun inject(activity: MainActivityDrawer)
     fun inject(activity: StartingActivity)
     fun inject(fragment: Feedback)
+    fun inject(worker: EverythingWorker)
+    fun inject(worker: TopHeadlinesWorker)
+
 
 }

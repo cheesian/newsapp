@@ -17,14 +17,10 @@ class SwipeToDismiss (
 
 //    Example usage in activity:
 //    ItemTouchHelper(SwipeToDismiss(adapter)).attachToRecyclerView(recyclerView)
-    private var adapterType: Int
-
-    init {
-        adapterType = when {
-            articlesAdapter != null -> 1
-            sourcesAdapter != null -> 2
-            else -> 0
-        }
+    private var adapterType: Int = when {
+        articlesAdapter != null -> 1
+        sourcesAdapter != null -> 2
+        else -> 0
     }
 
     override fun onMove(

@@ -19,6 +19,10 @@
             android:title="@string/feedback"
             android:icon="@drawable/ic_feedback"/>
 
+        <item android:id="@+id/optimize_menu"
+            android:title="@string/optimize_app"
+            android:icon="@drawable/ic_disc_full_24"/>
+
     </group>
 
 </menu>
