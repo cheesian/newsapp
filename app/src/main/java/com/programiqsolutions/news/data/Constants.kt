@@ -14,6 +14,15 @@ object Constants {
     const val PROGRAMIQ_TOKEN_RETROFIT = "programiqTokenRetrofit"
     const val SIMPLE_OKHTTP = "simpleOkhttp"
 
+//    Feedback Endpoint
+    const val FEEDBACK_CONGRATS_OPTION = "I like something about the app"
+    const val FEEDBACK_CONGRATS_VALUE = "congratulations"
+    const val FEEDBACK_ERROR_OPTION = "I dislike something about the app"
+    const val FEEDBACK_ERROR_VALUE = "error"
+    const val FEEDBACK_SUGGESTION_OPTION = "I have an improvement suggestion"
+    const val FEEDBACK_SUGGESTION_VALUE = "suggestion"
+    const val FEEDBACK_DEFAULT_OPTION = "Click & Select the Type of Feedback"
+
 //    App Constants
     const val PASSWORD_LENGTH = 5
     const val STORAGE_PERMISSIONS_REQUEST_CODE = 34500

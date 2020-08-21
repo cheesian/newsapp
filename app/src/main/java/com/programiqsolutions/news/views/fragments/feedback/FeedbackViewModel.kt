@@ -3,8 +3,14 @@ package com.programiqsolutions.news.views.fragments.feedback
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.programiqsolutions.news.data.Constants.FEEDBACK_CONGRATS_OPTION
+import com.programiqsolutions.news.data.Constants.FEEDBACK_CONGRATS_VALUE
+import com.programiqsolutions.news.data.Constants.FEEDBACK_DEFAULT_OPTION
+import com.programiqsolutions.news.data.Constants.FEEDBACK_ERROR_OPTION
+import com.programiqsolutions.news.data.Constants.FEEDBACK_ERROR_VALUE
+import com.programiqsolutions.news.data.Constants.FEEDBACK_SUGGESTION_OPTION
+import com.programiqsolutions.news.data.Constants.FEEDBACK_SUGGESTION_VALUE
 import com.programiqsolutions.news.data.repositories.FeedbackRepository
-import com.programiqsolutions.news.data.request.feedback.Comment
 import com.programiqsolutions.news.data.request.feedback.FeedbackRequest
 import com.programiqsolutions.news.data.response.GeneralResponse
 import com.programiqsolutions.news.utils.Notify.setErrorMessage
@@ -18,14 +24,14 @@ class FeedbackViewModel (
 
     val feedback = MutableLiveData<String>()
     val feedBackError = MutableLiveData<String>()
-    val spinnerSelectedItem = MutableLiveData<String>("Click & Select the Type of Feedback")
+    val spinnerSelectedItem = MutableLiveData<String>(FEEDBACK_DEFAULT_OPTION)
     val spinnerError = MutableLiveData<String>()
     val message = MutableLiveData<String>()
     val disposable = CompositeDisposable()
     val response = MutableLiveData<GeneralResponse>()
     val progressBarVisibility = MutableLiveData<Int>(View.GONE)
 
-    fun sendFeedbackToApi(){
+    private fun sendFeedbackToApi(){
         disposable.add(
             feedbackRepository.sendFeedback(buildFeedbackRequest())
                 .subscribeOn(Schedulers.io())
@@ -44,7 +50,7 @@ class FeedbackViewModel (
     fun sendFeedBack() {
         resetErrors()
         when {
-            spinnerSelectedItem.value == "Click & Select the Type of Feedback" -> {
+            spinnerSelectedItem.value == FEEDBACK_DEFAULT_OPTION -> {
                 spinnerError.value = "Click & Select"
             }
             feedback.value.isNullOrBlank() -> {
@@ -64,8 +70,14 @@ class FeedbackViewModel (
 
     private fun buildFeedbackRequest(): FeedbackRequest {
         return FeedbackRequest(
-            user = feedbackRepository.getUsers()[0].email,
-            comment = Comment(text = feedback.value!!, type = spinnerSelectedItem.value!!)
+            email = feedbackRepository.getUsers()[0].email,
+            text = feedback.value!!,
+            type = when (spinnerSelectedItem.value!!) {
+                FEEDBACK_CONGRATS_OPTION -> FEEDBACK_CONGRATS_VALUE
+                FEEDBACK_ERROR_OPTION -> FEEDBACK_ERROR_VALUE
+                FEEDBACK_SUGGESTION_OPTION -> FEEDBACK_SUGGESTION_VALUE
+                else -> ""
+            }
         )
     }
 
