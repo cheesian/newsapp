@@ -52,10 +52,7 @@ class StartingActivity: AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_starting)
         viewModel = ViewModelProvider(this, factory).get(StartingViewModel::class.java)
         viewModel.users.observe(this, Observer {
-            val userList = it.filter { userEntity ->
-                userEntity.email != "janet@doe.com"
-            }
-            if (userList.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 startActivity(Intent(this, MainActivityDrawer::class.java))
                 finish()
             }

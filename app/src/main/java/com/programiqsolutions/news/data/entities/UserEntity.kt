@@ -11,8 +11,8 @@ Created by ian
 
 data class UserEntity (
 
-    val username: String = "Janet Doe",
-    val email: String = "janet@doe.com",
-    val programiq_token: String = "Dummy Token"
+    val username: String,
+    val email: String,
+    val programiq_token: String
 
 )
