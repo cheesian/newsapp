@@ -27,7 +27,7 @@ object Constants {
     const val PASSWORD_LENGTH = 5
     const val STORAGE_PERMISSIONS_REQUEST_CODE = 34500
     const val SLEEP_DELAY_MILLIS: Long = 3000
-    const val MAX_ARTICLE_COUNT = 50
+    const val MIN_ARTICLE_COUNT = 30
     const val PREFERENCE_FILE = "com.example.news.newsPreference"
 
 //    Worker threads

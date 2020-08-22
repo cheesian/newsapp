@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import com.programiqsolutions.news.NewsApp
 import com.programiqsolutions.news.R
 import com.programiqsolutions.news.data.Constants.EVERYTHING_WORKER_FAILURE
-import com.programiqsolutions.news.data.Constants.MAX_ARTICLE_COUNT
+import com.programiqsolutions.news.data.Constants.MIN_ARTICLE_COUNT
 import com.programiqsolutions.news.data.repositories.EverythingRepository
 import com.programiqsolutions.news.utils.Notify.log
 import com.programiqsolutions.news.utils.Notify.makeStatusNotification
@@ -31,8 +31,8 @@ class EverythingWorker(
     }
 
     override fun doWork(): Result {
-        makeStatusNotification(applicationContext.getString(R.string.app_name), "Reducing Everything Articles", applicationContext)
-        sleepNotification()
+//        makeStatusNotification(applicationContext.getString(R.string.app_name), "Reducing Everything Articles", applicationContext)
+//        sleepNotification()
         return try {
             reduceEverything(everythingRepository)
             Result.success()
@@ -47,9 +47,9 @@ class EverythingWorker(
             it.publishedAt
         }
         list?.let {
-            if (it.size > MAX_ARTICLE_COUNT) {
+            if (it.size > MIN_ARTICLE_COUNT) {
                 for (headline in it) {
-                    if (it.indexOf(headline) >= MAX_ARTICLE_COUNT) repository.deleteArticle(headline)
+                    if (it.indexOf(headline) >= MIN_ARTICLE_COUNT) repository.deleteArticle(headline)
                 }
             }
         }
