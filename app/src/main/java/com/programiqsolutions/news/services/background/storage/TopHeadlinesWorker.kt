@@ -52,8 +52,8 @@ class TopHeadlinesWorker(
         }
         val finalSize = repository.getArticleList().size.toString()
         when (initialSize){
-             finalSize -> makeStatusNotification("TopHeadlines are already optimized", "Minimum number of articles is $MIN_ARTICLE_COUNT", applicationContext)
-            else -> makeStatusNotification("Reduced TopHeadlines from $initialSize to $finalSize", "Minimum number of articles is $MIN_ARTICLE_COUNT", applicationContext)
+             finalSize -> makeStatusNotification("Trending News articles are already optimized", "Minimum number of articles is $MIN_ARTICLE_COUNT", applicationContext)
+            else -> makeStatusNotification("Reduced Trending News articles from $initialSize to $finalSize", "Minimum number of articles is $MIN_ARTICLE_COUNT", applicationContext)
         }
         sleepNotification()
     }
