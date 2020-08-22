@@ -33,6 +33,10 @@ class TopHeadlinesRepository @Inject constructor(
         return topHeadlinesDao.getArticles()
     }
 
+    fun getArticleList(): List<TopHeadlinesResponseEntity> {
+        return topHeadlinesDao.getArticleList()
+    }
+
     fun deleteAllArticles(){
         topHeadlinesDao.deleteAllArticles()
     }
