@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.programiqsolutions.news.data.Constants.LANGUAGE
 import com.programiqsolutions.news.data.repositories.SourcesRepository
 import com.programiqsolutions.news.data.response.GeneralResponse
+import com.programiqsolutions.news.data.response.sources.SourceResponseEntity
 import com.programiqsolutions.news.utils.Notify
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,7 +25,7 @@ class SourcesViewModel (
     private val disposable = CompositeDisposable()
     var message: MutableLiveData<String> = MutableLiveData()
     var visibility: MutableLiveData<Int> = MutableLiveData()
-    var sourceList = sourcesRepository.getLocalSources()
+    var sourceList = MutableLiveData<List<SourceResponseEntity>>(sourcesRepository.getLocalSourceList())
 
     fun getGeneralResponse(): MutableLiveData<GeneralResponse> {
         return generalResponse

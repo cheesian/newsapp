@@ -25,7 +25,7 @@ class TopHeadlinesViewModel(
     private val disposable = CompositeDisposable()
     var message: MutableLiveData<String> = MutableLiveData()
     var visibility: MutableLiveData<Int> = MutableLiveData()
-    var articleList = topHeadlinesRepository.getArticles()
+    var articleList = MutableLiveData<List<TopHeadlinesResponseEntity>>(topHeadlinesRepository.getArticleList())
     var sourceList = topHeadlinesRepository.getSources()
     var lastRequest = MutableLiveData<HashMap<String, String>>()
     var nextPageList = MutableLiveData<List<TopHeadlinesResponseEntity>>()

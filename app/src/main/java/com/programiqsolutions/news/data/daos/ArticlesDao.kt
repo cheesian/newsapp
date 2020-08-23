@@ -12,6 +12,7 @@ Created by ian
 @Dao
 interface ArticlesDao {
 
+//    Not working
     @Query("SELECT * from articles")
     fun getArticles(): LiveData<List<ArticleResponseEntity>>
 

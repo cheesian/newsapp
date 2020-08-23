@@ -27,7 +27,7 @@ class EverythingViewModel (
     private val disposable = CompositeDisposable()
     var message: MutableLiveData<String> = MutableLiveData()
     var visibility: MutableLiveData<Int> = MutableLiveData()
-    var articleList = everythingRepository.getArticles()
+    var articleList = MutableLiveData<List<ArticleResponseEntity>>(everythingRepository.getArticleList())
     var sourceList = everythingRepository.getSources()
     var lastRequest = MutableLiveData<HashMap<String, String>>()
     var nextPageList = MutableLiveData<List<ArticleResponseEntity>>()

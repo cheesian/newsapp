@@ -11,8 +11,12 @@ Created by ian
 @Dao
 interface SourcesDao {
 
+//    Not working
     @Query("SELECT * FROM sources")
     fun getSources(): LiveData<List<SourceResponseEntity>>
+
+    @Query("SELECT * FROM sources")
+    fun getSourceList(): List<SourceResponseEntity>
 
     @Query("DELETE FROM sources")
     fun deleteAllSources()
