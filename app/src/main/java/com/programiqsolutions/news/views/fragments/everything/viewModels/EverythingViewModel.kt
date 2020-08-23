@@ -88,8 +88,6 @@ class EverythingViewModel (
     }
 
     fun getNextPage(map: HashMap<String, String>) {
-//        This function will not store data using ROOM
-//        The purpose is to save on memory usage
         recordLastQuery(map)
         disposable.add(
             everythingRepository.getCustomEverything(map)
@@ -100,7 +98,14 @@ class EverythingViewModel (
                     { result ->
                         visibility.value = View.GONE
                         result.articleResponseEntities.let {
-                            nextPageList.value = it
+                            nextPageList.value = with (it) {
+                                filter {articleResponseEntity ->
+//                                Eliminate duplicate articles by checking if the article exists in the stored list first
+                                    articleResponseEntity !in everythingRepository.getArticleList()
+                                }
+                                everythingRepository.insertArticleList(this)
+                                this
+                            }
                         }
                     },
                     { error ->

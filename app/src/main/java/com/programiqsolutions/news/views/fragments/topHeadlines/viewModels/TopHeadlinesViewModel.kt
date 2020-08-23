@@ -104,8 +104,6 @@ class TopHeadlinesViewModel(
     }
 
     fun getNextPage(map: HashMap<String, String>) {
-//        This function will not store data using ROOM
-//        The purpose is to save on memory usage
         recordLastQuery(map)
         disposable.add(
             topHeadlinesRepository.getCustomTopHeadlines(map)
@@ -116,7 +114,14 @@ class TopHeadlinesViewModel(
                     { result ->
                         visibility.value = View.GONE
                         result.articleResponseEntities.let {
-                            nextPageList.value = it
+                            nextPageList.value = with (it) {
+                                filter {topHeadlinesResponseEntity ->
+//                                Eliminate duplicate articles by checking if the article exists in the stored list first
+                                    topHeadlinesResponseEntity !in topHeadlinesRepository.getArticleList()
+                                }
+                                topHeadlinesRepository.insertArticleList(this)
+                                this
+                            }
                         }
                     },
                     { error ->
