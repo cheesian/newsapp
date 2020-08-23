@@ -293,16 +293,10 @@ class TopHeadlines : Fragment() {
             }
         }
     }
-//    when you start the app for the first time it does not get the articles on its own, you have to swipe down
-//    this function checks solves that bug
-    private fun populateViewIfEmpty () {
-        val list = topHeadlinesViewModel?.articleList?.value
-        if (list.isNullOrEmpty()) topHeadlinesViewModel?.getTopHeadlines()
-    }
 
     private fun initializeView() {
 
-        populateViewIfEmpty()
+        topHeadlinesViewModel?.getTopHeadlines()
 
         ftbCancel.setOnClickListener {
             reset()

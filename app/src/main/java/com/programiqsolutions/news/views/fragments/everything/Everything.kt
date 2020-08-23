@@ -316,16 +316,9 @@ class Everything : Fragment() {
         }
     }
 
-//    when you start the app for the first time it does not get the articles on its own, you have to swipe down
-//    this function checks solves that bug
-    private fun populateViewIfEmpty() {
-        val list = everythingViewModel?.articleList?.value
-        if (list.isNullOrEmpty()) everythingViewModel?.getEverythingWithoutDates()
-    }
-
     private fun initializeView() {
 
-        populateViewIfEmpty()
+        everythingViewModel?.getEverythingWithoutDates()
 
         Hide.hide(datePicker)
 
