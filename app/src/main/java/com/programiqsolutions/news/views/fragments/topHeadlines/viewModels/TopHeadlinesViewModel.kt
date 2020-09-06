@@ -25,7 +25,7 @@ class TopHeadlinesViewModel(
     private val disposable = CompositeDisposable()
     var message: MutableLiveData<String> = MutableLiveData()
     var visibility: MutableLiveData<Int> = MutableLiveData()
-    var articleList = MutableLiveData<List<TopHeadlinesResponseEntity>>(topHeadlinesRepository.getArticleList())
+    var articleList = MutableLiveData<List<TopHeadlinesResponseEntity>>()
     var sourceList = topHeadlinesRepository.getSources()
     var lastRequest = MutableLiveData<HashMap<String, String>>()
     var nextPageList = MutableLiveData<List<TopHeadlinesResponseEntity>>()
@@ -41,15 +41,19 @@ class TopHeadlinesViewModel(
                 log(message = "Status.SUCCESS")
                 visibility.value = View.GONE
                 generalResponse.topResponseEntity?.articleResponseEntities?.let { list ->
-                    topHeadlinesRepository.insertArticleList(list)
-                    for (entity in list) {
-                        entity.sourceResponseEntity?.let {
-                            if (!it.id.isNullOrBlank())
-                            topHeadlinesRepository.insertSource(it)
+                    nextPageList.value = with (list) {
+                        filter {topHeadlinesResponseEntity ->
+//                                Eliminate duplicate articles by checking if the article exists in the stored list first
+                            topHeadlinesResponseEntity !in topHeadlinesRepository.getArticleList()
                         }
+                        filter {topHeadlinesResponseEntity ->
+//                                Eliminate articles with blank source ids
+                            !topHeadlinesResponseEntity.sourceResponseEntity?.id.isNullOrBlank()
+                        }
+                        topHeadlinesRepository.insertArticleList(this)
+                        message.value = "Found $size articles"
+                        this
                     }
-                    val size = list.size
-                    message.value = "Found $size articles"
                 }
             }
 
@@ -91,14 +95,8 @@ class TopHeadlinesViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { generalResponse.value = GeneralResponse.loading() }
                 .subscribe(
-                    { result ->
-                        if (!result.articleResponseEntities.isNullOrEmpty())
-                            topHeadlinesRepository.deleteAllArticles()
-                        generalResponse.value = GeneralResponse.topResponseSuccess(result)
-                    },
-                    { error ->
-                        generalResponse.value = GeneralResponse.error(error)
-                    }
+                    { result -> generalResponse.value = GeneralResponse.topResponseSuccess(result) },
+                    { error -> generalResponse.value = GeneralResponse.error(error) }
                 )
         )
     }
@@ -110,31 +108,20 @@ class TopHeadlinesViewModel(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { visibility.value = View.VISIBLE }
-                .subscribe(
-                    { result ->
-                        visibility.value = View.GONE
-                        result.articleResponseEntities.let {
-                            nextPageList.value = with (it) {
-                                filter {topHeadlinesResponseEntity ->
-//                                Eliminate duplicate articles by checking if the article exists in the stored list first
-                                    topHeadlinesResponseEntity !in topHeadlinesRepository.getArticleList()
-                                }
-                                topHeadlinesRepository.insertArticleList(this)
-                                this
-                            }
-                        }
-                    },
-                    { error ->
-                        generalResponse.value = GeneralResponse.error(error)
-                    }
+                .subscribe (
+                    { result -> generalResponse.value = GeneralResponse.topResponseSuccess(result) },
+                    { error -> generalResponse.value = GeneralResponse.error(error) }
                 )
         )
     }
 
     private fun recordLastQuery (hashMap: HashMap<String, String>) {
 //        This function helps keep a record of the previous query for the refresh function
-        lastRequest.apply {
-            value = hashMap
-        }
+        lastRequest.value = hashMap
+    }
+
+    fun displayDatabaseArticles() {
+//        This function will run when the network connection is off to display the articles from the DB
+        articleList.value = topHeadlinesRepository.getArticleList()
     }
 }

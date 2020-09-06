@@ -26,6 +26,7 @@ import com.programiqsolutions.news.databinding.TopHeadlinesBinding
 import com.programiqsolutions.news.utils.*
 import com.programiqsolutions.news.utils.Hide.hide
 import com.programiqsolutions.news.utils.Notify.snackBar
+import com.programiqsolutions.news.utils.Notify.toast
 import com.programiqsolutions.news.utils.PopulateSpinner.populateSpinner
 import com.programiqsolutions.news.views.fragments.topHeadlines.viewModels.TopHeadlinesViewModel
 import kotlinx.android.synthetic.main.options.view.*
@@ -62,7 +63,7 @@ class TopHeadlines : Fragment() {
     @Inject
     lateinit var topHeadlinesViewModelFactory: VMFactory
     private lateinit var refreshLayout: SwipeRefreshLayout
-    private var currentPage: Int = 1
+    private var currentPage: Int = 0
     var map: HashMap<String, String> = HashMap()
     lateinit var prevRequest: HashMap<String, String>
 
@@ -110,8 +111,6 @@ class TopHeadlines : Fragment() {
         topHeadlinesViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
             adapter.setTopHeadlinesItems(it)
             layoutManager.scrollToPosition(it.size - 1)
-//            The current page should be reset to 1 when the user swipes to refresh or makes a custom request
-            currentPage = 1
         })
 
         topHeadlinesViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
@@ -131,9 +130,15 @@ class TopHeadlines : Fragment() {
         })
 
         topHeadlinesViewModel!!.message.observe(viewLifecycleOwner, Observer {
-            val action = when (it) {
-                "Fetching data ..." -> ""
-                else -> "Reload"
+            var action = "Reload"
+            when (it) {
+                "Check your connection and try again" -> {
+//                    This lambda tries to get the ROOM database articles when the network connection is down
+                    if (adapter.itemCount > 0) return@Observer
+                    toast(requireContext(), "Fetching the articles stored locally ...")
+                    topHeadlinesViewModel?.displayDatabaseArticles()
+                }
+                "Fetching data ..." -> action = ""
             }
             snackBar(
                 view = binding.root,
@@ -150,20 +155,25 @@ class TopHeadlines : Fragment() {
 
         topHeadlinesViewModel!!.nextPageList.observe(viewLifecycleOwner, Observer {nextPageList->
             currentPage++
-            nextPageList.forEach {
-                adapter.undoDelete(
-                    position = 0,
-                    articleResponseEntity = ArticleResponseEntity(
-                        author = it.author,
-                        title = it.title,
-                        description = it.description,
-                        url = it.url,
-                        urlToImage = it.urlToImage,
-                        publishedAt = it.publishedAt,
-                        content = it.content,
-                        sourceResponseEntity = it.sourceResponseEntity
+            if (currentPage == 1) {
+                adapter.setTopHeadlinesItems(nextPageList)
+                layoutManager.scrollToPosition(nextPageList.size - 1)
+            } else {
+                nextPageList.forEach {
+                    adapter.undoDelete(
+                        position = 0,
+                        articleResponseEntity = ArticleResponseEntity(
+                            author = it.author,
+                            title = it.title,
+                            description = it.description,
+                            url = it.url,
+                            urlToImage = it.urlToImage,
+                            publishedAt = it.publishedAt,
+                            content = it.content,
+                            sourceResponseEntity = it.sourceResponseEntity
+                        )
                     )
-                )
+                }
             }
         })
 
