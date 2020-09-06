@@ -27,7 +27,7 @@ class EverythingViewModel (
     private val disposable = CompositeDisposable()
     var message: MutableLiveData<String> = MutableLiveData()
     var visibility: MutableLiveData<Int> = MutableLiveData()
-    var articleList = MutableLiveData<List<ArticleResponseEntity>>(everythingRepository.getArticleList())
+    var articleList = MutableLiveData<List<ArticleResponseEntity>>()
     var sourceList = everythingRepository.getSources()
     var lastRequest = MutableLiveData<HashMap<String, String>>()
     var nextPageList = MutableLiveData<List<ArticleResponseEntity>>()
@@ -43,15 +43,19 @@ class EverythingViewModel (
                 Notify.log(message = "Status.SUCCESS")
                 visibility.value = View.GONE
                 generalResponse.allResponseEntity?.articleResponseEntities?.let { list ->
-                    everythingRepository.insertArticleList(list)
-                    for (entity in list) {
-                        entity.sourceResponseEntity?.let {
-                            if (!it.id.isNullOrBlank())
-                                everythingRepository.insertSource(it)
+                    nextPageList.value = with (list) {
+                        filter {articleResponseEntity ->
+//                            Eliminate duplicate articles by checking if the article exists in the stored list first
+                            articleResponseEntity !in everythingRepository.getArticleList()
                         }
+                        filter {articleResponseEntity->
+//                            Eliminate articles with blank source ids
+                            !articleResponseEntity.sourceResponseEntity?.id.isNullOrBlank()
+                        }
+                        everythingRepository.insertArticleList(this)
+                        message.value = "Found $size articles"
+                        this
                     }
-                    val size = list.size
-                    message.value = "Found $size articles"
                 }
             }
 
@@ -95,22 +99,8 @@ class EverythingViewModel (
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { visibility.value = View.VISIBLE }
                 .subscribe(
-                    { result ->
-                        visibility.value = View.GONE
-                        result.articleResponseEntities.let {
-                            nextPageList.value = with (it) {
-                                filter {articleResponseEntity ->
-//                                Eliminate duplicate articles by checking if the article exists in the stored list first
-                                    articleResponseEntity !in everythingRepository.getArticleList()
-                                }
-                                everythingRepository.insertArticleList(this)
-                                this
-                            }
-                        }
-                    },
-                    { error ->
-                        generalResponse.value = GeneralResponse.error(error)
-                    }
+                    { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
+                    { error -> generalResponse.value = GeneralResponse.error(error) }
                 )
         )
     }
@@ -123,22 +113,19 @@ class EverythingViewModel (
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { generalResponse.value = GeneralResponse.loading() }
                 .subscribe(
-                    { result ->
-                        if (!result.articleResponseEntities.isNullOrEmpty())
-                            everythingRepository.deleteAllArticles()
-                        generalResponse.value = GeneralResponse.allResponseSuccess(result)
-                    },
-                    { error ->
-                        generalResponse.value = GeneralResponse.error(error)
-                    }
+                    { result -> generalResponse.value = GeneralResponse.allResponseSuccess(result) },
+                    { error -> generalResponse.value = GeneralResponse.error(error) }
                 )
         )
     }
 
     private fun recordLastQuery (hashMap: HashMap<String, String>) {
 //        This function helps keep a record of the previous query for the refresh function
-        lastRequest.apply {
-            value = hashMap
-        }
+        lastRequest.value = hashMap
+    }
+
+    fun displayDatabaseArticles() {
+//        This function will run when the network connection is off to display the articles from the DB
+        articleList.value = everythingRepository.getArticleList()
     }
 }
