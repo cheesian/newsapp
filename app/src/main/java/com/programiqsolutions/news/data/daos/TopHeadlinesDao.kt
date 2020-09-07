@@ -11,8 +11,12 @@ Created by ian
  */
 @Dao
 interface TopHeadlinesDao {
+
     @Query("SELECT * from topHeadlines")
     fun getArticles(): LiveData<List<TopHeadlinesResponseEntity>>
+
+    @Query("SELECT * from topHeadlines")
+    fun getArticleList(): List<TopHeadlinesResponseEntity>
 
     @Query("DELETE from topHeadlines")
     fun deleteAllArticles()

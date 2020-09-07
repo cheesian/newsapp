@@ -74,8 +74,8 @@ class SignInViewModel (
                 generalResponse.signInResponse?.let {
                     if (it.success) {
                         token.value = it.token
-//                        Dependency injection will fetch the token from the user entity
-                        accountRepository.insertUser(UserEntity(programiq_token = it.token))
+//                        Give the user default parameters for username and email. These will be correctly updated after response from getUser()
+                        accountRepository.insertUser(UserEntity(username = "User", email = "user@gmail.com", programiq_token = it.token))
                         val ext = accountRepository.getUsers()
                         getUser()
                     } else {

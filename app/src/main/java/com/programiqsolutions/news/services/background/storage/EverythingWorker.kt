@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.programiqsolutions.news.NewsApp
-import com.programiqsolutions.news.R
 import com.programiqsolutions.news.data.Constants.EVERYTHING_WORKER_FAILURE
-import com.programiqsolutions.news.data.Constants.MAX_ARTICLE_COUNT
+import com.programiqsolutions.news.data.Constants.MIN_ARTICLE_COUNT
 import com.programiqsolutions.news.data.repositories.EverythingRepository
 import com.programiqsolutions.news.utils.Notify.log
 import com.programiqsolutions.news.utils.Notify.makeStatusNotification
@@ -31,8 +30,6 @@ class EverythingWorker(
     }
 
     override fun doWork(): Result {
-        makeStatusNotification(applicationContext.getString(R.string.app_name), "Reducing Everything Articles", applicationContext)
-        sleepNotification()
         return try {
             reduceEverything(everythingRepository)
             Result.success()
@@ -43,16 +40,23 @@ class EverythingWorker(
     }
 
     private fun reduceEverything(repository: EverythingRepository) {
-        val list = repository.getArticles().value?.sortedByDescending {
+        val list = repository.getArticleList().sortedByDescending {
             it.publishedAt
         }
-        list?.let {
-            if (it.size > MAX_ARTICLE_COUNT) {
+        val initialSize = list.size.toString()
+        list.let {
+            if (it.size > MIN_ARTICLE_COUNT) {
                 for (headline in it) {
-                    if (it.indexOf(headline) >= MAX_ARTICLE_COUNT) repository.deleteArticle(headline)
+                    if (it.indexOf(headline) >= MIN_ARTICLE_COUNT) repository.deleteArticle(headline)
                 }
             }
         }
+        val finalSize = repository.getArticleList().size.toString()
+        when (initialSize){
+            finalSize -> makeStatusNotification("All Global News articles are already optimized", "Minimum number of articles is $MIN_ARTICLE_COUNT", applicationContext)
+            else -> makeStatusNotification("Reduced All Global News articles from $initialSize to $finalSize", "Minimum number of articles is $MIN_ARTICLE_COUNT", applicationContext)
+        }
+        sleepNotification()
     }
 
 }

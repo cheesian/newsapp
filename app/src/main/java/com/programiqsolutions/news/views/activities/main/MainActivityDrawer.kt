@@ -60,17 +60,10 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         binding = DataBindingUtil.setContentView(this, R.layout.drawer_activity_main)
         viewModel = ViewModelProvider(this, factory).get(MainActivityViewModel::class.java)
         workerViewModel = ViewModelProvider(this).get(WorkerViewModel::class.java)
-        user = viewModel.getUserList()[0]
-        viewModel.users.observe(this, Observer {
-            if (it.isNullOrEmpty()) {
-//                Here the user accounts have been deleted
-                startActivity(Intent(this, StartingActivity::class.java))
-                finish()
-            } else {
-//                Get the logged in user
-                user = it[0]
-            }
-        })
+        when {
+            viewModel.getUserList().isNullOrEmpty() -> logout()
+            else -> user = viewModel.getUserList()[0]
+        }
         navigationView = binding.navigationView
         headerView = navigationView.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.name_tag).apply {

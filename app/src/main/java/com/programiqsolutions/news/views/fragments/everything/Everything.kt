@@ -71,7 +71,7 @@ class Everything : Fragment() {
     private lateinit var calendar: Calendar
     private lateinit var fromDateTextView: TextView
     private lateinit var toDateTextView: TextView
-    private var currentPage: Int = 1
+    private var currentPage: Int = 0
     var map: HashMap<String, String> = HashMap()
     lateinit var prevRequest: HashMap<String, String>
 
@@ -116,13 +116,6 @@ class Everything : Fragment() {
             everythingViewModel!!.consume(it)
         })
 
-        everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
-            adapter.setItems(it)
-            layoutManager.scrollToPosition(it.size - 1)
-//            The current page should be reset to 1 when the user swipes to refresh or makes a custom request
-            currentPage = 1
-        })
-
         everythingViewModel!!.sourceList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 sourceList.clear()
@@ -145,9 +138,15 @@ class Everything : Fragment() {
         })
 
         everythingViewModel!!.message.observe(viewLifecycleOwner, Observer {
-            val action = when (it) {
-                "Fetching data ..." -> ""
-                else -> "Reload"
+            var action = "Reload"
+            when (it) {
+                "Check your connection and try again" -> {
+//                    This lambda tries to get the ROOM database articles when the network connection is down
+                    if (adapter.itemCount > 0) return@Observer
+                    toast(requireContext(), "Fetching the articles stored locally ...")
+                    everythingViewModel?.displayDatabaseArticles()
+                }
+                "Fetching data ..." -> action = ""
             }
             Notify.snackBar(
                 view = binding.root,
@@ -162,14 +161,24 @@ class Everything : Fragment() {
             prevRequest = it
         })
 
+        everythingViewModel!!.articleList.observe(viewLifecycleOwner, Observer {
+            adapter.setItems(it)
+            layoutManager.scrollToPosition(it.size - 1)
+        })
+
         everythingViewModel!!.nextPageList.observe(viewLifecycleOwner, Observer {nextPageList->
             currentPage++
-            nextPageList.forEach {
+            if (currentPage == 1) {
+                adapter.setItems(nextPageList)
+                layoutManager.scrollToPosition(nextPageList.size - 1)
+            } else {
+                nextPageList.forEach {
 //                Insert the new items to the bottom of the list
-                adapter.undoDelete(
-                    position = 0,
-                    articleResponseEntity = it
-                )
+                    adapter.undoDelete(
+                        position = 0,
+                        articleResponseEntity = it
+                    )
+                }
             }
         })
 
@@ -316,16 +325,9 @@ class Everything : Fragment() {
         }
     }
 
-//    when you start the app for the first time it does not get the articles on its own, you have to swipe down
-//    this function checks solves that bug
-    private fun populateViewIfEmpty() {
-        val list = everythingViewModel?.articleList?.value
-        if (list.isNullOrEmpty()) everythingViewModel?.getEverythingWithoutDates()
-    }
-
     private fun initializeView() {
 
-        populateViewIfEmpty()
+        everythingViewModel?.getEverythingWithoutDates()
 
         Hide.hide(datePicker)
 

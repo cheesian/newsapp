@@ -37,6 +37,10 @@ class EverythingRepository @Inject constructor(
         return articlesDao.getArticles()
     }
 
+    fun getArticleList(): List<ArticleResponseEntity> {
+        return articlesDao.getArticleList()
+    }
+
     fun deleteAllArticles(){
         articlesDao.deleteAllArticles()
     }
