@@ -9,7 +9,7 @@ import com.programiqsolutions.news.data.daos.ArticlesDao
 import com.programiqsolutions.news.data.response.sources.SourceResponseEntity
 import com.programiqsolutions.news.data.daos.SourcesDao
 import com.programiqsolutions.news.data.daos.TopHeadlinesDao
-import com.programiqsolutions.news.data.entities.UserEntity
+import com.programiqsolutions.news.data.request.user.UserEntity
 import com.programiqsolutions.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 import com.programiqsolutions.news.utils.SourceResponseEntityConverter
 

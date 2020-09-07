@@ -1,4 +1,4 @@
-package com.programiqsolutions.news.services.background.storage.viewModel
+package com.programiqsolutions.news.services.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,8 +6,8 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.programiqsolutions.news.services.background.storage.EverythingWorker
-import com.programiqsolutions.news.services.background.storage.TopHeadlinesWorker
+import com.programiqsolutions.news.services.EverythingWorker
+import com.programiqsolutions.news.services.TopHeadlinesWorker
 
 
 /**

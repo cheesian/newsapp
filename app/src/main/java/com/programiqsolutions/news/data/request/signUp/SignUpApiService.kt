@@ -1,7 +1,6 @@
-package com.programiqsolutions.news.data.request
+package com.programiqsolutions.news.data.request.signUp
 
 import com.programiqsolutions.news.data.request.URLs.SIGN_UP_ENDPOINT
-import com.programiqsolutions.news.data.request.signUp.SignUpRequest
 import com.programiqsolutions.news.data.response.signUp.SignUpResponse
 import io.reactivex.Observable
 import retrofit2.http.Body

@@ -2,7 +2,7 @@ package com.programiqsolutions.news.data.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.programiqsolutions.news.data.entities.UserEntity
+import com.programiqsolutions.news.data.request.user.UserEntity
 
 
 /**

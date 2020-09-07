@@ -1,4 +1,4 @@
-package com.programiqsolutions.news.services.background.storage
+package com.programiqsolutions.news.services
 
 import android.content.Context
 import androidx.work.Worker
