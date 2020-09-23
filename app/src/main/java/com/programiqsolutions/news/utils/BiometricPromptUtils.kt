@@ -24,11 +24,14 @@ import com.programiqsolutions.news.R
 
 // Since we are using the same methods in more than one Activity, better give them their own file.
 object BiometricPromptUtils {
+
     private const val TAG = "BiometricPromptUtils"
+
     fun createBiometricPrompt(
         activity: AppCompatActivity,
         processSuccess: (BiometricPrompt.AuthenticationResult) -> Unit
     ): BiometricPrompt {
+
         val executor = ContextCompat.getMainExecutor(activity)
 
         val callback = object : BiometricPrompt.AuthenticationCallback() {
