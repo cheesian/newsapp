@@ -42,7 +42,7 @@
     <string name="sign_up_to_register">SIGN UP TO CREATE AN ACCOUNT</string>
     <string name="sign_in_to_account">LOGIN IF YOU HAVE AN ACCOUNT</string>
     <string name="error_try_again">Something went wrong. Please try again</string>
-    <string name="type_feedback">Type your feedback ...</string>
+    <string name="type_feedback">Type your feedback …</string>
     <string name="send">Send</string>
     <string name="feedback">Feedback</string>
     <string name="optimize_app">Optimize App</string>
@@ -50,4 +50,6 @@
     <string name="biometric_prompt_subtitle">Please login to get access</string>
     <string name="prompt_info_description">Global News is using Android biometric authentication</string>
     <string name="prompt_info_use_app_password">Use app password</string>
+    <string name="private_section">Private Section</string>
+    <string name="use_fingerprint">USE FINGERPRINT VERIFICATION</string>
 </resources>

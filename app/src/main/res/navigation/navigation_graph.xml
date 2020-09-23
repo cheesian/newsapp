@@ -41,4 +41,18 @@
             app:destination="@id/top_headlines_fragment" />
     </fragment>
 
+    <fragment android:id="@+id/private_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.private.Private"
+        tools:layout="@layout/fragment_private">
+
+    </fragment>
+
+    <fragment android:id="@+id/private_login_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.private.PrivateLogin"
+        tools:layout="@layout/fragment_private_login">
+
+        <action
+            android:id="@+id/action_private_login_fragment_to_private_fragment"
+            app:destination="@id/private_fragment" />
+    </fragment>
 </navigation>

@@ -184,6 +184,12 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 workerViewModel.deleteExcessiveArticles()
             }
 
+            R.id.private_menu -> {
+                checkIfIsCurrentFragment(R.id.private_login_fragment) {
+                    replaceFragment(R.id.private_login_fragment)
+                }
+            }
+
         }
         return true
     }
