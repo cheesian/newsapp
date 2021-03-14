@@ -48,12 +48,15 @@ class ArticleActivity: AppCompatActivity() {
                 view = binding.root,
                 message = "Failed to load url",
                 actionMessage = "Go back",
-                function = { webView.loadUrl(url) }
+                function = {  }
             )
-        } else
-        webView.loadUrl(url)
+        } else {
+            webView.loadUrl(url!!)
+        }
         swipeRefreshLayout.setOnRefreshListener {
-            webView.loadUrl(url)
+            url?.let {
+                webView.loadUrl(it)
+            }
             swipeRefreshLayout.isRefreshing = false
         }
     }
