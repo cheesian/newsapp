@@ -18,6 +18,7 @@ package com.programiqsolutions.news.utils
 
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
 import com.google.gson.Gson
 import java.nio.charset.Charset
@@ -88,10 +89,18 @@ private class CryptographyManagerImpl : CryptographyManager {
         keyName: String,
         initializationVector: ByteArray
     ): Cipher {
-        val cipher = getCipher()
-        val secretKey = getOrCreateSecretKey(keyName)
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(128, initializationVector))
-        return cipher
+        return try {
+            val cipher = getCipher()
+            val secretKey = getOrCreateSecretKey(keyName)
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(128, initializationVector))
+            cipher
+        } catch (exception: KeyPermanentlyInvalidatedException) {
+            deleteKey(keyName)
+            val cipher = getCipher()
+            val secretKey = getOrCreateSecretKey(keyName)
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(128, initializationVector))
+            cipher
+        }
     }
 
     override fun encryptData(plaintext: String, cipher: Cipher): CipherTextWrapper {
@@ -136,6 +145,14 @@ private class CryptographyManagerImpl : CryptographyManager {
         )
         keyGenerator.init(keyGenParams)
         return keyGenerator.generateKey()
+    }
+
+    private fun deleteKey(keyName: String) {
+        KeyStore.getInstance(ANDROID_KEYSTORE).apply {
+            load(null)
+        }.also {
+            it.deleteEntry(keyName)
+        }
     }
 
     override fun persistCipherTextWrapperToSharedPrefs(
