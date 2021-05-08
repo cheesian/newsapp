@@ -22,6 +22,7 @@ import com.programiqsolutions.news.views.fragments.start.SignIn
 import com.programiqsolutions.news.views.fragments.start.SignUp
 import com.programiqsolutions.news.views.fragments.start.Welcome
 import com.google.android.material.tabs.TabLayout
+import com.programiqsolutions.news.data.request.user.UserEntity
 import javax.inject.Inject
 
 
@@ -52,7 +53,8 @@ class StartingActivity: AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_starting)
         viewModel = ViewModelProvider(this, factory).get(StartingViewModel::class.java)
         viewModel.users.observe(this, Observer {
-            if (it.isNotEmpty()) {
+            if (it.isEmpty()) {
+                viewModel.accountRepository.insertUser(UserEntity("default", "default", "token"))
                 startActivity(Intent(this, MainActivityDrawer::class.java))
                 finish()
             }

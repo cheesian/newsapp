@@ -46,13 +46,9 @@ class PrivateLogin: Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_private_login, container, false)
+        checkForFingerprintAndToken()
         setClickListeners()
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        checkForFingerprintAndToken()
     }
 
     private fun checkForFingerprintAndToken() {
