@@ -87,7 +87,7 @@ object Notify {
         }
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_programiq)
+            .setSmallIcon(R.drawable.ic_news)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

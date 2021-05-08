@@ -5,8 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -90,8 +88,7 @@ class ArticlesAdapter (
 
     fun setItems(itemList: List<ArticleResponseEntity>) {
         this.articleList.clear()
-        this.articleList.addAll(itemList)
-        this.articleList.distinct()
+        this.articleList.addAll(itemList.distinct())
         origin++
         submitList(this.articleList)
     }

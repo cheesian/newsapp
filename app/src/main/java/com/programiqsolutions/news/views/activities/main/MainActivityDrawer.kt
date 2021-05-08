@@ -31,7 +31,6 @@ import com.google.android.material.navigation.NavigationView
 import com.programiqsolutions.news.services.viewModel.WorkerViewModel
 import javax.inject.Inject
 
-
 /**
 Created by ian
  */
