@@ -1,4 +1,4 @@
-package com.programiqsolutions.news.data.entities
+package com.programiqsolutions.news.data.request.user
 
 import androidx.room.Entity
 

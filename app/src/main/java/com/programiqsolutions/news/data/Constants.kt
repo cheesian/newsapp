@@ -28,7 +28,8 @@ object Constants {
     const val STORAGE_PERMISSIONS_REQUEST_CODE = 34500
     const val SLEEP_DELAY_MILLIS: Long = 5000
     const val MIN_ARTICLE_COUNT = 30
-    const val PREFERENCE_FILE = "com.example.news.newsPreference"
+    const val PREFERENCE_FILE_NAME = "com.example.news.newsPreference"
+    const val CIPHER_WRAPPER = "$PREFERENCE_FILE_NAME WRAPPER"
 
 //    Worker threads
     const val VERBOSE_NOTIFICATION_CHANNEL_NAME = "WorkManager Notifications"

@@ -2,10 +2,10 @@ package com.programiqsolutions.news.di
 
 import com.programiqsolutions.news.data.Constants.PROGRAMIQ_RETROFIT
 import com.programiqsolutions.news.data.Constants.PROGRAMIQ_TOKEN_RETROFIT
-import com.programiqsolutions.news.data.request.FeedbackApiService
-import com.programiqsolutions.news.data.request.SignInApiService
-import com.programiqsolutions.news.data.request.SignUpApiService
-import com.programiqsolutions.news.data.request.UserApiService
+import com.programiqsolutions.news.data.request.feedback.FeedbackApiService
+import com.programiqsolutions.news.data.request.signIn.SignInApiService
+import com.programiqsolutions.news.data.request.signUp.SignUpApiService
+import com.programiqsolutions.news.data.request.user.UserApiService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

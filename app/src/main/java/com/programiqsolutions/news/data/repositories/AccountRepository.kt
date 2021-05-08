@@ -2,10 +2,10 @@ package com.programiqsolutions.news.data.repositories
 
 import androidx.lifecycle.LiveData
 import com.programiqsolutions.news.data.daos.AccountDao
-import com.programiqsolutions.news.data.entities.UserEntity
-import com.programiqsolutions.news.data.request.SignInApiService
-import com.programiqsolutions.news.data.request.SignUpApiService
-import com.programiqsolutions.news.data.request.UserApiService
+import com.programiqsolutions.news.data.request.user.UserEntity
+import com.programiqsolutions.news.data.request.signIn.SignInApiService
+import com.programiqsolutions.news.data.request.signUp.SignUpApiService
+import com.programiqsolutions.news.data.request.user.UserApiService
 import com.programiqsolutions.news.data.request.signIn.SignInRequest
 import com.programiqsolutions.news.data.request.signUp.SignUpRequest
 import com.programiqsolutions.news.data.response.signIn.GetUserResponse

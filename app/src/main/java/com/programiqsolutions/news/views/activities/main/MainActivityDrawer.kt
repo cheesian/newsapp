@@ -20,7 +20,7 @@ import com.programiqsolutions.news.NewsApp
 import com.programiqsolutions.news.R
 import com.programiqsolutions.news.VMFactory
 import com.programiqsolutions.news.data.Constants.STORAGE_PERMISSIONS_REQUEST_CODE
-import com.programiqsolutions.news.data.entities.UserEntity
+import com.programiqsolutions.news.data.request.user.UserEntity
 import com.programiqsolutions.news.databinding.MainActivityDrawerBinding
 import com.programiqsolutions.news.utils.FullScreen.setFullScreen
 import com.programiqsolutions.news.utils.Notify.snackBar
@@ -28,7 +28,7 @@ import com.programiqsolutions.news.utils.Notify.toast
 import com.programiqsolutions.news.views.activities.main.viewModels.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.programiqsolutions.news.services.background.storage.viewModel.WorkerViewModel
+import com.programiqsolutions.news.services.viewModel.WorkerViewModel
 import javax.inject.Inject
 
 /**
@@ -181,6 +181,12 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
             R.id.optimize_menu -> {
                 workerViewModel.deleteExcessiveArticles()
+            }
+
+            R.id.private_menu -> {
+                checkIfIsCurrentFragment(R.id.private_login_fragment) {
+                    replaceFragment(R.id.private_login_fragment)
+                }
             }
 
         }

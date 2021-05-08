@@ -1,4 +1,4 @@
-package com.programiqsolutions.news.data.request
+package com.programiqsolutions.news.data.request.user
 
 import com.programiqsolutions.news.data.request.URLs.GET_USER_ENDPOINT
 import com.programiqsolutions.news.data.response.signIn.GetUserResponse

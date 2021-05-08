@@ -3,7 +3,7 @@ package com.programiqsolutions.news.views.fragments.start.viewModels
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.programiqsolutions.news.data.entities.UserEntity
+import com.programiqsolutions.news.data.request.user.UserEntity
 import com.programiqsolutions.news.data.repositories.AccountRepository
 import com.programiqsolutions.news.data.request.signIn.SignInRequest
 import com.programiqsolutions.news.data.response.GeneralResponse

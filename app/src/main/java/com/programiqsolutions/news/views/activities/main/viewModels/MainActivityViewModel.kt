@@ -1,8 +1,7 @@
 package com.programiqsolutions.news.views.activities.main.viewModels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.programiqsolutions.news.data.entities.UserEntity
+import com.programiqsolutions.news.data.request.user.UserEntity
 import com.programiqsolutions.news.data.repositories.AccountRepository
 
 
