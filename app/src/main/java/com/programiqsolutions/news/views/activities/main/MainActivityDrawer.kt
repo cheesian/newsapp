@@ -2,7 +2,6 @@ package com.programiqsolutions.news.views.activities.main
 
 import android.Manifest
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -27,13 +25,11 @@ import com.programiqsolutions.news.databinding.MainActivityDrawerBinding
 import com.programiqsolutions.news.utils.FullScreen.setFullScreen
 import com.programiqsolutions.news.utils.Notify.snackBar
 import com.programiqsolutions.news.utils.Notify.toast
-import com.programiqsolutions.news.views.activities.start.StartingActivity
 import com.programiqsolutions.news.views.activities.main.viewModels.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.programiqsolutions.news.services.background.storage.viewModel.WorkerViewModel
 import javax.inject.Inject
-
 
 /**
 Created by ian
