@@ -44,17 +44,16 @@ class EverythingViewModel (
                 visibility.value = View.GONE
                 generalResponse.allResponseEntity?.articleResponseEntities?.let { list ->
                     nextPageList.value = with (list) {
-                        filter {articleResponseEntity ->
+                        val filteredList = filter {articleResponseEntity ->
 //                            Eliminate duplicate articles by checking if the article exists in the stored list first
                             articleResponseEntity !in everythingRepository.getArticleList()
-                        }
-                        filter {articleResponseEntity->
+                        }.filter {articleResponseEntity->
 //                            Eliminate articles with blank source ids
                             !articleResponseEntity.sourceResponseEntity?.id.isNullOrBlank()
                         }
-                        everythingRepository.insertArticleList(this)
-                        message.value = "Found $size articles"
-                        this
+                        everythingRepository.insertArticleList(filteredList)
+                        message.value = "Found ${filteredList.size} articles"
+                        filteredList
                     }
                 }
             }
