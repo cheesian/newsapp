@@ -42,17 +42,16 @@ class TopHeadlinesViewModel(
                 visibility.value = View.GONE
                 generalResponse.topResponseEntity?.articleResponseEntities?.let { list ->
                     nextPageList.value = with (list) {
-                        filter {topHeadlinesResponseEntity ->
+                        val filteredList = filter {topHeadlinesResponseEntity ->
 //                                Eliminate duplicate articles by checking if the article exists in the stored list first
                             topHeadlinesResponseEntity !in topHeadlinesRepository.getArticleList()
-                        }
-                        filter {topHeadlinesResponseEntity ->
+                        }.filter {topHeadlinesResponseEntity ->
 //                                Eliminate articles with blank source ids
                             !topHeadlinesResponseEntity.sourceResponseEntity?.id.isNullOrBlank()
                         }
-                        topHeadlinesRepository.insertArticleList(this)
-                        message.value = "Found $size articles"
-                        this
+                        topHeadlinesRepository.insertArticleList(filteredList)
+                        message.value = "Found ${filteredList.size} articles"
+                        filteredList
                     }
                 }
             }
