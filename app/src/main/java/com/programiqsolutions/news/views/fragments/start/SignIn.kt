@@ -87,14 +87,15 @@ class SignIn: Fragment() {
     }
 
     private fun signIn() {
-        if (checkFormValidity()) {
+        viewModel.accountRepository.deleteAllAccounts()
+        /*if (checkFormValidity()) {
             viewModel.signIn(
                 SignInRequest(
                 email = email.text.toString(),
                 password = pass.text.toString()
             )
             )
-        }
+        }*/
     }
 
 }
