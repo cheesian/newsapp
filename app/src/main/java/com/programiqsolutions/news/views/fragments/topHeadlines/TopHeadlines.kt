@@ -22,6 +22,7 @@ import com.programiqsolutions.news.R
 import com.programiqsolutions.news.VMFactory
 import com.programiqsolutions.news.adapters.ArticlesAdapter
 import com.programiqsolutions.news.data.response.everything.ArticleResponseEntity
+import com.programiqsolutions.news.data.response.topHeadlines.TopHeadlinesResponseEntity
 import com.programiqsolutions.news.databinding.TopHeadlinesBinding
 import com.programiqsolutions.news.utils.*
 import com.programiqsolutions.news.utils.Hide.hide
@@ -132,7 +133,7 @@ class TopHeadlines : Fragment() {
         topHeadlinesViewModel!!.message.observe(viewLifecycleOwner, Observer {
             var action = "Reload"
             when (it) {
-                "Check your connection and try again" -> {
+                "Something went wrong. Please try again", "Check your connection and try again" -> {
 //                    This lambda tries to get the ROOM database articles when the network connection is down
                     if (adapter.itemCount > 0) return@Observer
                     toast(requireContext(), "Fetching the articles stored locally ...")
@@ -156,7 +157,12 @@ class TopHeadlines : Fragment() {
         topHeadlinesViewModel!!.nextPageList.observe(viewLifecycleOwner, Observer {nextPageList->
             currentPage++
             if (currentPage == 1) {
-                adapter.setTopHeadlinesItems(nextPageList)
+                val combinedList = with(mutableListOf<TopHeadlinesResponseEntity>()) {
+                    addAll(topHeadlinesViewModel!!.getDatabaseArticles())
+                    addAll(nextPageList)
+                    this
+                }
+                adapter.setTopHeadlinesItems(combinedList)
                 layoutManager.scrollToPosition(adapter.itemCount - 1)
             } else {
                 nextPageList.forEach {

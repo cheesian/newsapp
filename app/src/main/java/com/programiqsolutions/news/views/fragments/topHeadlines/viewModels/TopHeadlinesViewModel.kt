@@ -123,4 +123,6 @@ class TopHeadlinesViewModel(
 //        This function will run when the network connection is off to display the articles from the DB
         articleList.value = topHeadlinesRepository.getArticleList()
     }
+
+    fun getDatabaseArticles() = topHeadlinesRepository.getArticleList()
 }
