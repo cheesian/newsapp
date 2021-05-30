@@ -22,6 +22,7 @@ import com.programiqsolutions.news.NewsApp
 import com.programiqsolutions.news.R
 import com.programiqsolutions.news.VMFactory
 import com.programiqsolutions.news.adapters.ArticlesAdapter
+import com.programiqsolutions.news.data.response.everything.ArticleResponseEntity
 import com.programiqsolutions.news.databinding.EverythingBinding
 import com.programiqsolutions.news.utils.*
 import com.programiqsolutions.news.utils.DateTimeUtil.getYMD
@@ -86,7 +87,7 @@ class Everything : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.everythingRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(requireContext(), binding.root)
         recyclerView.adapter = adapter
@@ -140,7 +141,7 @@ class Everything : Fragment() {
         everythingViewModel!!.message.observe(viewLifecycleOwner, Observer {
             var action = "Reload"
             when (it) {
-                "Check your connection and try again" -> {
+                "Something went wrong. Please try again", "Check your connection and try again" -> {
 //                    This lambda tries to get the ROOM database articles when the network connection is down
                     if (adapter.itemCount > 0) return@Observer
                     toast(requireContext(), "Fetching the articles stored locally ...")
@@ -169,8 +170,13 @@ class Everything : Fragment() {
         everythingViewModel!!.nextPageList.observe(viewLifecycleOwner, Observer {nextPageList->
             currentPage++
             if (currentPage == 1) {
-                adapter.setItems(nextPageList)
-                layoutManager.scrollToPosition(nextPageList.size - 1)
+                val combinedList = with(mutableListOf<ArticleResponseEntity>()) {
+                    addAll(everythingViewModel!!.getDatabaseArticles())
+                    addAll(nextPageList)
+                    this
+                }
+                adapter.setItems(combinedList)
+                layoutManager.scrollToPosition(adapter.itemCount - 1)
             } else {
                 nextPageList.forEach {
 //                Insert the new items to the bottom of the list

@@ -127,4 +127,6 @@ class EverythingViewModel (
 //        This function will run when the network connection is off to display the articles from the DB
         articleList.value = everythingRepository.getArticleList()
     }
+
+    fun getDatabaseArticles() = everythingRepository.getArticleList()
 }
