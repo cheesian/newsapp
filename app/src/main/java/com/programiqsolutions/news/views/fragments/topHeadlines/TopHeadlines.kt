@@ -79,7 +79,7 @@ class TopHeadlines : Fragment() {
         progressBar = binding.progress
         refreshLayout = binding.refreshLayout
         recyclerView = binding.topHeadlinesRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         val adapter = ArticlesAdapter(requireContext(), binding.root)
         recyclerView.adapter = adapter
@@ -157,7 +157,7 @@ class TopHeadlines : Fragment() {
             currentPage++
             if (currentPage == 1) {
                 adapter.setTopHeadlinesItems(nextPageList)
-                layoutManager.scrollToPosition(nextPageList.size - 1)
+                layoutManager.scrollToPosition(adapter.itemCount - 1)
             } else {
                 nextPageList.forEach {
                     adapter.undoDelete(
