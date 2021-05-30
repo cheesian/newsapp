@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.programiqsolutions.news.R
@@ -25,7 +24,7 @@ Created by ian
 class ArticlesAdapter (
     private val adapterContext: Context,
     private val rootView: View
-) : ListAdapter<ArticleResponseEntity, ArticlesAdapter.ArticlesHolder>(ArticlesDiffCallBack()) {
+) : RecyclerView.Adapter<ArticlesAdapter.ArticlesHolder>() {
 
     private var articleList = mutableListOf<ArticleResponseEntity>()
     private var origin = 0
@@ -48,7 +47,7 @@ class ArticlesAdapter (
         if (articleList.isNullOrEmpty()) {
             toast(adapterContext, "No news to display")
         } else {
-            val currentArticle = getItem(position)
+            val currentArticle = articleList[position]
             articlesHolder.articleTitle.text = currentArticle.title
             articlesHolder.articleText.text = currentArticle.description
             val author = currentArticle.author ?: "Anonymous"
@@ -90,7 +89,7 @@ class ArticlesAdapter (
         this.articleList.clear()
         this.articleList.addAll(itemList.distinct())
         origin++
-        submitList(this.articleList)
+        notifyDataSetChanged()
     }
 
     fun setTopHeadlinesItems(itemList: List<TopHeadlinesResponseEntity>) {
@@ -128,5 +127,7 @@ class ArticlesAdapter (
         articleList.add(position, articleResponseEntity)
         notifyItemInserted(position)
     }
+
+    override fun getItemCount(): Int = articleList.size
 
 }
