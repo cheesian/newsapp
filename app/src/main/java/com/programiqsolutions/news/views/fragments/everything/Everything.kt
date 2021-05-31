@@ -318,6 +318,7 @@ class Everything : Fragment() {
                     )
                 } else {
                     reset()
+                    currentPage = 0
                     everythingViewModel!!.getCustomEverything(map)
                 }
 

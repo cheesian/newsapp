@@ -296,6 +296,7 @@ class TopHeadlines : Fragment() {
                     snackBar(view = binding.root, message = "Use the checkboxes to filter your search")
                 } else {
                     reset()
+                    currentPage = 0
                     topHeadlinesViewModel!!.getCustomTopHeadlines(map)
                 }
 
