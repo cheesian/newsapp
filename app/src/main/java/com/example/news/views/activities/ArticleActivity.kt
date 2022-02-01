@@ -48,10 +48,14 @@ class ArticleActivity: AppCompatActivity() {
                 view = binding.root,
                 message = "Failed to load url",
                 actionMessage = "Go back",
-                function = View.OnClickListener { webView.loadUrl(url) }
+                function = View.OnClickListener {
+                    url?.let { url->
+                        webView.loadUrl(url)
+                    }
+                }
             )
         } else
-        webView.loadUrl(url)
+        webView.loadUrl(url!!)
     }
 
     inner class Client: WebViewClient () {
@@ -84,7 +88,11 @@ class ArticleActivity: AppCompatActivity() {
                 view = view!!.rootView,
                 message = errorMessage,
                 actionMessage = "Reload",
-                function = View.OnClickListener { webView.loadUrl(url) }
+                function = View.OnClickListener {
+                    url?.let { url->
+                        webView.loadUrl(url)
+                    }
+                }
             )
         }
     }
