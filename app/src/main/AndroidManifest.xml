@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name="com.programiqsolutions.news.views.activities.start.StartingActivity">
+        <activity android:name="com.programiqsolutions.news.views.activities.start.StartingActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
