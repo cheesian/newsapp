@@ -20,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.programiqsolutions.news.NewsApp
 import com.programiqsolutions.news.R
 import com.programiqsolutions.news.VMFactory
-import com.programiqsolutions.news.adapters.ArticlesAdapter
+import com.programiqsolutions.news.adapters.ArticlesAdapterNew
 import com.programiqsolutions.news.data.response.everything.ArticleResponseEntity
 import com.programiqsolutions.news.databinding.TopHeadlinesBinding
 import com.programiqsolutions.news.utils.*
@@ -81,7 +81,7 @@ class TopHeadlines : Fragment() {
         recyclerView = binding.topHeadlinesRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = ArticlesAdapter(requireContext(), binding.root)
+        val adapter = ArticlesAdapterNew(requireContext(), binding.root)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
@@ -102,7 +102,7 @@ class TopHeadlines : Fragment() {
             }
         )
 
-        ItemTouchHelper(SwipeToDismiss(articlesAdapter = adapter)).attachToRecyclerView(recyclerView)
+        ItemTouchHelper(SwipeToDismiss(articlesAdapterNew = adapter)).attachToRecyclerView(recyclerView)
 
         topHeadlinesViewModel = ViewModelProvider(this, topHeadlinesViewModelFactory).get(TopHeadlinesViewModel::class.java)
         topHeadlinesViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {

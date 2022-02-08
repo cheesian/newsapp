@@ -21,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.programiqsolutions.news.NewsApp
 import com.programiqsolutions.news.R
 import com.programiqsolutions.news.VMFactory
-import com.programiqsolutions.news.adapters.ArticlesAdapter
+import com.programiqsolutions.news.adapters.ArticlesAdapterOld
 import com.programiqsolutions.news.databinding.EverythingBinding
 import com.programiqsolutions.news.utils.*
 import com.programiqsolutions.news.utils.DateTimeUtil.getYMD
@@ -88,7 +88,7 @@ class Everything : Fragment() {
         recyclerView = binding.everythingRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         recyclerView.layoutManager = layoutManager
-        val adapter = ArticlesAdapter(requireContext(), binding.root)
+        val adapter = ArticlesAdapterOld(requireContext(), binding.root)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
@@ -109,7 +109,7 @@ class Everything : Fragment() {
             }
         )
 
-        ItemTouchHelper(SwipeToDismiss(adapter)).attachToRecyclerView(recyclerView)
+        ItemTouchHelper(SwipeToDismiss(articlesAdapterOld = adapter)).attachToRecyclerView(recyclerView)
         everythingViewModel =
             ViewModelProvider(this, everythingViewModelFactory).get(EverythingViewModel::class.java)
         everythingViewModel!!.getGeneralResponse().observe(viewLifecycleOwner, Observer {

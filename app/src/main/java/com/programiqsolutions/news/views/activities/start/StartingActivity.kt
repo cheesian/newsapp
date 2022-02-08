@@ -55,9 +55,9 @@ class StartingActivity: AppCompatActivity() {
         viewModel.users.observe(this, Observer {
             if (it.isEmpty()) {
                 viewModel.accountRepository.insertUser(UserEntity("default", "default", "token"))
-                startActivity(Intent(this, MainActivityDrawer::class.java))
-                finish()
             }
+            startActivity(Intent(this, MainActivityDrawer::class.java))
+            finish()
         })
 
         pagerAdapter = StartingPagerAdapter(supportFragmentManager)

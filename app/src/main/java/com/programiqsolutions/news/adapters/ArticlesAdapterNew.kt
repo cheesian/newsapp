@@ -22,10 +22,10 @@ import com.programiqsolutions.news.views.activities.ArticleActivity
 Created by ian
  */
 
-class ArticlesAdapter (
+class ArticlesAdapterNew (
     private val adapterContext: Context,
     private val rootView: View
-) : ListAdapter<ArticleResponseEntity, ArticlesAdapter.ArticlesHolder>(ArticlesDiffCallBack()) {
+) : ListAdapter<ArticleResponseEntity, ArticlesAdapterNew.ArticlesHolder>(ArticlesDiffCallBack()) {
 
     private var articleList = mutableListOf<ArticleResponseEntity>()
     private var origin = 0
