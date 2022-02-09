@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/action_button"
+        style="@style/image_button"
+        android:layout_marginBottom="@dimen/ftb_margins"
+        android:drawableStart="@drawable/ic_menu_white"
+        android:text="@string/options"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        style="@style/image_button"
+        android:backgroundTint="@color/colorAccent"
+        android:drawableStart="@drawable/ic_cancel_white_24dp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toStartOf="@id/action_button"
+        app:layout_constraintTop_toTopOf="@id/action_button" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/options_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/options_spacing"
+        android:layout_marginBottom="@dimen/options_spacing"
+        android:background="@drawable/layout_background_shape"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/action_button"
+        app:layout_constraintEnd_toEndOf="@id/action_button"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.2"
+            android:textColor="@color/white"
+            android:gravity="start"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_from"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_from"
+            app:layout_constraintTop_toTopOf="@id/checkBox_from" />
+
+        <CheckBox
+            android:id="@+id/checkBox_from"
+            style="@style/checkbox"
+            android:text="@string/from_date"
+            app:layout_constraintBottom_toTopOf="@id/checkBox_to"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.2"
+            android:textColor="@color/white"
+            android:gravity="start"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_to"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_to"
+            app:layout_constraintTop_toTopOf="@id/checkBox_to" />
+
+        <CheckBox
+            android:id="@+id/checkBox_to"
+            style="@style/checkbox"
+            android:text="To date"
+            app:layout_constraintBottom_toTopOf="@id/checkBox_language"
+            app:layout_constraintStart_toStartOf="@id/checkBox_from" />
+
+        <Spinner
+            android:id="@+id/spinner_language"
+            style="@style/spinner"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_language"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_language"
+            app:layout_constraintTop_toTopOf="@id/checkBox_language" />
+
+        <CheckBox
+            android:id="@+id/checkBox_language"
+            style="@style/checkbox"
+            android:text="@string/language"
+            app:layout_constraintBottom_toTopOf="@id/checkBox_source"
+            app:layout_constraintStart_toStartOf="@id/checkBox_from" />
+
+        <Spinner
+            android:id="@+id/spinner_source"
+            style="@style/spinner"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_source"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_source"
+            app:layout_constraintTop_toTopOf="@id/checkBox_source" />
+
+        <CheckBox
+            android:id="@+id/checkBox_source"
+            style="@style/checkbox"
+            android:text="@string/source"
+            app:layout_constraintBottom_toTopOf="@id/checkBox_keyword"
+            app:layout_constraintStart_toStartOf="@id/checkBox_from" />
+
+        <EditText
+            android:id="@+id/editText_keyword"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/type"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/colorPressed"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/checkBox_keyword"
+            app:layout_constraintEnd_toStartOf="@id/checkBox_keyword"
+            app:layout_constraintTop_toTopOf="@id/checkBox_keyword" />
+
+        <CheckBox
+            android:id="@+id/checkBox_keyword"
+            style="@style/checkbox"
+            android:text="@string/keyword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/checkBox_from" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/ftb_margins"
+        android:headerBackground="@color/colorPrimary"
+        android:theme="@style/CalenderViewCustom"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

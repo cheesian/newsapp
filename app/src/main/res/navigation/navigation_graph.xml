@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/top_headlines_fragment">
+
+    <fragment android:id="@+id/top_headlines_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.topHeadlines.TopHeadlines"
+        tools:layout="@layout/fragment_top_headlines">
+        <action
+            android:id="@+id/action_top_headlines_fragment_to_everything_fragment"
+            app:destination="@id/everything_fragment"
+            app:popUpTo="@id/everything_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment android:id="@+id/everything_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.everything.Everything"
+        tools:layout="@layout/fragment_everything">
+        <action
+            android:id="@+id/action_everything_fragment_to_sources_fragment"
+            app:destination="@id/sources_fragment"
+            app:popUpTo="@id/sources_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment android:id="@+id/sources_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.sources.Sources"
+        tools:layout="@layout/fragment_sources">
+        <action
+            android:id="@+id/action_sources_fragment_to_feedback_fragment"
+            app:destination="@id/feedback_fragment" />
+    </fragment>
+
+    <fragment android:id="@+id/feedback_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.feedback.Feedback"
+        tools:layout="@layout/fragment_feedback">
+        <action
+            android:id="@+id/action_feedback_fragment_to_top_headlines_fragment"
+            app:destination="@id/top_headlines_fragment" />
+    </fragment>
+
+    <fragment android:id="@+id/private_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.private.Private"
+        tools:layout="@layout/fragment_private">
+
+    </fragment>
+
+    <fragment android:id="@+id/private_login_fragment"
+        android:name="com.programiqsolutions.news.views.fragments.private.PrivateLogin"
+        tools:layout="@layout/fragment_private_login">
+
+        <action
+            android:id="@+id/action_private_login_fragment_to_private_fragment"
+            app:destination="@id/private_fragment" />
+    </fragment>
+</navigation>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedbacks">
+        <item>Click &amp; Select the Type of Feedback</item>
+        <item>I like something about the app</item>
+        <item>I dislike something about the app</item>
+        <item>I have an improvement suggestion</item>
+    </string-array>
+</resources>

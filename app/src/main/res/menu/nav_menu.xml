@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/top_headlines_menu"
+            android:title="@string/trending_news"
+            android:icon="@drawable/ic_hot_accent_24dp"/>
+
+        <item android:id="@+id/everything_menu"
+            android:title="@string/all_global_news"
+            android:icon="@drawable/ic_globe_accent_24dp"/>
+
+        <item android:id="@+id/sources_menu"
+            android:title="@string/news_sources"
+            android:icon="@drawable/ic_wifi_accent_24dp"/>
+
+        <item android:id="@+id/feedback_menu"
+            android:title="@string/feedback"
+            android:icon="@drawable/ic_feedback"/>
+
+        <item android:id="@+id/optimize_menu"
+            android:title="@string/optimize_app"
+            android:icon="@drawable/ic_disc_full_24"/>
+
+        <item android:id="@+id/private_menu"
+            android:title="@string/private_section"
+            android:icon="@drawable/ic_security_24"/>
+
+    </group>
+
+</menu>

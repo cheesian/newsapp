@@ -6,10 +6,13 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
     compileSdkVersion 32
+    buildToolsVersion "29.0.3"
     defaultConfig {
-        applicationId "com.example.news"
+        applicationId "com.programiqsolutions.news"
         minSdkVersion 24
         targetSdkVersion 32
         versionCode 1
@@ -22,9 +25,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    // for data binding
-    dataBinding {
-        enabled = true
+//    for data binding
+    buildFeatures {
+        dataBinding = true
+    }
+
+//    Specifying JVMTarget
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    kapt {
+        generateStubs = true
     }
 
 }
@@ -42,6 +57,10 @@ dependencies {
     //material design
     implementation 'com.google.android.material:material:1.5.0'
 
+    // Android Architecture Component - Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
     // Android Architecture Component - LiveData & ViewModel
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
@@ -51,9 +70,9 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.4.1'
 
     // Retrofit using RxJava2, Okhttp, Okhttp logging interceptor, Gson
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
@@ -67,9 +86,15 @@ dependencies {
     compileOnly "org.glassfish:javax.annotation:3.1.1"
 
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.10.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //Android support library e.g. for SwipeRefreshLayout
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    //Biometric login
+    implementation "androidx.biometric:biometric:$biometric_version"
 }

@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#0A82C8</color>
     <color name="colorAccent">#D81B60</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="colorPressed">#87C6F8</color>
+    <color name="brand_dark_color">#3f5675</color>
+    <color name="brand_text_color">#ae9609</color>
 </resources>
